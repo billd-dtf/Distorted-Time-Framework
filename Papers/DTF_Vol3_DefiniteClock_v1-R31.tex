@@ -1,0 +1,577 @@
+\documentclass[11pt]{article}
+\pdfobjcompresslevel=0 % force classic uncompressed xref table (avoids MiKTeX broken-xref-stream bug)
+\usepackage[margin=2.3cm]{geometry}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tcolorbox}\tcbuselibrary{skins,breakable}
+\usepackage{booktabs}\usepackage{array}\usepackage{enumitem}
+\usepackage{fancyhdr}\setlength{\headheight}{14.5pt}
+\usepackage{parskip}\usepackage{xcolor}\usepackage{hyperref}
+\usepackage{tikz}\usetikzlibrary{arrows.meta,positioning}
+
+\definecolor{dtfblue}{HTML}{1a1a2e}\definecolor{dtflight}{HTML}{0f3460}
+\definecolor{boxblue}{HTML}{e8f4f8}\definecolor{knownblue}{HTML}{1a3a6e}
+\definecolor{cbKnownBg}{HTML}{E9E9FA}\definecolor{cbKnownFr}{HTML}{8E97C9}
+\definecolor{cbNodeBg}{HTML}{F4F5F8}\definecolor{cbNodeFr}{HTML}{CDD2DB}
+\definecolor{cbAssumeBg}{HTML}{FBEBEB}\definecolor{cbAssumeFr}{HTML}{C0392B}
+\definecolor{cbResultBg}{HTML}{FBF4D2}\definecolor{cbResultFr}{HTML}{C8A21E}
+\definecolor{cbTagBg}{HTML}{E2F1EF}\definecolor{cbTagFr}{HTML}{4FA295}
+\definecolor{cbArrow}{HTML}{8A93A6}\definecolor{cbPyBg}{HTML}{ECEFF4}
+
+\tcbset{
+  keybox/.style={enhanced,breakable,colback=boxblue,colframe=dtfblue,boxrule=0.8pt,
+    arc=3pt,left=10pt,right=10pt,top=8pt,bottom=8pt},
+  cbflow/.style={enhanced,arc=3.5pt,boxrule=0.7pt,left=12pt,right=12pt,top=10pt,bottom=10pt,
+    before skip=4pt,after skip=4pt},
+}
+\newcommand{\chainarrow}{\vspace{1pt}\centerline{\tikz{\draw[-{Latex[length=2.6mm,width=2.2mm]},
+  line width=1pt,cbArrow](0,0.28)--(0,0);}}\vspace{1pt}}
+\newcommand{\known}[2]{\begin{tcolorbox}[cbflow,colback=cbKnownBg,colframe=cbKnownFr]
+  \centering\(\displaystyle #1\)\\[3pt]{\color{knownblue}\small[\,\textit{known: #2}\,]}\par
+  \nobreak\vspace{1pt}\hfill{\tiny\color{gray}Known}\end{tcolorbox}}
+\newcommand{\assume}[1]{\chainarrow\begin{tcolorbox}[cbflow,colback=cbAssumeBg,colframe=cbAssumeFr]
+  {\color{cbAssumeFr}\bfseries[DTF input:]\ }{\color{cbAssumeFr}\small #1}\par
+  \nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF input}\end{tcolorbox}}
+\newcommand{\nodetext}[1]{\chainarrow\begin{tcolorbox}[cbflow,colback=cbNodeBg,colframe=cbNodeFr]
+  \small #1\par\nobreak\vspace{1pt}\hfill{\tiny\color{gray}Derivation}\end{tcolorbox}}
+\newcommand{\dtfresult}[2]{\chainarrow
+  \begin{tcolorbox}[cbflow,colback=cbResultBg,colframe=cbResultFr,boxrule=1.3pt]
+  \centering\(\displaystyle #1\)\par\nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF result}\end{tcolorbox}\chainarrow
+  \begin{tcolorbox}[cbflow,colback=cbTagBg,colframe=cbTagFr]
+  \centering{\itshape\color{dtflight}#2}\par\nobreak\vspace{1pt}\hfill{\tiny\color{gray}Takeaway}\end{tcolorbox}}
+\newcommand{\pychip}[2]{{\footnotesize\colorbox{cbPyBg}{\ttfamily\,#1\,}\,{\color{gray}$\to$ #2}}}
+\newcommand{\resultpy}[3]{\chainarrow
+  \begin{tcolorbox}[cbflow,colback=cbResultBg,colframe=cbResultFr,boxrule=1.3pt]
+  \centering\(\displaystyle #1\)\par\smallskip\centering\pychip{#2}{#3}\par
+  \nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF result --- verified}\end{tcolorbox}}
+\newcommand{\oneobject}[2]{\begin{tcolorbox}[enhanced,colback=dtfblue,colframe=dtfblue,arc=3pt,
+  coltext=white,left=10pt,right=10pt,top=7pt,bottom=7pt,before skip=4pt,after skip=4pt]
+  {\bfseries One object, seen here as: #1}\\[2pt]{\small #2}\end{tcolorbox}}
+\newenvironment{chainbox}{\par\addvspace{4pt}\noindent\ignorespaces}{\par\addvspace{4pt}}
+\newcommand{\chainhead}[2]{\subsection*{Chain #1\quad\normalfont\itshape #2}}
+\newcommand{\setup}[1]{\noindent\emph{#1}\par\smallskip}
+\newcommand{\tr}{\operatorname{tr}}
+
+\hypersetup{colorlinks=true,linkcolor=knownblue,citecolor=knownblue,
+  pdftitle={The Distorted Time Framework, Volume III: The Definite Clock},
+  pdfauthor={William de Dufour}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\itshape Distorted Time Framework --- Volume III}
+\fancyhead[R]{\small\itshape The Definite Clock}
+\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+\begin{center}
+{\large\bfseries The Distorted Time Framework\\[3pt]
+\normalsize Volume III --- \itshape The Definite Clock}\\[6pt]
+{\small The Born rule, measurement, and entanglement from a clock that stays definite}\\[10pt]
+{\normalsize William de Dufour}\\[2pt]
+{\small\itshape Independent Researcher, Austin, TX}\\[3pt]
+{\small July 2026 \quad---\quad Version 8}\\[3pt]
+{\small\href{https://doi.org/10.5281/zenodo.21659853}{\texttt{DOI: 10.5281/zenodo.21659853}}}
+\end{center}
+
+\begin{abstract}
+Quantum mechanics postulates the Born rule and has never derived it; the closest route --- Nelson's
+stochastic mechanics --- has stalled on Wallstrom's single-valuedness obstruction and on the unexplained
+origin of its noise. Taking time's local rate as primitive (Volume~I), this volume reads a quantum's phase
+as the clock's reading and \emph{reduces} the Born rule to the relaxation equilibrium of the conserved
+location density under the native guiding flow. Wallstrom is reduced to a single \emph{declared} posit ---
+that Row~0's beable is a single-valued amplitude assignment --- for the simply-connected sector, the nodal
+case left open. Nelson's missing noise is named: the internal flexing (a zitterbewegung) of bound energy at
+the Compton scale, fixing the diffusion coefficient to $\hbar/2m$; its conservative (time-symmetric)
+character --- hence Schr\"odinger rather than a heat equation --- follows from the flexing being a
+\emph{bound} mode, which cannot dissipate, on a timeless substrate. Entanglement is a shared present on the
+proper now, with $\mathrm{CHSH}=2\sqrt2$ inherited, not derived. Two honest limits are kept in view: the
+guiding wave lives on configuration space ($O(N^2)$ content against a slice's $O(N)$), so the local-beable
+reading holds only for one particle; and the amplitude sector is non-relativistic, its relativistic
+completion (toward Dirac) an open program. The claim throughout is reduction and identification, not a
+derivation of quantum mechanics.
+\end{abstract}
+
+\smallskip
+\noindent{\small\textbf{Keywords:} Born rule; Nelson stochastic mechanics; Wallstrom obstruction;
+pilot-wave theory; zitterbewegung; entanglement; measurement.}
+
+\bigskip
+
+\begin{tcolorbox}[keybox]
+\textbf{The three commitments (from the Core, Volume~I).}\enspace This volume builds on three, argued there
+and used here without re-argument (full recap: Appendix~A):
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=3pt]
+  \item \textbf{1.\ Time is primitive} --- its local rate $u$ is the one physical thing, and a quantum's
+    phase is its reading, $\Phi=-\omega_C\!\int u\,dt$ ($\omega_C=mc^2/\hbar$): Row~0 (timeless,
+    $\hat H\Psi=0$) $\to$ Row~1 (the definite clock) $\to$ Row~2 (space); ``becoming definite'' is the
+    Row-0$\to$1 step.
+  \item \textbf{2.\ Space is time's radiation} --- and the moving clock's momentum is
+    $\mathbf p=\nabla S=m\mathbf v$: inertia \emph{is} the rate $\omega_C$, the pilot-wave guidance the same
+    space-face gradient $\nabla S$ ($\hbar$-coupled, present even at $u\equiv1$); the $G$-coupled well the
+    rate digs is gravity, a separate object.
+  \item \textbf{3.\ There is a proper now} --- the preferred slice a non-propagating rate fixes, real but
+    empirically silent; here it is the shared present that carries entanglement.
+\end{itemize}
+\noindent\emph{Here} the rate's reading is the quantum phase, and its residual internal flexing is the
+quantum noise.
+\end{tcolorbox}
+
+\medskip
+\noindent Quantum mechanics postulates the Born rule~\cite{Born1926} and has never derived it. The route
+that came closest --- Nelson's stochastic mechanics~\cite{Nelson1966} --- has been held up thirty years by
+one obstruction (Wallstrom's~\cite{Wallstrom1994}: nothing forces the phase to be single-valued, so the
+quantised spectrum is lost). This volume \textbf{reduces Born to a relaxation equilibrium on three
+physical premises} --- and \emph{reduces} the Wallstrom obstruction to a single ontological posit rather
+than an imposed quantisation rule: take the fundamental object to be Row~0's amplitude assignment
+($\hat H\psi_0=0$), a single-valued function on configuration space, and integer circulation then follows
+by topology alone, with nothing added by hand. That posit is \emph{declared}, not derived --- and it is a
+genuine restriction, since physically multivalued states exist (spinors, anyons) --- so the reduction is
+made for the simply-connected sector and the nodal / multiply-connected case stays open. It keeps de~Broglie--Bohm's~\cite{Bohm1952}
+commitment that the particle is real and guided. On the wave equation itself the claim is bounded and
+stated once: DTF derives the \emph{phase} half of the Schr\"odinger equation --- the space-face of its own
+interval --- and \emph{reduces} the amplitude half to a single posited scale, $\hbar$, the clock's jitter;
+it does not claim to derive the equation, and the closing box totals this at its true size.
+
+\noindent It does \emph{not} make the guiding object local. Counting settles this rather than leaving it
+open: a general two-particle amplitude needs functional content growing like $N^2$ on $N$ cells of space,
+while everything DTF puts on a slice --- the clock rate and the extent structure --- grows like $N$. No
+bounded amount of internal structure closes that gap, and enlarging it until it does is configuration space
+with an index renamed. So the guiding wave lives on configuration space here as in every Bohmian theory;
+the local-beable reading holds for a single quantum and does not extend
+[\texttt{DTF\_sharednow\_counting.py}].
+
+\noindent \textbf{What is distinctive survives that, and is the volume's actual claim.} Relativistic
+Bohmian mechanics needs a preferred foliation and must postulate one. DTF's is not postulated: it falls
+out of $\pi_u\equiv0$, and it is the same slice on which gravity already solves its field --- introduced
+in Volume~I for reasons that have nothing to do with Bell. The economy is in where the foliation comes
+from, not in making the wave local.
+
+\clearpage
+\chainhead{1}{The wave is a phase field, not a vanishing}
+\setup{The particle stays definite and stays somewhere. What ``spreads'' is not the particle but the phase field that guides it --- a gradient in space, not a wake in the rate of time.}
+\begin{chainbox}
+\known{\psi=R\,e^{iS/\hbar},\qquad \Phi=-\omega_C\tau\ \text{(the clock reading)}}{polar form; phase as elapsed proper time}
+\known{S=\hbar\Phi=-mc^2\!\int d\tau:\quad \mathbf p=\nabla S=\gamma m\mathbf v\ (\text{space-face}),\quad E=-\partial_t S=\gamma mc^2\ (\text{time-face})}{Hamilton--Jacobi: the one phase has two faces ($\int u\,dt$ at rest)}
+\nodetext{a clock carries two independent things: a \emph{rate} (its mass $\omega_C$, which moves it
+and bends time around it) and a \emph{state} (a spin). Entanglement touches only the state.}
+\resultpy{\text{singlet: spin purity } 0.5,\quad \text{each rest energy sharp, spread } 0.0000}
+{DTF\_two\_clocks\_resolved.py}{rate untouched}
+\resultpy{u\equiv1\ \Rightarrow\ \nabla S=\gamma m\mathbf v\neq0\ \ (\text{guidance is the space face})}
+{DTF\_guidance\_is\_spaceface.py}{no $G$, no $u$-wake}
+\dtfresult{\text{the ``wave''}=\text{the phase gradient }\nabla S,\qquad \nabla S\neq0\ \text{even at }u\equiv1}
+{The particle never de-materialises. What guides it is the \emph{space}-face phase gradient $\nabla S$ ---
+which survives even with the clock rate perfectly uniform ($u\equiv1$), so it is no wake in $u$. The
+\emph{rate} itself (the mass $\omega_C$) is the separate thing entanglement leaves razor-sharp.}
+\end{chainbox}
+\oneobject{inertia \& the pilot wave}{Both read the one phase $\Phi=-\omega_C\tau$, and \emph{neither
+carries $G$}. Inertia \emph{is} the rate $\omega_C$ --- the mass $m=\hbar\omega_C/c^2$, linear in $m$,
+definitional: the clock's ticking, not a mechanism. Guidance is the \emph{space}-face gradient $\nabla S$
+--- $\hbar$-coupled, and it \emph{survives at $u\equiv1$} (a flat clock field). The two are tied because
+the momentum \emph{is} that gradient, $\mathbf p=\nabla S=m\mathbf v$: one clock, read as its rate and as
+the gradient it lays down. What is \emph{neither} --- the $G$-coupled well the rate digs in $u$,
+$\sim(m/m_P)^2$ --- is gravity (Volume~II). Met again through Volumes~I and~II.}
+
+\clearpage
+\chainhead{2}{Amplitude is the same clock, read on the space axis}
+\setup{The phase read along time is a period; along space it is an extent. One constant ties them.}
+\begin{chainbox}
+\known{E\,T_C=h\ \ (\text{phase}),\qquad E\,\lambda_C=hc\ \ (\text{amplitude}),\qquad \lambda_C=c\,T_C}
+{Planck/Compton, one on each axis (Volume~I, Chain~5)}
+\dtfresult{h\ \text{and}\ hc\ \text{differ only by}\ c}
+{The phase-anchor and amplitude-anchor are one constant, not two --- ``space is time's radiation.''
+The pilot-wave tradition reads the time face, textbook Born the space face; the clock supplies both.}
+\end{chainbox}
+
+\begin{tcolorbox}[keybox]
+\textbf{The most legible line in the framework: the double slit.}\enspace With $\Phi=-\omega_C\tau$,
+bright fringes sit where the two routes' accumulated \emph{proper times} differ by a whole number of
+Compton periods --- constructive interference is $\omega_C\,\Delta\tau=2\pi n$, i.e. $\Delta\tau=nT_C$.
+For two paths reaching the same lab time this is \emph{exactly} de~Broglie's $\Delta\ell=nh/p$
+[\texttt{DTF\_doubleslit\_compton\_ticks.py}, verified exact --- not small-angle]. Label it honestly:
+the relativistic action phase rewritten in clock language, a \emph{consistency check}, not new physics.
+Its worth is that for \emph{one} particle configuration space \emph{is} ordinary 3-space, so the
+single-particle interferometer is where DTF's local-beable reading holds with \textbf{nothing owed} ---
+its best case, not its hardest. (Two particles is Chain~4, where the debt begins.)
+\end{tcolorbox}
+
+\clearpage
+\chainhead{3}{The Born rule as the flow's equilibrium}
+\setup{$|\psi|^2$ is not a probability postulate --- it is the density of where the definite particle is. So compute where it settles.}
+\begin{chainbox}
+\known{\rho=|\psi|^2,\qquad \partial_t\rho+\nabla\!\cdot(\rho\mathbf v)=0}{polar form + local conservation}
+\assume{the particle flows along its guiding phase gradient, $\mathbf v=\nabla S/m$ --- the same $\nabla S$ that is its momentum, not a new law}
+\nodetext{conservation makes $\rho=|\psi|^2$ the \emph{stationary} distribution of the flow
+(equivariance); the settling toward it is a coarse-grained $H$-theorem. The remaining ingredient is
+single-valuedness --- Wallstrom's obstruction, that the hydrodynamic pair $(\rho,S)$ does not force
+$\oint\nabla S\cdot d\ell\in2\pi\hbar\,\mathbb Z$. Here it is not imposed as a separate quantisation rule
+but \emph{reduced to one ontological posit}: take DTF's fundamental object to be Row~0's amplitude
+assignment $\psi_0$ ($\hat H\psi_0=0$), a single-valued function on configuration space, rather than the
+Madelung pair. Then a non-integer-winding mode assigns two values to one configuration --- it is not such a
+function --- and integer circulation follows by topology, with nothing added at Row~1 (conditioning on the
+clock cannot manufacture a winding $\psi_0$ never had). The posit does the work a by-hand quantisation rule
+used to do; it is \emph{declared}, not derived, and it is a genuine restriction --- physically multivalued
+states exist (spinors, anyons) --- so the reduction is made for the simply-connected sector, and the nodal
+/ multiply-connected case, where multivalued states can be physical, stays open.}
+\resultpy{\text{start at }|\psi|^2\Rightarrow\text{stays }|\psi|^2\ \ (\text{equivariance})}
+{DTF\_born\_relaxation\_2d.py}{H $\approx$ 0.01}
+\resultpy{\text{start off-equilibrium}\Rightarrow\text{relaxes to }|\psi|^2}
+{DTF\_born\_relaxation\_2d\_mp.py}{H: 0.78$\to$0.04}
+\resultpy{\text{single-valued }\psi_0\ \Rightarrow\ \oint\!\nabla S\!\cdot d\ell=2\pi n\hbar\ \text{(simply-connected sector)}}
+{DTF\_wallstrom\_from\_row0.py}{reduced to one posit}
+\dtfresult{|\psi|^2=\text{the equilibrium the conserved location-density settles onto}}
+{Born is \emph{reduced} to three premises (closing ledger), not postulated outright: it is the fixed
+point of the guiding flow, reached by relaxation, with the spectrum quantised because single-valuedness
+is reduced to a single Row-0 posit rather than imposed by hand. \emph{Which} outcome a single run yields --- the hard half
+of measurement --- stays open. And the direction matters: this chain \emph{assumes} $\psi$ obeys the
+Schr\"odinger equation and shows $\rho\to|\psi|^2$, so it \emph{reduces} Born \emph{downstream} of that
+equation --- it is not a route to deriving the equation (the closing box totals what is and is not derived).}
+\end{chainbox}
+
+\chainhead{4}{Entanglement is a shared present, not a signal}
+\setup{Bind quanta and you get one object with several addresses. The link is a ledger, not a channel.}
+\begin{chainbox}
+\known{\text{singlet: part purity } \tr\rho_A^2=0.5}{joint definiteness without individual definiteness}
+\nodetext{the correlation is a Row-0 constraint (a conserved total, no location), balanced on the
+\emph{proper now} --- the shared present. Separating the parts stretches nothing; measuring one reads an
+entry. Nothing crosses the gap.}
+\resultpy{\text{GHZ: measure one}\Rightarrow\text{other two definite \emph{or} a fresh pair; marginals unchanged}}
+{DTF\_tripartite\_ledger.py}{no-signalling}
+\nodetext{DTF's \emph{local} wake in ordinary space gives $\mathrm{CHSH}=2$ --- the local-beable bound
+(Bell 1964~\cite{Bell1964}; Maudlin~\cite{Maudlin2011}; Norsen~\cite{Norsen2017} --- a theorem, not a misreading). To exceed it the correlation must ride the
+\emph{shared present}: a joint state on one preferred slice. Relaxing that joint state to its Born
+measure reproduces $\mathrm{CHSH}=2\sqrt2$ [\texttt{DTF\_bell\_from\_joint\_relaxation.py}] --- but this
+is standard foliation-based relativistic Bohmian mechanics (D\"urr--Goldstein--Norsen--Zangh\`i~\cite{DGNSZ2014};
+Tumulka~\cite{Tumulka2006}), and the $2\sqrt2$ is \emph{inherited} from the entangled state, not generated by the relaxation
+(which only drives $\rho$ toward a given $|\psi|^2$).}
+\dtfresult{\text{the shared now is the \emph{resource} for Bell violation --- and DTF gets it for free}}
+{The claim is not a new derivation of $2\sqrt2$ but an \emph{ontological economy over} the foliation-based
+relativistic Bohmian programme: those theories postulate the preferred foliation externally, whereas
+DTF's --- the proper now --- \emph{falls out of} $\pi_u\equiv0$ (Volume~I). That is the loud, defensible
+claim, and the only one made here. Whether the shared-now joint object is distinguishable from
+configuration space under another name is settled, against the local reading: it is not. A general two-particle amplitude needs $O(N^2)$ functional
+content and a slice carries $O(N)$, a gap no bounded internal structure closes. So the joint object
+\emph{is} configuration space, and this chain claims no locality it cannot have.}
+\end{chainbox}
+\oneobject{the proper now --- a shared present}{The same preferred slice on which gravity solves its
+field (Volume~I, Chain~7) is where an entangled system's joint state --- one object on configuration space,
+not two local clocks --- is referred to a single present. One slice, two jobs; and because $c$ is universal
+it stays undetectable --- no signal, no broken relativity.}
+
+\begin{tcolorbox}[keybox]
+\textbf{The Schr\"odinger equation, reassembled --- and where it stops.}\enspace In polar form
+$\psi=R\,e^{iS/\hbar}$ the Schr\"odinger equation splits \emph{exactly} (Madelung~\cite{Madelung1927}) into
+a phase law and an amplitude law:
+\[
+  \underbrace{\partial_t S+\tfrac{(\nabla S)^2}{2m}+V+Q=0}_{\text{phase: Hamilton--Jacobi}},
+  \qquad
+  \underbrace{\partial_t R^2+\nabla\!\cdot\!\Big(R^2\,\tfrac{\nabla S}{m}\Big)=0}_{\text{amplitude: continuity}},
+  \qquad Q=-\tfrac{\hbar^2}{2m}\tfrac{\nabla^2 R}{R}.
+\]
+\pychip{DTF\_madelung\_split.py}{the split, exhibited --- phase half native, amplitude half imported}
+\par\smallskip
+\textbf{The phase law is DTF-native, and reassembles from the chains above.} Its pieces are already
+deposited: the accumulated clock reading $S=-mc^2\!\int u\,dt$ with its two faces $\mathbf p=\nabla S$ and
+$E=-\partial_t S$ (Chain~1), and $V$ from the clock's coupling to matter (Volumes~I--II). Collected, they
+are the \emph{classical} Hamilton--Jacobi equation --- missing exactly $Q$.
+\textbf{The amplitude law is imported.} The continuity equation for $R^2$ is Chain~3's premise, and with it
+$Q$ --- which carries \emph{all} the quantum content and is built entirely from $R$. So the quantum lives
+wholly in the half DTF does not derive --- and here the framework says something definite about it.
+\textbf{This is Nelson's stochastic mechanics~\cite{Nelson1966}, with the one thing Nelson left unexplained
+now named.} Nelson recovers exactly this amplitude law from an underlying conservative diffusion of
+coefficient $\nu=\hbar/2m$, but must \emph{posit} the diffusion; its physical origin was never supplied.
+DTF supplies it --- and \emph{not} at the Row-0$\to$Row-1 interface, which carries only the conservation law
+and single-valuedness (below). The noise is intrinsic to Row~1: a particle \emph{is} bound energy, and it
+flexes as it oscillates inside itself at the Compton clock frequency $\omega_C=mc^2/\hbar$ --- the trembling
+internal motion of a \emph{zitterbewegung}~\cite{Schrodinger1930,Hestenes1990}. That flexing is unresolvable
+at the position level, and, carried into the phase $\Phi=-\omega_C\!\int u\,dt$, \emph{is} the sub-quantum
+noise. So the quantum potential $Q$ is not imported machinery but the shadow of the internal flexing, and
+the classical limit is the particle whose internal motion is ignorable ($Q\to0$). And because that sub-tick
+flexing can \emph{never} enter a position-level deterministic formula, it is at one stroke the origin of
+quantum \emph{indeterminism} --- the piece Nelson takes as brute noise.
+\par\smallskip
+\textbf{The scale, and the factor of $2$.} The flexing amplitude is the Compton cell $\lambda_C=\hbar/mc$,
+one oscillation per tick $T_C=\hbar/mc^2$; an unbiased random walk of that step has the \emph{standard}
+diffusion coefficient
+\[ \nu\;=\;\frac{\lambda_C^{2}}{2\,T_C}\;=\;\frac{\hbar}{2m}, \]
+which is Nelson's $\nu$ exactly --- though the factor of $2$ carries the one-dimensional random-walk
+convention $\langle x^2\rangle=2\nu t$, and is not itself fixed by the flexing dynamics. So $\hbar$ is
+\emph{reparented}: not posited afresh as ``the quantum of action'' but read as the scale of the particle's
+own internal flexing. Writing the step as $\alpha\lambda_C$ ($\nu=\alpha^2\hbar/2m$) and requiring the
+osmotic potential it builds, $-2m\nu^2\nabla^2R/R$, to \emph{be} the Madelung $Q=-\tfrac{\hbar^2}{2m}\nabla^2R/R$,
+returns $\alpha=1$: a \emph{consistency check} that the two roles of $\hbar$ agree, not an independent
+derivation of the coefficient. What remains open --- and is listed as owed below --- is whether the flexing
+dynamics \emph{forces} $\hbar/2m$ rather than merely admitting it.
+\pychip{DTF\_nelson\_from\_flexing.py}{$\nu=\hbar/2m$ (1D convention); osmotic-match returns $\alpha{=}1$ --- consistency, not derivation}
+\par\smallskip
+\textbf{Conservative, not dissipative --- and that is the whole of it.} Nelson's construction yields
+Schr\"odinger rather than a heat equation only if the diffusion is \emph{conservative} (time-symmetric),
+his most-criticised assumption. Two DTF facts point the same way, and a free-particle check confirms the
+consequence: the internal flexing is a \emph{bound} oscillation --- rest mass neither radiates nor decays
+--- and a bound, finite motion cannot dissipate (dissipation needs a thermal continuum), so it is
+reversible; and Row~0 is timeless, with no substrate arrow. For the free particle the time-symmetric
+(Nelson) acceleration vanishes \emph{exactly} when the osmotic coefficient equals $\hbar/2m$, reproducing
+quantum spreading, whereas the forward-only (arrow-ful) rule gives the heat equation
+[\texttt{DTF\_nelson\_from\_flexing.py}]. Whether the flexing dynamics realises this \emph{exactly} is the
+sector's one open item --- stated as its single posit in the box below.
+\par\smallskip
+\textbf{The interface, separately, carries conservation and single-valuedness.} Distinct from the Row-1
+flexing, the Row-0$\to$Row-1 conditioning is what supplies the continuity law (Chain~3) and preserves
+single-valuedness of $\psi$ (Chain~3's Wallstrom posit --- it manufactures no winding). Noise on the
+amplitude; conservation and topology at the interface: two different jobs, not to be run together.
+\smallskip
+\noindent\textbf{At true size:} DTF does not \emph{derive} the Schr\"odinger equation. It supplies the
+phase half structurally and \emph{reduces} the amplitude half to a single physical postulate --- the
+conservative internal flexing of Row-1 bound energy --- with the coefficient now native ($\hbar/2m$, the
+random-walk normalisation) and the flexing's time-symmetry now shown to follow from bound-energy and a
+timeless Row~0 (harmonic model; only full nonlinear rigor remains --- see the posit box). And \emph{reducing Born
+is not deriving Schr\"odinger}: Chain~3 assumes $\psi$ obeys the equation and shows $\rho\to|\psi|^2$ ---
+downstream of it. What is new is an \emph{identification}: Nelson's unexplained noise, and quantum
+indeterminism with it, is the internal flexing of bound energy --- the always-on, $\hbar$-scale form of the
+same clock indefiniteness whose growth to an $O(1)$ crossing (there gravitationally driven) is measurement
+and the black-hole core. The trilogy marks the wall exactly here.
+\end{tcolorbox}
+
+\begin{tcolorbox}[keybox]
+\textbf{The one quantum posit --- weighted with the singularity's.}\enspace Volume~II's black hole rests on
+a single ontological posit: Row-1 time \emph{de-emerges} where the clock loses definiteness
+($\delta u/u\sim1$), and the finite core, the Planck remnant, and the absent echoes follow. The quantum
+sector rests on one of the same weight. Given what the trilogy has already fixed --- the density
+$\rho=|\psi|^2$, the phase $S$ as the clock reading, and the flexing scale $\nu=\hbar/2m$ --- the
+variational principle for the amplitude law (Madelung; Guerra--Morato~\cite{GuerraMorato1983}) has
+\emph{one} free choice left: the sign of its osmotic term,
+\[ \varepsilon=+1\ \Rightarrow\ \text{real-time, unitary: Schr\"odinger};\qquad
+   \varepsilon=-1\ \Rightarrow\ \text{imaginary-time, dissipative: a heat equation}. \]
+\pychip{DTF\_qm\_posit\_variational.py}{$\varepsilon{=}{+}1$ Euler--Lagrange $\Leftrightarrow$ Schr\"odinger (verified); $\varepsilon{=}{-}1\Rightarrow$ heat}
+That sign \emph{is} the time-symmetry of the internal flexing --- a flexing with no preferred time
+direction takes the real-time branch. So the whole quantum sector reduces to one statement:
+\begin{center}\itshape The internal flexing of bound energy is time-symmetric.\end{center}
+\noindent And $\varepsilon=+1$ is not an arbitrary choice: \emph{within a harmonic model of the flexing} it
+follows from what DTF holds. Model the flexing as its \emph{own} (internal, not environmental)
+Caldeira--Leggett~\cite{CaldeiraLeggett1983} sector: a \emph{bound}, discrete oscillator has a vanishing
+friction kernel ($\tilde\gamma(s\!\to\!0)=0$, reactive only) and returns the coarse energy in \emph{full}
+(reversible), so the induced diffusion is time-symmetric; and Row~0, being timeless, imports no arrow.
+\emph{One caveat, stated plainly:} the physical flexing is a \emph{zitterbewegung}, which in Dirac theory
+is interference across the positive/negative-energy \emph{continuum}, not a few discrete modes --- so
+whether it retains that time-symmetric character is part of the relativistic completion listed as open
+below, not settled here. Within the harmonic model, a vanishing friction kernel \emph{is} a
+time-symmetric influence action, which \emph{is} $\varepsilon=+1$
+[\texttt{DTF\_flexing\_time\_symmetry.py}]. So the quantum sector's character is a \emph{consequence} of the
+bound-energy ontology and a timeless substrate --- shown here for the harmonic flexing model. It sits at the
+other end of the same axis as the singularity: the singularity is the \emph{ceiling} of clock indefiniteness
+($\delta u/u\to1$, time de-emerges), the flexing its always-on \emph{floor} ($\hbar$-scale, definite but
+never perfectly). One knob, two ends. \textbf{The honest remainder} is the relativistic one: whether the
+physical flexing --- a continuum zitterbewegung, not the harmonic model's discrete mode --- retains the
+time-symmetric character; that is the relativistic-completion question below, not settled here.
+\end{tcolorbox}
+
+\begin{tcolorbox}[keybox]
+\textbf{At relativistic speed: an open program, and where DTF stands.}\enspace The amplitude law above is
+non-relativistic (Schr\"odinger), while the phase is relativistic ($\Phi=-\omega_C\!\int d\tau$, with
+$\mathbf p=\gamma m\mathbf v$). Closing that gap is an open program --- but an unusually favourable one here,
+for two structural reasons. \emph{First}, relativistic stochastic mechanics classically fails for want of a
+preferred time in which the diffusion runs; DTF already has one --- the proper now ($\pi_u\equiv0$), the
+same slice that does gravity and entanglement --- so the natural covariant statement is that the diffusion
+runs in \emph{proper time}, $\nu=\hbar/2m$ per $d\tau$, exactly as the phase does. \emph{Second}, the noise
+is a \emph{zitterbewegung}, a Dirac-equation phenomenon; so the relativistic amplitude sector should
+complete not toward a patched Schr\"odinger but toward \emph{Dirac} (Hestenes~\cite{Hestenes1990}), with
+Schr\"odinger as its $\gamma\to1$ face. \emph{The honest ceiling}: the flexing amplitude \emph{is} the
+Compton length $\lambda_C$ --- precisely the scale at which single-particle quantum mechanics gives way to
+pair production and quantum field theory. So the single-particle construction is intrinsically bounded below
+the Compton scale, and the full completion is ultimately field-theoretic, not merely Dirac. None of this is
+claimed here; it is the sharpest forward direction, and DTF holds the two ingredients the direction needs
+--- a preferred time, and a relativistic noise.
+\end{tcolorbox}
+
+\begin{tcolorbox}[keybox]
+\textbf{What is earned, borrowed, declared, and owed.}
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=3pt]
+  \item \textbf{Earned.} The phase as a clock reading; the one phase $\Phi$ as the shared root of inertia
+    (the rate), gravity (the well it sources), and guidance (its space-face gradient); the amplitude as
+    the same clock on the space axis; entanglement as
+    joint-without-individual definiteness on the proper now; \textbf{the Born rule}, as the relaxation
+    equilibrium of the conserved location-density (verified), with quantised circulation
+    \emph{reduced} to a single Row-0 posit (a single-valued amplitude assignment) rather than imposed by
+    hand --- for the simply-connected sector.
+  \item \textbf{Borrowed.} The Tsirelson bound $2\sqrt2$~\cite{Cirelson1980}; the sub-quantum $H$-theorem
+    (Valentini~\cite{Valentini1991}) and the diffusion construction of the amplitude sector
+    (Nelson~\cite{Nelson1966}).
+  \item \textbf{Retired --- not borrowed.} The measurement-axiom scaffolding
+    (Gleason~\cite{Gleason1957}, Busch~\cite{Busch2003}) is not inherited here but \emph{dropped}: those
+    theorems justify $|\psi|^2$ as the unique measure over measurement outcomes, and once $|\psi|^2$ is
+    instead the equilibrium of a conserved location density, that is a question this account does not
+    ask. Stated as its own commitment rather than a clause, because it is the stronger claim: not that
+    the scaffolding is used differently, but that it is unnecessary.
+  \item \textbf{Declared.} The substrate is unresolved to any observer built from it (typicality);
+    correlations are overlaps (exact for the qubit); and the posit that carries the Wallstrom reduction ---
+    that Row~0's beable is a \emph{single-valued} amplitude assignment on configuration space. This is what
+    replaces a by-hand quantisation rule; it is a genuine restriction (spinors and anyons are physically
+    multivalued), so it is declared for the simply-connected sector, not derived in general.
+  \item \textbf{Owed.} Coarse-graining (typicality); and \emph{which} single outcome a run yields
+    (selection), which every no-collapse ontology owes. \emph{The amplitude sector's dynamics:} the phase
+    half of the Schr\"odinger equation is DTF-native (the reassembly above), but the amplitude half is
+    imported. For its origin DTF offers a \emph{candidate}, not a derivation --- the clock's cell-to-cell
+    resynchronisation, whose fluctuation is a natural source for the diffusion the amplitude law needs ---
+    at a scale $\hbar$ posited as every formulation of quantum mechanics posits it; what is open is whether
+    that dynamics \emph{forces} the coefficient $\hbar/2m$ (the factor of $2$). DTF therefore \emph{reduces}
+    the Schr\"odinger equation to one posited constant plus one open coefficient; it does not derive it.
+    \emph{On single-valuedness, two open items, honestly sized:} (i)~that the Row-0$\to$Row-1 emergence
+    through the $u$-clock is a conditioning-type map (which would preserve single-valuedness), still to be
+    shown for the specific $u$-clock emergence; and (ii)~the nodal / multiply-connected case, genuinely
+    open, because there the single-valuedness posit is a real restriction (spinors, anyons). These are
+    smaller than ``Wallstrom is unaddressed'' --- the obstruction is reduced to one declared posit --- but
+    larger than a single technical residual.
+  \item \textbf{Settled, negatively.} The Bell question of Chain~4 --- whether the shared-now joint object
+    is distinguishable from a \emph{fundamental} configuration space --- is not owed: it has
+    been answered, and it is not. The guiding wave is on configuration space, and this volume claims no
+    locality beyond the single quantum.
+\end{itemize}
+\end{tcolorbox}
+
+\noindent On gravity-mediated entanglement (BMV): \emph{if} the clock-rate constraint is quantised ---
+operator-valued, as QED's non-radiative Coulomb sector is --- the guiding-not-driving reading predicts a
+\emph{positive} outcome. This is stated conditionally, and honestly: the zero-DOF and polarisation
+results (Volume~I--II) treat $u$ as a \emph{classical} constraint, whereas BMV needs it operator-valued
+--- a quantisation this trilogy does not construct. So DTF's BMV stance is ``positive, conditional on
+quantising the constraint,'' not a delivered prediction; the framework's delivered falsifiable stakes are
+in Volume~II (GW polarisations, black-hole cores).
+
+\medskip
+\noindent The reading offered here is not a separate theory of measurement but the \emph{organizing
+principle} of Volume~I holding in the quantum sector: ``becoming definite'' is the Row-0$\to$Row-1 step ---
+the \emph{same} clock-definiteness surface whose opposite crossing is the black-hole core of Volume~II,
+where a clock instead de-emerges. Measurement and the singularity are one transition, run in the two
+directions; that is the sense in which the three volumes are one principle, not three results. A fourth ---
+deep cosmology (the proper now as cosmic time) --- is in preparation.
+
+\medskip
+\noindent{\small Scripts (public, SymPy/NumPy): \texttt{DTF\_two\_clocks\_resolved},
+\texttt{DTF\_guidance\_is\_spaceface}, \texttt{DTF\_phase\_amplitude\_oneconstant},
+\texttt{DTF\_doubleslit\_compton\_ticks}, \texttt{DTF\_born\_relaxation\_2d},
+\texttt{DTF\_born\_relaxation\_2d\_mp}, \texttt{DTF\_wallstrom\_from\_row0},
+\texttt{DTF\_sharednow\_counting}, \texttt{DTF\_tripartite\_ledger},
+\texttt{DTF\_bell\_from\_joint\_relaxation}, \texttt{DTF\_clockjitter\_scale},
+\texttt{DTF\_nelson\_from\_flexing}, \texttt{DTF\_qm\_posit\_variational},
+\texttt{DTF\_flexing\_time\_symmetry}.}
+
+\begin{tcolorbox}[keybox]
+\textbf{Provenance of the checks (ontology-first).}\enspace This volume derives little that is new ---
+that is the point. Its contribution is the \emph{reading}, not new physics, and the scripts are labelled
+accordingly. \textbf{Borrowed} (standard constructions, credited): the relaxation to $|\psi|^2$
+(Valentini's $H$-theorem on Bohm's guidance) and its joint-configuration extension to $2\sqrt2$; the
+stochastic-quantisation and Nelson checks. \textbf{Consistency checks} (a standard fact or definition
+confirmed, \emph{not} a native derivation): the two-clock $c$-number/state split, the one-constant
+Planck/Compton identity, the double-slit Compton-tick $=$ de~Broglie identity, the singlet purity and
+Horodecki CHSH~\cite{Horodecki1995}, the GHZ no-signalling. Two \textbf{DTF-native structural} checks
+earn their place: $u\equiv1\Rightarrow\nabla S\neq0$ (\texttt{DTF\_guidance\_is\_spaceface}), which
+\emph{refutes} the reading of pilot-wave guidance as a wake in the clock rate, fixing guidance as the
+space face of the interval; and the Wallstrom reduction
+(\texttt{DTF\_wallstrom\_from\_row0}) --- that single-valuedness reduces to one declared Row-0 posit (a
+single-valued amplitude assignment) rather than a by-hand quantisation rule, for the simply-connected
+sector. (The circulation Wallstrom asks about is the \emph{spatial} configuration phase on a fixed slice,
+not the unbounded temporal one, so no clock-angle argument bears on it; that framing is retired.) The bulk of the native computational content still lives in Volume~II; here the work is
+ontological. None of it rests on circular reasoning.
+\end{tcolorbox}
+
+\appendix
+\section*{Appendix A --- The DTF Core in brief}
+\addcontentsline{toc}{section}{Appendix A}
+\noindent For readers coming to this volume first. The Distorted Time Framework takes the local
+\emph{rate} of time as the one physical primitive, and builds outward in three layers (Volume~I).
+
+\begin{itemize}[leftmargin=1.4em,itemsep=3pt,topsep=3pt]
+  \item \textbf{Row 0 --- the timeless substrate.} The deepest layer has no clock: the Wheeler--DeWitt
+    constraint $\hat H\Psi=0$ holds with no external time. Correlations are simultaneous, not ordered.
+  \item \textbf{Row 1 --- the clock.} A definite local clock-rate field $u(\mathbf x)>0$ is conditioned
+    on Row~0; its reading $\tau=\int u\,dt$ accumulates monotonically --- time, and its arrow. A
+    quantum's phase is this reading, $\Phi=-\omega_C\tau$.
+  \item \textbf{Row 2 --- space.} An extent is a period radiated at $c$ ($\lambda_C=c\,T_C$): space is
+    time's radiation, compiled by an orientation (frame) field. Because $c$ is one universal exchange
+    rate, Lorentz invariance is its signature.
+  \item \textbf{One object, four faces.} Extremising the interval gives one phase read four ways: inertia
+    ($\mathbf p=\nabla S$), free fall (geodesic), the pilot wave ($\mathbf v=\nabla S/m$), and the path
+    integral. Inertia (the rate $\omega_C$) and the pilot wave (the space-face gradient $\nabla S$) are
+    tied by $\mathbf p=\nabla S=m\mathbf v$, both $\hbar$-set and linear in $m$; the $G$-coupled well the
+    rate digs is gravity, a separate object.
+  \item \textbf{The proper now.} The clock rate does not propagate ($\pi_u\equiv0$), so it is fixed
+    across space on one preferred slice --- a real but empirically inert present, shared by gravity and
+    by entanglement.
+  \item \textbf{Definiteness.} ``Becoming definite'' is the Row-0$\to$1 step; a single
+    clock-definiteness threshold governs measurement (this volume) and the black-hole core (Volume~II).
+\end{itemize}
+
+\section*{Code and data availability}
+\addcontentsline{toc}{section}{Code and data availability}
+{\small The SymPy/NumPy verification scripts named throughout (the \texttt{DTF\_born\_relaxation} and
+\texttt{DTF\_wallstrom\_from\_row0} scripts, \texttt{DTF\_nelson\_from\_flexing},
+\texttt{DTF\_qm\_posit\_variational}, \texttt{DTF\_flexing\_time\_symmetry}, and the entanglement/counting
+scripts) are publicly available at \url{https://github.com/billd-dtf/Distorted-Time-Framework}.\par}
+
+\section*{Author's Note: the role of AI}
+\addcontentsline{toc}{section}{Author's Note: the role of AI}
+{\small
+The Distorted Time Framework---its central hypothesis (time's local \emph{rate}, the ADM lapse,
+as the one physical primitive), its ontology-first strategy, and the physical
+interpretations---was conceived and developed by the author over several years of independent
+research outside academic institutions. The mathematical formalization was carried out in
+collaboration with Claude (Anthropic): the Born-rule relaxation and Wallstrom-reduction arguments,
+the entanglement, Bell, and functional-content counting results, and the symbolic/numerical
+verification scripts (SymPy/NumPy) referenced throughout. Separately, other large language models
+(ChatGPT, Grok, Gemini) were used as independent referees, providing adversarial review of the
+manuscript; their critiques shaped the revisions but not the derivations.
+
+In each case the author specified the physical target, the constraints the result had to satisfy,
+and the direction of the argument, and reviewed and approved each result; the AI executed and
+checked the formal derivations. Without that assistance the author could not have produced the
+mathematical formalization at this level of detail.
+
+This is disclosed because intellectual honesty requires it. It does not change the epistemic status
+of the results---a derivation is correct or it is not, independent of how it was produced---but it
+does mean they warrant careful independent scrutiny rather than assumed authority. The author
+welcomes that scrutiny; the explicit claim-type labels and the reproducible verification scripts are
+provided precisely to enable it.
+\par}
+
+\begingroup\small
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+\bibitem{Born1926} M.~Born, ``Zur Quantenmechanik der Sto\ss vorg\"ange,''
+  \emph{Z.\ Phys.} \textbf{37}, 863--867 (1926).
+\bibitem{Bohm1952} D.~Bohm, ``A Suggested Interpretation of the Quantum Theory in Terms of `Hidden'
+  Variables. I \& II,'' \emph{Phys.\ Rev.} \textbf{85}, 166--179, 180--193 (1952).
+\bibitem{Nelson1966} E.~Nelson, ``Derivation of the Schr\"odinger Equation from Newtonian Mechanics,''
+  \emph{Phys.\ Rev.} \textbf{150}, 1079--1085 (1966).
+\bibitem{Schrodinger1930} E.~Schr\"odinger, ``\"Uber die kr\"aftefreie Bewegung in der relativistischen
+  Quantenmechanik'' (Zitterbewegung), \emph{Sitzungsber.\ Preuss.\ Akad.\ Wiss.\ Phys.-Math.\ Kl.}
+  \textbf{24}, 418--428 (1930).
+\bibitem{Hestenes1990} D.~Hestenes, ``The Zitterbewegung Interpretation of Quantum Mechanics,''
+  \emph{Found.\ Phys.} \textbf{20}, 1213--1232 (1990).
+\bibitem{GuerraMorato1983} F.~Guerra and L.~M.~Morato, ``Quantization of dynamical systems and stochastic
+  control theory,'' \emph{Phys.\ Rev.\ D} \textbf{27}, 1774--1786 (1983).
+\bibitem{CaldeiraLeggett1983} A.~O.~Caldeira and A.~J.~Leggett, ``Path integral approach to quantum
+  Brownian motion,'' \emph{Physica A} \textbf{121}, 587--616 (1983).
+\bibitem{Madelung1927} E.~Madelung, ``Quantentheorie in hydrodynamischer Form,''
+  \emph{Z.\ Phys.} \textbf{40}, 322--326 (1927).
+\bibitem{Bell1964} J.~S.~Bell, ``On the Einstein Podolsky Rosen Paradox,''
+  \emph{Physics} \textbf{1}, 195--200 (1964).
+\bibitem{Wallstrom1994} T.~C.~Wallstrom, ``Inequivalence between the Schr\"odinger equation and the
+  Madelung hydrodynamic equations,'' \emph{Phys.\ Rev.\ A} \textbf{49}, 1613--1617 (1994).
+\bibitem{Valentini1991} A.~Valentini, ``Signal-locality, uncertainty, and the subquantum
+  $H$-theorem. I,'' \emph{Phys.\ Lett.\ A} \textbf{156}, 5--11 (1991).
+\bibitem{Cirelson1980} B.~S.~Cirel'son (Tsirelson), ``Quantum generalizations of Bell's inequality,''
+  \emph{Lett.\ Math.\ Phys.} \textbf{4}, 93--100 (1980).
+\bibitem{Horodecki1995} R.~Horodecki, P.~Horodecki, and M.~Horodecki, ``Violating Bell inequality by
+  mixed spin-$\tfrac12$ states,'' \emph{Phys.\ Lett.\ A} \textbf{200}, 340--344 (1995).
+\bibitem{Gleason1957} A.~M.~Gleason, ``Measures on the Closed Subspaces of a Hilbert Space,''
+  \emph{J.\ Math.\ Mech.} \textbf{6}, 885--893 (1957).
+\bibitem{Busch2003} P.~Busch, ``Quantum States and Generalized Observables: A Simple Proof of Gleason's
+  Theorem,'' \emph{Phys.\ Rev.\ Lett.} \textbf{91}, 120403 (2003).
+\bibitem{Maudlin2011} T.~Maudlin, \emph{Quantum Non-Locality and Relativity}, 3rd ed.
+  (Wiley-Blackwell, 2011).
+\bibitem{Norsen2017} T.~Norsen, \emph{Foundations of Quantum Mechanics} (Springer, 2017).
+\bibitem{DGNSZ2014} D.~D\"urr, S.~Goldstein, T.~Norsen, W.~Struyve, and N.~Zangh\`i, ``Can Bohmian
+  mechanics be made relativistic?'' \emph{Proc.\ R.\ Soc.\ A} \textbf{470}, 20130699 (2014).
+\bibitem{Tumulka2006} R.~Tumulka, ``A Relativistic Version of the Ghirardi--Rimini--Weber Model,''
+  \emph{J.\ Stat.\ Phys.} \textbf{125}, 821--840 (2006).
+\end{thebibliography}
+\endgroup
+
+\end{document}
