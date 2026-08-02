@@ -45,15 +45,15 @@
   \begin{tcolorbox}[cbflow,colback=cbResultBg,colframe=cbResultFr,boxrule=1.3pt]
   \centering\(\displaystyle #1\)\par\smallskip\centering\pychip{#2}{#3}\par
   \nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF result --- verified}\end{tcolorbox}}
-\newcommand{\oneobject}[2]{\begin{tcolorbox}[enhanced,colback=dtfblue,colframe=dtfblue,arc=3pt,
-  coltext=white,left=10pt,right=10pt,top=7pt,bottom=7pt,before skip=4pt,after skip=4pt]
+\newcommand{\oneobject}[2]{\begin{tcolorbox}[enhanced,colback=white,colframe=black,boxrule=1.3pt,arc=3pt,
+  left=10pt,right=10pt,top=7pt,bottom=7pt,before skip=4pt,after skip=4pt]
   {\bfseries One object, seen here as: #1}\\[2pt]{\small #2}\end{tcolorbox}}
 \newenvironment{chainbox}{\par\addvspace{4pt}\noindent\ignorespaces}{\par\addvspace{4pt}}
 \newcommand{\chainhead}[2]{\subsection*{Chain #1\quad\normalfont\itshape #2}}
 \newcommand{\setup}[1]{\noindent\emph{#1}\par\smallskip}
 \newcommand{\lp}{\ell_P}
 
-\hypersetup{colorlinks=true,linkcolor=knownblue,citecolor=knownblue,
+\hypersetup{colorlinks=true,linkcolor=knownblue,citecolor=knownblue,urlcolor=knownblue,
   pdftitle={The Distorted Time Framework, Volume II: The Shape of Time},
   pdfauthor={William de Dufour}}
 \pagestyle{fancy}\fancyhf{}
@@ -125,7 +125,6 @@ curvature, and ``what is at $r=0$'' is a question asked in a language that has c
 What replaces the singularity is a finite core, and it makes predictions that differ, sharply, from
 every other proposal. First, though, the gravity the singularity lives in.
 
-\clearpage
 \chainhead{1}{Gravity is the shape of the clock field}
 \setup{A slow body falls down the gradient of time's rate. Make that rate primitive, and gravity is its shape --- with no force carrier.}
 \begin{chainbox}
@@ -138,6 +137,7 @@ promoting time adds no degree of freedom and breaks no symmetry (Volume~I, Appen
 space, time does not radiate, $c$ is universal.}
 \end{chainbox}
 
+\clearpage
 \chainhead{2}{General relativity, matched in the tested regime}
 \setup{The reconstructed metric is GR's in every tested regime --- by construction, not by tuning; beyond it, matched only where the scheme is known to hold.}
 \begin{chainbox}
@@ -263,8 +263,8 @@ Radio/gamma bounce transient & none & Planck star: yes\\
 \end{center}
 
 \clearpage
-\chainhead{8}{The rotating sector --- Kerr matched (exterior; forward through $O(a^3)$, higher orders inherited)}
-\setup{Rotation is the one place the conformally-flat reconstruction stops. Sourced forward from DTF's own sectors --- not read off Kerr --- it is reached even so: frame-dragging is the proper now dragged, and the spatial geometry follows to second order in spin.}
+\chainhead{8}{The rotating sector --- Kerr matched}
+\setup{Exterior; forward through $O(a^3)$, higher orders inherited. Rotation is the one place the conformally-flat reconstruction stops. Sourced forward from DTF's own sectors --- not read off Kerr --- it is reached even so: frame-dragging is the proper now dragged, and the spatial geometry follows to second order in spin.}
 \begin{chainbox}
 \known{\mathrm{tr}\,K=-\tfrac{1}{N}D_i\beta^i=0}{a stationary axisymmetric const-$u$ slice is \emph{maximal} --- a legitimate proper now}
 \assume{rotation enters only through the shift $\beta^i$, sourced by the matter momentum $\rho v^i$ \emph{alone} ($\pi_u\equiv0$: no clock current to be dragged alongside it).}
@@ -427,11 +427,9 @@ is standard linearised gravity. Nothing here rests on circular reasoning.
 \texttt{DTF\_LTB\_collapse}, \texttt{DTF\_singularity\_observable}, and the six-script Kerr suite named in
 the Provenance box --- \texttt{DTF\_kerr\_constructive}, \texttt{DTF\_kerr\_forward\_tensor},
 \texttt{DTF\_kerr\_oa2\_sufficiency}, \texttt{DTF\_kerr\_oa3\_balance},
-\texttt{DTF\_kerr\_premise\_oneoperator}, \texttt{DTF\_kerr\_deser\_closure}) are publicly available at the
-release tagged \texttt{v1.0} (Version~8 of this trilogy); see the repository's README for a script-to-claim
-index and run instructions.\par
-\smallskip
-\url{https://github.com/billd-dtf/Distorted-Time-Framework}\par}
+\texttt{DTF\_kerr\_premise\_oneoperator}, \texttt{DTF\_kerr\_deser\_closure}) are publicly available (see
+the repository link on the title page) at the release tagged \texttt{v1.0} (Version~8 of this trilogy); see
+the repository's README for a script-to-claim index and run instructions.\par}
 
 \section*{Author's Note: the role of AI}
 \addcontentsline{toc}{section}{Author's Note: the role of AI}
@@ -462,12 +460,14 @@ provided precisely to enable it.
 \begingroup\small
 \begin{thebibliography}{9}
 \addcontentsline{toc}{section}{References}
-\bibitem{Hawking1975} S.~W.~Hawking, ``Particle Creation by Black Holes,''
-  \emph{Commun.\ Math.\ Phys.} \textbf{43}, 199--220 (1975).
-\bibitem{WeisbergHuang2016} J.~M.~Weisberg and Y.~Huang, ``Relativistic Measurements from Timing the
-  Binary Pulsar PSR~B1913+16,'' \emph{Astrophys.\ J.} \textbf{829}, 55 (2016).
+\bibitem{Isenberg2008} J.~Isenberg, ``Waveless approximation theories of gravity,''
+  \emph{Int.\ J.\ Mod.\ Phys.\ D} \textbf{17}, 265--273 (2008) [1978 unpublished manuscript].
+\bibitem{WilsonMathews1995} J.~R.~Wilson and G.~J.~Mathews, ``Instabilities in Close Neutron Star
+  Binaries,'' \emph{Phys.\ Rev.\ Lett.} \textbf{75}, 4161--4164 (1995).
 \bibitem{Will2014} C.~M.~Will, ``The Confrontation between General Relativity and Experiment,''
   \emph{Living Rev.\ Relativity} \textbf{17}, 4 (2014).
+\bibitem{WeisbergHuang2016} J.~M.~Weisberg and Y.~Huang, ``Relativistic Measurements from Timing the
+  Binary Pulsar PSR~B1913+16,'' \emph{Astrophys.\ J.} \textbf{829}, 55 (2016).
 \bibitem{LTB} G.~Lema\^itre, \emph{Ann.\ Soc.\ Sci.\ Bruxelles} \textbf{A53}, 51 (1933);
   R.~C.~Tolman, \emph{Proc.\ Natl.\ Acad.\ Sci.\ USA} \textbf{20}, 169 (1934);
   H.~Bondi, \emph{Mon.\ Not.\ R.\ Astron.\ Soc.} \textbf{107}, 410 (1947).
@@ -477,14 +477,12 @@ provided precisely to enable it.
   Complementarity or Firewalls?'' \emph{J.\ High Energy Phys.} \textbf{02}, 062 (2013).
 \bibitem{RovelliVidotto2014} C.~Rovelli and F.~Vidotto, ``Planck stars,''
   \emph{Int.\ J.\ Mod.\ Phys.\ D} \textbf{23}, 1442026 (2014).
-\bibitem{Isenberg2008} J.~Isenberg, ``Waveless approximation theories of gravity,''
-  \emph{Int.\ J.\ Mod.\ Phys.\ D} \textbf{17}, 265--273 (2008) [1978 unpublished manuscript].
-\bibitem{WilsonMathews1995} J.~R.~Wilson and G.~J.~Mathews, ``Instabilities in Close Neutron Star
-  Binaries,'' \emph{Phys.\ Rev.\ Lett.} \textbf{75}, 4161--4164 (1995).
-\bibitem{Deser1970} S.~Deser, ``Self-interaction and gauge invariance,''
-  \emph{Gen.\ Relativ.\ Gravit.} \textbf{1}, 9--18 (1970).
 \bibitem{GaratPrice2000} A.~Garat and R.~H.~Price, ``Nonexistence of conformally flat slices of the
   Kerr spacetime,'' \emph{Phys.\ Rev.\ D} \textbf{61}, 124011 (2000).
+\bibitem{Deser1970} S.~Deser, ``Self-interaction and gauge invariance,''
+  \emph{Gen.\ Relativ.\ Gravit.} \textbf{1}, 9--18 (1970).
+\bibitem{Hawking1975} S.~W.~Hawking, ``Particle Creation by Black Holes,''
+  \emph{Commun.\ Math.\ Phys.} \textbf{43}, 199--220 (1975).
 \end{thebibliography}
 \endgroup
 

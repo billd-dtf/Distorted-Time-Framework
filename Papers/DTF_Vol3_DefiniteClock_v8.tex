@@ -44,15 +44,15 @@
   \begin{tcolorbox}[cbflow,colback=cbResultBg,colframe=cbResultFr,boxrule=1.3pt]
   \centering\(\displaystyle #1\)\par\smallskip\centering\pychip{#2}{#3}\par
   \nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF result --- verified}\end{tcolorbox}}
-\newcommand{\oneobject}[2]{\begin{tcolorbox}[enhanced,colback=dtfblue,colframe=dtfblue,arc=3pt,
-  coltext=white,left=10pt,right=10pt,top=7pt,bottom=7pt,before skip=4pt,after skip=4pt]
+\newcommand{\oneobject}[2]{\begin{tcolorbox}[enhanced,colback=white,colframe=black,boxrule=1.3pt,arc=3pt,
+  left=10pt,right=10pt,top=7pt,bottom=7pt,before skip=4pt,after skip=4pt]
   {\bfseries One object, seen here as: #1}\\[2pt]{\small #2}\end{tcolorbox}}
 \newenvironment{chainbox}{\par\addvspace{4pt}\noindent\ignorespaces}{\par\addvspace{4pt}}
 \newcommand{\chainhead}[2]{\subsection*{Chain #1\quad\normalfont\itshape #2}}
 \newcommand{\setup}[1]{\noindent\emph{#1}\par\smallskip}
 \newcommand{\tr}{\operatorname{tr}}
 
-\hypersetup{colorlinks=true,linkcolor=knownblue,citecolor=knownblue,
+\hypersetup{colorlinks=true,linkcolor=knownblue,citecolor=knownblue,urlcolor=knownblue,
   pdftitle={The Distorted Time Framework, Volume III: The Definite Clock},
   pdfauthor={William de Dufour}}
 \pagestyle{fancy}\fancyhf{}
@@ -173,7 +173,6 @@ the momentum \emph{is} that gradient, $\mathbf p=\nabla S=m\mathbf v$: one clock
 the gradient it lays down. What is \emph{neither} --- the $G$-coupled well the rate digs in $u$,
 $\sim(m/m_P)^2$ --- is gravity (Volume~II). Met again through Volumes~I and~II.}
 
-\clearpage
 \chainhead{2}{Amplitude is the same clock, read on the space axis}
 \setup{The phase read along time is a period; along space it is an extent. One constant ties them.}
 \begin{chainbox}
@@ -205,7 +204,9 @@ its best case, not its hardest. (Two particles is Chain~4, where the debt begins
 \nodetext{conservation makes $\rho=|\psi|^2$ the \emph{stationary} distribution of the flow
 (equivariance); the settling toward it is a coarse-grained $H$-theorem. The remaining ingredient is
 single-valuedness --- Wallstrom's obstruction, that the hydrodynamic pair $(\rho,S)$ does not force
-$\oint\nabla S\cdot d\ell\in2\pi\hbar\,\mathbb Z$. Here it is not imposed as a separate quantisation rule
+integer circulation,
+\[ \oint\nabla S\cdot d\ell\ \in\ 2\pi\hbar\,\mathbb Z. \]
+Here it is not imposed as a separate quantisation rule
 but \emph{reduced to one ontological posit}: take DTF's fundamental object to be Row~0's amplitude
 assignment $\psi_0$ ($\hat H\psi_0=0$), a single-valued function on configuration space, rather than the
 Madelung pair. Then a non-integer-winding mode assigns two values to one configuration --- it is not such a
@@ -274,9 +275,11 @@ a phase law and an amplitude law:
 deposited: the accumulated clock reading $S=-mc^2\!\int u\,dt$ with its two faces $\mathbf p=\nabla S$ and
 $E=-\partial_t S$ (Chain~1), and $V$ from the clock's coupling to matter (Volumes~I--II). Collected, they
 are the \emph{classical} Hamilton--Jacobi equation --- missing exactly $Q$.
+\par\smallskip
 \textbf{The amplitude law is imported.} The continuity equation for $R^2$ is Chain~3's premise, and with it
 $Q$ --- which carries \emph{all} the quantum content and is built entirely from $R$. So the quantum lives
 wholly in the half DTF does not derive --- and here the framework says something definite about it.
+\par\smallskip
 \textbf{This is Nelson's stochastic mechanics~\cite{Nelson1966}, with the one thing Nelson left unexplained
 now named.} Nelson recovers exactly this amplitude law from an underlying conservative diffusion of
 coefficient $\nu=\hbar/2m$, but must \emph{posit} the diffusion; its physical origin was never supplied.
@@ -298,7 +301,8 @@ which is Nelson's $\nu$ exactly --- though the factor of $2$ carries the one-dim
 convention $\langle x^2\rangle=2\nu t$, and is not itself fixed by the flexing dynamics. So $\hbar$ is
 \emph{reparented}: not posited afresh as ``the quantum of action'' but read as the scale of the particle's
 own internal flexing. Writing the step as $\alpha\lambda_C$ ($\nu=\alpha^2\hbar/2m$) and requiring the
-osmotic potential it builds, $-2m\nu^2\nabla^2R/R$, to \emph{be} the Madelung $Q=-\tfrac{\hbar^2}{2m}\nabla^2R/R$,
+osmotic potential it builds to \emph{be} the Madelung potential $Q$,
+\[ -2m\nu^2\,\frac{\nabla^2 R}{R}\ =\ -\frac{\hbar^2}{2m}\,\frac{\nabla^2 R}{R}, \]
 returns $\alpha=1$: a \emph{consistency check} that the two roles of $\hbar$ agree, not an independent
 derivation of the coefficient. What remains open --- and is listed as owed below --- is whether the flexing
 dynamics \emph{forces} $\hbar/2m$ rather than merely admitting it.
@@ -440,14 +444,14 @@ directions; that is the sense in which the three volumes are one principle, not 
 deep cosmology (the proper now as cosmic time) --- is in preparation.
 
 \medskip
-\noindent{\small Scripts (public, SymPy/NumPy): \texttt{DTF\_two\_clocks\_resolved},
+\noindent{\small\raggedright Scripts (public, SymPy/NumPy): \texttt{DTF\_two\_clocks\_resolved},
 \texttt{DTF\_guidance\_is\_spaceface}, \texttt{DTF\_phase\_amplitude\_oneconstant},
 \texttt{DTF\_doubleslit\_compton\_ticks}, \texttt{DTF\_born\_relaxation\_2d},
 \texttt{DTF\_born\_relaxation\_2d\_mp}, \texttt{DTF\_wallstrom\_from\_row0},
 \texttt{DTF\_sharednow\_counting}, \texttt{DTF\_tripartite\_ledger},
 \texttt{DTF\_bell\_from\_joint\_relaxation}, \texttt{DTF\_clockjitter\_scale},
 \texttt{DTF\_nelson\_from\_flexing}, \texttt{DTF\_qm\_posit\_variational},
-\texttt{DTF\_flexing\_time\_symmetry}.}
+\texttt{DTF\_flexing\_time\_symmetry}.\par}
 
 \begin{tcolorbox}[keybox]
 \textbf{Provenance of the checks (ontology-first).}\enspace This volume derives little that is new ---
@@ -500,10 +504,9 @@ ontological. None of it rests on circular reasoning.
 {\small The SymPy/NumPy verification scripts named throughout (the \texttt{DTF\_born\_relaxation} and
 \texttt{DTF\_wallstrom\_from\_row0} scripts, \texttt{DTF\_nelson\_from\_flexing},
 \texttt{DTF\_qm\_posit\_variational}, \texttt{DTF\_flexing\_time\_symmetry}, and the entanglement/counting
-scripts) are publicly available at the release tagged \texttt{v1.0} (Version~8 of this trilogy); see the
-repository's README for a script-to-claim index and run instructions.\par
-\smallskip
-\url{https://github.com/billd-dtf/Distorted-Time-Framework}\par}
+scripts) are publicly available (see the repository link on the title page) at the release tagged
+\texttt{v1.0} (Version~8 of this trilogy); see the repository's README for a script-to-claim index and run
+instructions.\par}
 
 \section*{Author's Note: the role of AI}
 \addcontentsline{toc}{section}{Author's Note: the role of AI}
@@ -535,10 +538,23 @@ provided precisely to enable it.
 \addcontentsline{toc}{section}{References}
 \bibitem{Born1926} M.~Born, ``Zur Quantenmechanik der Sto\ss vorg\"ange,''
   \emph{Z.\ Phys.} \textbf{37}, 863--867 (1926).
-\bibitem{Bohm1952} D.~Bohm, ``A Suggested Interpretation of the Quantum Theory in Terms of `Hidden'
-  Variables. I \& II,'' \emph{Phys.\ Rev.} \textbf{85}, 166--179, 180--193 (1952).
 \bibitem{Nelson1966} E.~Nelson, ``Derivation of the Schr\"odinger Equation from Newtonian Mechanics,''
   \emph{Phys.\ Rev.} \textbf{150}, 1079--1085 (1966).
+\bibitem{Wallstrom1994} T.~C.~Wallstrom, ``Inequivalence between the Schr\"odinger equation and the
+  Madelung hydrodynamic equations,'' \emph{Phys.\ Rev.\ A} \textbf{49}, 1613--1617 (1994).
+\bibitem{Bohm1952} D.~Bohm, ``A Suggested Interpretation of the Quantum Theory in Terms of `Hidden'
+  Variables. I \& II,'' \emph{Phys.\ Rev.} \textbf{85}, 166--179, 180--193 (1952).
+\bibitem{Bell1964} J.~S.~Bell, ``On the Einstein Podolsky Rosen Paradox,''
+  \emph{Physics} \textbf{1}, 195--200 (1964).
+\bibitem{Maudlin2011} T.~Maudlin, \emph{Quantum Non-Locality and Relativity}, 3rd ed.
+  (Wiley-Blackwell, 2011).
+\bibitem{Norsen2017} T.~Norsen, \emph{Foundations of Quantum Mechanics} (Springer, 2017).
+\bibitem{DGNSZ2014} D.~D\"urr, S.~Goldstein, T.~Norsen, W.~Struyve, and N.~Zangh\`i, ``Can Bohmian
+  mechanics be made relativistic?'' \emph{Proc.\ R.\ Soc.\ A} \textbf{470}, 20130699 (2014).
+\bibitem{Tumulka2006} R.~Tumulka, ``A Relativistic Version of the Ghirardi--Rimini--Weber Model,''
+  \emph{J.\ Stat.\ Phys.} \textbf{125}, 821--840 (2006).
+\bibitem{Madelung1927} E.~Madelung, ``Quantentheorie in hydrodynamischer Form,''
+  \emph{Z.\ Phys.} \textbf{40}, 322--326 (1927).
 \bibitem{Schrodinger1930} E.~Schr\"odinger, ``\"Uber die kr\"aftefreie Bewegung in der relativistischen
   Quantenmechanik'' (Zitterbewegung), \emph{Sitzungsber.\ Preuss.\ Akad.\ Wiss.\ Phys.-Math.\ Kl.}
   \textbf{24}, 418--428 (1930).
@@ -548,29 +564,16 @@ provided precisely to enable it.
   control theory,'' \emph{Phys.\ Rev.\ D} \textbf{27}, 1774--1786 (1983).
 \bibitem{CaldeiraLeggett1983} A.~O.~Caldeira and A.~J.~Leggett, ``Path integral approach to quantum
   Brownian motion,'' \emph{Physica A} \textbf{121}, 587--616 (1983).
-\bibitem{Madelung1927} E.~Madelung, ``Quantentheorie in hydrodynamischer Form,''
-  \emph{Z.\ Phys.} \textbf{40}, 322--326 (1927).
-\bibitem{Bell1964} J.~S.~Bell, ``On the Einstein Podolsky Rosen Paradox,''
-  \emph{Physics} \textbf{1}, 195--200 (1964).
-\bibitem{Wallstrom1994} T.~C.~Wallstrom, ``Inequivalence between the Schr\"odinger equation and the
-  Madelung hydrodynamic equations,'' \emph{Phys.\ Rev.\ A} \textbf{49}, 1613--1617 (1994).
-\bibitem{Valentini1991} A.~Valentini, ``Signal-locality, uncertainty, and the subquantum
-  $H$-theorem. I,'' \emph{Phys.\ Lett.\ A} \textbf{156}, 5--11 (1991).
 \bibitem{Cirelson1980} B.~S.~Cirel'son (Tsirelson), ``Quantum generalizations of Bell's inequality,''
   \emph{Lett.\ Math.\ Phys.} \textbf{4}, 93--100 (1980).
-\bibitem{Horodecki1995} R.~Horodecki, P.~Horodecki, and M.~Horodecki, ``Violating Bell inequality by
-  mixed spin-$\tfrac12$ states,'' \emph{Phys.\ Lett.\ A} \textbf{200}, 340--344 (1995).
+\bibitem{Valentini1991} A.~Valentini, ``Signal-locality, uncertainty, and the subquantum
+  $H$-theorem. I,'' \emph{Phys.\ Lett.\ A} \textbf{156}, 5--11 (1991).
 \bibitem{Gleason1957} A.~M.~Gleason, ``Measures on the Closed Subspaces of a Hilbert Space,''
   \emph{J.\ Math.\ Mech.} \textbf{6}, 885--893 (1957).
 \bibitem{Busch2003} P.~Busch, ``Quantum States and Generalized Observables: A Simple Proof of Gleason's
   Theorem,'' \emph{Phys.\ Rev.\ Lett.} \textbf{91}, 120403 (2003).
-\bibitem{Maudlin2011} T.~Maudlin, \emph{Quantum Non-Locality and Relativity}, 3rd ed.
-  (Wiley-Blackwell, 2011).
-\bibitem{Norsen2017} T.~Norsen, \emph{Foundations of Quantum Mechanics} (Springer, 2017).
-\bibitem{DGNSZ2014} D.~D\"urr, S.~Goldstein, T.~Norsen, W.~Struyve, and N.~Zangh\`i, ``Can Bohmian
-  mechanics be made relativistic?'' \emph{Proc.\ R.\ Soc.\ A} \textbf{470}, 20130699 (2014).
-\bibitem{Tumulka2006} R.~Tumulka, ``A Relativistic Version of the Ghirardi--Rimini--Weber Model,''
-  \emph{J.\ Stat.\ Phys.} \textbf{125}, 821--840 (2006).
+\bibitem{Horodecki1995} R.~Horodecki, P.~Horodecki, and M.~Horodecki, ``Violating Bell inequality by
+  mixed spin-$\tfrac12$ states,'' \emph{Phys.\ Lett.\ A} \textbf{200}, 340--344 (1995).
 \end{thebibliography}
 \endgroup
 

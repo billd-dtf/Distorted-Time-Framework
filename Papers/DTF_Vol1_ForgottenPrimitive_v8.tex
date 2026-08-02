@@ -49,14 +49,14 @@
   \begin{tcolorbox}[cbflow,colback=cbResultBg,colframe=cbResultFr,boxrule=1.3pt]
   \centering\(\displaystyle #1\)\par\smallskip\centering\pychip{#2}{#3}\par
   \nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF result --- verified}\end{tcolorbox}}
-\newcommand{\oneobject}[2]{\begin{tcolorbox}[enhanced,colback=dtfblue,colframe=dtfblue,arc=3pt,
-  coltext=white,left=10pt,right=10pt,top=7pt,bottom=7pt,before skip=4pt,after skip=4pt]
+\newcommand{\oneobject}[2]{\begin{tcolorbox}[enhanced,colback=white,colframe=black,boxrule=1.3pt,arc=3pt,
+  left=10pt,right=10pt,top=7pt,bottom=7pt,before skip=4pt,after skip=4pt]
   {\bfseries One object, seen here as: #1}\\[2pt]{\small #2}\end{tcolorbox}}
 \newenvironment{chainbox}{\par\addvspace{4pt}\noindent\ignorespaces}{\par\addvspace{4pt}}
 \newcommand{\chainhead}[2]{\subsection*{Chain #1\quad\normalfont\itshape #2}}
 \newcommand{\setup}[1]{\noindent\emph{#1}\par\smallskip}
 
-\hypersetup{colorlinks=true,linkcolor=knownblue,citecolor=knownblue,
+\hypersetup{colorlinks=true,linkcolor=knownblue,citecolor=knownblue,urlcolor=knownblue,
   pdftitle={The Distorted Time Framework, Volume I: The Forgotten Primitive},
   pdfauthor={William de Dufour}}
 \pagestyle{fancy}\fancyhf{}
@@ -280,7 +280,6 @@ and because $u>0$ it is strictly monotone --- it can only grow.}
 statement about initial conditions (the past hypothesis) this framework does not supply.}
 \end{chainbox}
 
-\clearpage
 \chainhead{3}{The reading is a phase; its straightest path is Fermat's}
 \setup{Read the clock reading as a quantum phase, and ask which path it makes stationary.}
 \begin{chainbox}
@@ -288,7 +287,8 @@ statement about initial conditions (the past hypothesis) this framework does not
 {internal phase of any quantum, re-read as a clock reading}
 \nodetext{the rule is to extremise the accumulated \emph{proper time},
 \[ \delta\!\int d\tau=0,\qquad d\tau=\sqrt{u^2dt^2-dx^2/c^2}, \]
-whose geodesics are free fall. For a slow body $\int d\tau\approx\int\!\big(u-\tfrac{v^2}{2c^2u}\big)dt$;
+whose geodesics are free fall. For a slow body,
+\[ \int d\tau\ \approx\ \int\!\Big(u-\frac{v^2}{2c^2u}\Big)dt; \]
 dropping the kinetic term leaves $\delta\!\int u\,dt=0$, the \emph{static} (Fermat) reduction that Chain~6's
 force $=-c^2\nabla u$ lives in.}
 \dtfresult{\text{one object}\ \ \Phi=-\omega_C\!\int d\tau,\qquad \text{one method}\ \ \delta\!\int d\tau=0}
@@ -357,7 +357,6 @@ Space is not compiled by a second law; it is the ledger balance of the one rate.
 The preferred now is the \emph{time}-face; Lorentz invariance is the \emph{space}-face; $c$ is the hinge.
 A preferred slice and exact relativity are not in tension --- they are two readings of one interval.}
 
-\clearpage
 \chainhead{6}{Gravity is the shape of the clock field}
 \setup{A slow body falls down the gradient of time's rate. Make that rate primitive, and gravity is its shape.}
 \begin{chainbox}
@@ -539,6 +538,7 @@ two-tensor-polarisation content is standard linearised gravity, and \emph{agrees
 discriminating from it. Nothing here rests on circular reasoning.
 \end{tcolorbox}
 
+\clearpage
 \appendix
 \section*{Appendix A --- Confirmation of Chain 5: space radiates, time does not, $c$ is universal}
 \addcontentsline{toc}{section}{Appendix A}
@@ -562,13 +562,14 @@ $\|\Lambda[\delta_{ij}]\|$ = 0.00e+00\qquad$\|\Lambda[P_{ij}]\|$ = 0.00e+00  (sp
 \end{tcolorbox}
 
 \subsection*{A.2\quad Time does not radiate --- $u$ is the lapse, not a scalar}
-It is tempting to read the clock term $\mathcal L_u=-\tfrac1{8\pi G}(\nabla u)^2-\rho u$ as an independent
-scalar carrying gradient energy, whose momentum $\pi_u$ vanishes merely for want of a $\dot u$ term. That
+It is tempting to read the clock term as an independent scalar carrying gradient energy,
+\[ \mathcal L_u=-\frac{1}{8\pi G}(\nabla u)^2-\rho u, \]
+whose momentum $\pi_u$ vanishes merely for want of a $\dot u$ term. That
 reading is \emph{wrong for DTF}, and seeing why is the whole of the no-breathing-mode result. In it,
 varying $u$ would not impose the Hamiltonian constraint $H_\perp\approx0$ but set it equal to a
 $u$-gradient; refoliation would cease to be a symmetry; and the Dirac count would return
-$N_{\rm dof}=\tfrac12(20-2(6)-2)=3=2\text{ tensor}+1\text{ scalar}$ --- a breathing mode. That is a
-khronometric theory, and it is precisely the one Chain~5 forbids.
+\[ N_{\rm dof}=\tfrac12(20-2(6)-2)=3=2\ \text{tensor}+1\ \text{scalar} \]
+--- a breathing mode. That is a khronometric theory, and it is precisely the one Chain~5 forbids.
 
 In DTF, $u$ \emph{is} the ADM lapse. Reparametrization invariance of the primitive $\int u\,dt$ (the rest form of $\int d\tau$, Chain~3) is the
 \emph{local}, many-fingered symmetry, so $\pi_u\equiv0$ is delivered \emph{by that symmetry} --- $H_\perp$
@@ -709,11 +710,9 @@ computational reach, not an open-ended ``nonlinear closure'' problem.
 
 \section*{Code and data availability}
 \addcontentsline{toc}{section}{Code and data availability}
-{\small The SymPy/NumPy verification scripts named throughout are publicly available at the release tagged
-\texttt{v1.0} (Version~8 of this trilogy); see the repository's README for a script-to-claim index and run
-instructions.\par
-\smallskip
-\url{https://github.com/billd-dtf/Distorted-Time-Framework}\par}
+{\small The SymPy/NumPy verification scripts named throughout are publicly available (see the repository
+link on the title page) at the release tagged \texttt{v1.0} (Version~8 of this trilogy); see the
+repository's README for a script-to-claim index and run instructions.\par}
 
 \section*{Author's Note: the role of AI}
 \addcontentsline{toc}{section}{Author's Note: the role of AI}
@@ -744,33 +743,19 @@ provided precisely to enable it.
 \begingroup\small
 \begin{thebibliography}{9}
 \addcontentsline{toc}{section}{References}
-\bibitem{DeWitt1967} B.~S.~DeWitt, ``Quantum Theory of Gravity. I. The Canonical Theory,''
-  \emph{Phys.\ Rev.} \textbf{160}, 1113--1148 (1967).
+\bibitem{LaughlinPines2000} R.~B.~Laughlin and D.~Pines, ``The Theory of Everything,''
+  \emph{Proc.\ Natl.\ Acad.\ Sci.\ USA} \textbf{97}, 28--31 (2000).
 \bibitem{ADM1962} R.~Arnowitt, S.~Deser, and C.~W.~Misner, ``The Dynamics of General Relativity,'' in
   \emph{Gravitation: An Introduction to Current Research}, ed.\ L.~Witten (Wiley, New York, 1962),
   pp.~227--265; reprinted in \emph{Gen.\ Relativ.\ Gravit.} \textbf{40}, 1997--2027 (2008).
-\bibitem{LaughlinPines2000} R.~B.~Laughlin and D.~Pines, ``The Theory of Everything,''
-  \emph{Proc.\ Natl.\ Acad.\ Sci.\ USA} \textbf{97}, 28--31 (2000).
-\bibitem{Will2014} C.~M.~Will, ``The Confrontation between General Relativity and Experiment,''
-  \emph{Living Rev.\ Relativity} \textbf{17}, 4 (2014).
 \bibitem{Lichnerowicz1944} A.~Lichnerowicz, ``L'int\'egration des \'equations de la gravitation relativiste
   et le probl\`eme des $n$ corps,'' \emph{J.\ Math.\ Pures Appl.} \textbf{23}, 37--63 (1944).
 \bibitem{York1972} J.~W.~York, Jr., ``Role of Conformal Three-Geometry in the Dynamics of Gravitation,''
   \emph{Phys.\ Rev.\ Lett.} \textbf{28}, 1082--1085 (1972).
+\bibitem{DeWitt1967} B.~S.~DeWitt, ``Quantum Theory of Gravity. I. The Canonical Theory,''
+  \emph{Phys.\ Rev.} \textbf{160}, 1113--1148 (1967).
 \bibitem{Horava2009} P.~Ho\v{r}ava, ``Quantum Gravity at a Lifshitz Point,''
   \emph{Phys.\ Rev.\ D} \textbf{79}, 084008 (2009).
-\bibitem{BlasPujolasSibiryakov2011} D.~Blas, O.~Pujol\`as, and S.~Sibiryakov, ``Models of non-relativistic
-  quantum gravity: the good, the bad and the healthy,'' \emph{J.\ High Energy Phys.} \textbf{04}, 018 (2011).
-\bibitem{Jacobson2001} T.~Jacobson and D.~Mattingly, ``Gravity with a dynamical preferred frame,''
-  \emph{Phys.\ Rev.\ D} \textbf{64}, 024028 (2001).
-\bibitem{MarsdenTipler1980} J.~E.~Marsden and F.~J.~Tipler, ``Maximal hypersurfaces and foliations of
-  constant mean curvature in general relativity,'' \emph{Phys.\ Rep.} \textbf{66}, 109--139 (1980).
-\bibitem{Gerhardt1983} C.~Gerhardt, ``$H$-surfaces in Lorentzian manifolds,''
-  \emph{Commun.\ Math.\ Phys.} \textbf{89}, 523--553 (1983).
-\bibitem{Bartnik1984} R.~Bartnik, ``Existence of maximal surfaces in asymptotically flat spacetimes,''
-  \emph{Commun.\ Math.\ Phys.} \textbf{94}, 155--175 (1984).
-\bibitem{Bartnik1988} R.~Bartnik, ``Remarks on cosmological spacetimes and constant mean curvature
-  surfaces,'' \emph{Commun.\ Math.\ Phys.} \textbf{117}, 615--624 (1988).
 \bibitem{Maudlin2011} T.~Maudlin, \emph{Quantum Non-Locality and Relativity}, 3rd ed.
   (Wiley-Blackwell, 2011).
 \bibitem{DGNSZ2014} D.~D\"urr, S.~Goldstein, T.~Norsen, W.~Struyve, and N.~Zangh\`i, ``Can Bohmian
@@ -786,6 +771,20 @@ provided precisely to enable it.
   \emph{Class.\ Quantum Grav.} \textbf{11}, 2899--2917 (1994).
 \bibitem{Bombelli1987} L.~Bombelli, J.~Lee, D.~Meyer, and R.~D.~Sorkin, ``Space-time as a causal set,''
   \emph{Phys.\ Rev.\ Lett.} \textbf{59}, 521--524 (1987).
+\bibitem{Will2014} C.~M.~Will, ``The Confrontation between General Relativity and Experiment,''
+  \emph{Living Rev.\ Relativity} \textbf{17}, 4 (2014).
+\bibitem{Jacobson2001} T.~Jacobson and D.~Mattingly, ``Gravity with a dynamical preferred frame,''
+  \emph{Phys.\ Rev.\ D} \textbf{64}, 024028 (2001).
+\bibitem{BlasPujolasSibiryakov2011} D.~Blas, O.~Pujol\`as, and S.~Sibiryakov, ``Models of non-relativistic
+  quantum gravity: the good, the bad and the healthy,'' \emph{J.\ High Energy Phys.} \textbf{04}, 018 (2011).
+\bibitem{Bartnik1984} R.~Bartnik, ``Existence of maximal surfaces in asymptotically flat spacetimes,''
+  \emph{Commun.\ Math.\ Phys.} \textbf{94}, 155--175 (1984).
+\bibitem{MarsdenTipler1980} J.~E.~Marsden and F.~J.~Tipler, ``Maximal hypersurfaces and foliations of
+  constant mean curvature in general relativity,'' \emph{Phys.\ Rep.} \textbf{66}, 109--139 (1980).
+\bibitem{Gerhardt1983} C.~Gerhardt, ``$H$-surfaces in Lorentzian manifolds,''
+  \emph{Commun.\ Math.\ Phys.} \textbf{89}, 523--553 (1983).
+\bibitem{Bartnik1988} R.~Bartnik, ``Remarks on cosmological spacetimes and constant mean curvature
+  surfaces,'' \emph{Commun.\ Math.\ Phys.} \textbf{117}, 615--624 (1988).
 \end{thebibliography}
 \endgroup
 
