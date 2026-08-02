@@ -1,0 +1,490 @@
+\documentclass[11pt]{article}
+\pdfobjcompresslevel=0 % force classic uncompressed xref table (avoids MiKTeX broken-xref-stream bug)
+\usepackage[margin=2.3cm]{geometry}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tcolorbox}\tcbuselibrary{skins,breakable}
+\usepackage{booktabs}\usepackage{array}\usepackage{enumitem}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{fancyhdr}\setlength{\headheight}{14.5pt}
+\usepackage{parskip}\usepackage{xcolor}\usepackage{hyperref}
+\usepackage{tikz}\usetikzlibrary{arrows.meta,positioning}
+
+\definecolor{dtfblue}{HTML}{1a1a2e}\definecolor{dtflight}{HTML}{0f3460}
+\definecolor{boxblue}{HTML}{e8f4f8}\definecolor{knownblue}{HTML}{1a3a6e}
+\definecolor{cbKnownBg}{HTML}{E9E9FA}\definecolor{cbKnownFr}{HTML}{8E97C9}
+\definecolor{cbNodeBg}{HTML}{F4F5F8}\definecolor{cbNodeFr}{HTML}{CDD2DB}
+\definecolor{cbAssumeBg}{HTML}{FBEBEB}\definecolor{cbAssumeFr}{HTML}{C0392B}
+\definecolor{cbResultBg}{HTML}{FBF4D2}\definecolor{cbResultFr}{HTML}{C8A21E}
+\definecolor{cbTagBg}{HTML}{E2F1EF}\definecolor{cbTagFr}{HTML}{4FA295}
+\definecolor{cbArrow}{HTML}{8A93A6}\definecolor{cbPyBg}{HTML}{ECEFF4}
+
+\tcbset{
+  keybox/.style={enhanced,breakable,colback=boxblue,colframe=dtfblue,boxrule=0.8pt,
+    arc=3pt,left=10pt,right=10pt,top=8pt,bottom=8pt},
+  cbflow/.style={enhanced,arc=3.5pt,boxrule=0.7pt,left=12pt,right=12pt,top=10pt,bottom=10pt,
+    before skip=4pt,after skip=4pt},
+}
+\newcommand{\chainarrow}{\vspace{1pt}\centerline{\tikz{\draw[-{Latex[length=2.6mm,width=2.2mm]},
+  line width=1pt,cbArrow](0,0.28)--(0,0);}}\vspace{1pt}}
+\newcommand{\known}[2]{\begin{tcolorbox}[cbflow,colback=cbKnownBg,colframe=cbKnownFr]
+  \centering\(\displaystyle #1\)\\[3pt]{\color{knownblue}\small[\,\textit{known: #2}\,]}\par
+  \nobreak\vspace{1pt}\hfill{\tiny\color{gray}Known}\end{tcolorbox}}
+\newcommand{\assume}[1]{\chainarrow\begin{tcolorbox}[cbflow,colback=cbAssumeBg,colframe=cbAssumeFr]
+  {\color{cbAssumeFr}\bfseries[DTF input:]\ }{\color{cbAssumeFr}\small #1}\par
+  \nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF input}\end{tcolorbox}}
+\newcommand{\nodetext}[1]{\chainarrow\begin{tcolorbox}[cbflow,colback=cbNodeBg,colframe=cbNodeFr]
+  \small #1\par\nobreak\vspace{1pt}\hfill{\tiny\color{gray}Derivation}\end{tcolorbox}}
+\newcommand{\dtfresult}[2]{\chainarrow
+  \begin{tcolorbox}[cbflow,colback=cbResultBg,colframe=cbResultFr,boxrule=1.3pt]
+  \centering\(\displaystyle #1\)\par\nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF result}\end{tcolorbox}\chainarrow
+  \begin{tcolorbox}[cbflow,colback=cbTagBg,colframe=cbTagFr]
+  \centering{\itshape\color{dtflight}#2}\par\nobreak\vspace{1pt}\hfill{\tiny\color{gray}Takeaway}\end{tcolorbox}}
+\newcommand{\pychip}[2]{{\footnotesize\colorbox{cbPyBg}{\ttfamily\,#1\,}\,{\color{gray}$\to$ #2}}}
+\newcommand{\resultpy}[3]{\chainarrow
+  \begin{tcolorbox}[cbflow,colback=cbResultBg,colframe=cbResultFr,boxrule=1.3pt]
+  \centering\(\displaystyle #1\)\par\smallskip\centering\pychip{#2}{#3}\par
+  \nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF result --- verified}\end{tcolorbox}}
+\newcommand{\oneobject}[2]{\begin{tcolorbox}[enhanced,colback=dtfblue,colframe=dtfblue,arc=3pt,
+  coltext=white,left=10pt,right=10pt,top=7pt,bottom=7pt,before skip=4pt,after skip=4pt]
+  {\bfseries One object, seen here as: #1}\\[2pt]{\small #2}\end{tcolorbox}}
+\newenvironment{chainbox}{\par\addvspace{4pt}\noindent\ignorespaces}{\par\addvspace{4pt}}
+\newcommand{\chainhead}[2]{\subsection*{Chain #1\quad\normalfont\itshape #2}}
+\newcommand{\setup}[1]{\noindent\emph{#1}\par\smallskip}
+\newcommand{\lp}{\ell_P}
+
+\hypersetup{colorlinks=true,linkcolor=knownblue,citecolor=knownblue,
+  pdftitle={The Distorted Time Framework, Volume II: The Shape of Time},
+  pdfauthor={William de Dufour}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\itshape Distorted Time Framework --- Volume II}
+\fancyhead[R]{\small\itshape The Shape of Time}
+\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+\begin{center}
+{\large\bfseries The Distorted Time Framework\\[3pt]
+\normalsize Volume II --- \itshape The Shape of Time}\\[6pt]
+{\small Gravity, inertia, and the resolution of the black-hole singularity}\\[10pt]
+{\normalsize William de Dufour}\\[2pt]
+{\small\itshape Independent Researcher, Austin, TX \;\textrm{$\cdot$}\; \texttt{billd.dtf@gmail.com}}\\[3pt]
+{\small July 2026 \quad---\quad Version 8}\\[3pt]
+{\small\href{https://doi.org/10.5281/zenodo.21659853}{\texttt{DOI: 10.5281/zenodo.21659853}}}
+\end{center}
+
+\begin{abstract}
+With time's local rate $u$ as the single primitive (Volume~I), gravity is the shape of that rate: a slow
+body falls down its gradient, and the field law $\nabla^2u=4\pi G\rho/c^2$ is the rate's, not a graviton's.
+The reconstructed metric matches general relativity in every tested regime (the Isenberg--Wilson--Mathews
+conformally-flat scheme, exact to 1PN), and the frame field radiates exactly two tensor polarisations --- so
+the tested content is GR's, and by Deser's uniqueness the two are indistinguishable wherever the spin-2
+field is defined. The volume's distinctive claim lies where that field is \emph{not} defined: at Planck
+curvature the emergent description of time \textbf{de-emerges}, replacing the singularity with a finite core
+and a stable Planck-mass remnant --- a \emph{boundary conjecture} whose signatures (no echoes, no bounce)
+differ sharply from the fuzzball and the Planck star. The rotating exterior is matched to Kerr (forward
+through $O(a^3)$, all orders inherited via Deser). Stated plainly: the singularity results sit at the
+epistemic level of a boundary conjecture, not a derived dynamics.
+\end{abstract}
+
+\smallskip
+\noindent{\small\textbf{Keywords:} black-hole singularity; time de-emergence; general relativity; Kerr
+metric; gravitational-wave polarisations; conformal flatness.}
+
+\bigskip
+
+\begin{tcolorbox}[keybox,unbreakable]
+\textbf{The three commitments (from the Core, Volume~I).}\enspace This volume builds on three, argued there
+and used here without re-argument (full recap: Appendix~A):
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=3pt]
+  \item \textbf{1.\ Time is primitive} --- its local rate $u(\mathbf x)$ is the one physical thing:
+    Row~0 (timeless substrate, $\hat H\Psi=0$, energy conserved as a constraint) $\to$ Row~1 (the clock,
+    where gravity and inertia live) $\to$ Row~2 (space).
+  \item \textbf{2.\ Space is time's radiation} --- $\lambda_C=c\,T_C$; time takes $g_{00}=-u^2$ and space
+    the complement $\gamma_{ij}=(2-u^2)\delta_{ij}$, while $u$ itself does \emph{not} propagate
+    ($\pi_u\equiv0$). Hence zero new degrees of freedom, exact Lorentz ($\alpha_1=\alpha_2=0$), and a
+    radiative content of exactly two --- read forward from what space is made of (Appendix~A). These carry
+    the polarisation count and the singularity alike.
+  \item \textbf{3.\ There is a proper now} --- the slice that solves Row-0's energy constraint
+    (constant-$u$/CMC), real but empirically silent.
+\end{itemize}
+\noindent\emph{Here} the rate is \emph{sourced} by matter (gravity) and pushed to where it \emph{de-emerges}
+(the singularity). What stays contingent is only the conformally-flat scheme this volume uses to compute the
+metric beyond 1PN --- a limit on calculation, not on the commitments.
+\end{tcolorbox}
+
+\medskip
+\noindent General relativity is our most successful theory of gravity, and it predicts its own failure:
+at the centre of a black hole the curvature diverges and the theory stops. This volume says \emph{what
+that failure is}. With time's rate as the primitive, the singularity is not a place where curvature
+becomes infinite --- it is where the emergent description of time \textbf{de-emerges}, at Planck
+curvature, and ``what is at $r=0$'' is a question asked in a language that has ceased to exist there.
+What replaces the singularity is a finite core, and it makes predictions that differ, sharply, from
+every other proposal. First, though, the gravity the singularity lives in.
+
+\clearpage
+\chainhead{1}{Gravity is the shape of the clock field}
+\setup{A slow body falls down the gradient of time's rate. Make that rate primitive, and gravity is its shape --- with no force carrier.}
+\begin{chainbox}
+\known{g_{00}=-u^2,\qquad \ddot{\mathbf x}=-c^2\nabla u\ \ (\text{slow body})}
+{Newtonian limit of GR: gravity is the curvature of \emph{time}}
+\assume{promote $u$ to primitive; the one reparametrization-invariant action carries no $u$ time-derivative, so $\pi_u\equiv0$.}
+\dtfresult{\nabla^2 u=\tfrac{4\pi G}{c^2}\rho\quad(\text{elliptic constraint, not a wave})}
+{Gravity is the shape of the clock-rate field, sourced instantaneously --- no graviton to exchange. And
+promoting time adds no degree of freedom and breaks no symmetry (Volume~I, Appendix~A): the radiation is
+space, time does not radiate, $c$ is universal.}
+\end{chainbox}
+
+\chainhead{2}{General relativity, matched in the tested regime}
+\setup{The reconstructed metric is GR's in every tested regime --- by construction, not by tuning; beyond it, matched only where the scheme is known to hold.}
+\begin{chainbox}
+\known{\text{reconstruct } g_{\mu\nu}\ \text{from } u\ \text{and the frame field}}{constrained, conformally-flat form}
+\nodetext{this construction --- a conformally-flat spatial 3-metric plus elliptic constraints --- is not
+a bespoke DTF scheme; it \emph{is} the Isenberg--Wilson--Mathews (IWM/CFC) approximation to
+GR~\cite{Isenberg2008,WilsonMathews1995}, a known, well-posed, numerically validated formulation with a documented error
+budget: exact for spherical symmetry, correct through 1PN (hence $\gamma=\beta=1$ falls out, not is tuned),
+departs from GR at 2PN, and admits no conformally-flat slicing of Kerr at all. Naming the scheme converts an
+open-ended ``closure item'' into a quantified one.}
+\dtfresult{\gamma=\beta=1,\quad c_{\rm GW}=c\quad(\text{IWM/CFC, exact to 1PN})}
+{The PPN parameters~\cite{Will2014} and the GW speed come out as GR's at the order IWM/CFC is known to
+reproduce it. Honest caveat: the spatial metric is reconstructed in this \emph{conformally-flat
+approximation} with a documented $g_{rr}$ deviation beyond 1PN (the closure item, sharpened above) --- so
+this is GR \emph{proposed as what the clock field is made of} at the tested level, not a claim of exact
+recovery. The binary-pulsar orbital decay --- matched to $\sim0.2\%$ against
+PSR~B1913+16~\cite{WeisbergHuang2016} --- is a \emph{radiation-reaction} effect, which the \emph{waveless}
+conformally-flat scheme does not itself produce: it is GR's quadrupole result, and DTF inherits it not
+through the CFC reconstruction but through the \emph{Deser closure} (box after Chain~8) --- the radiative
+sector is a two-polarisation spin-2 field, so its matter coupling, and hence the $G/5c^5$ quadrupole
+emission, are GR's (a mode \emph{count} alone would not fix the prefactor). A genuinely independent DTF
+quadrupole computation from the frame field's own dynamics is not written out in this trilogy.}
+\end{chainbox}
+
+\clearpage
+\chainhead{3}{Space radiates --- two tensor polarisations}
+\setup{The radiative sector is space. How many ways it can wave follows from what space is made of --- not from a projector chosen in advance.}
+\begin{chainbox}
+\known{h_{ij}\ \text{symmetric}:\ \tfrac{d(d+1)}{2}=6\ \text{components at}\ d=3}{the extent structure --- what assigns a length to each direction}
+\nodetext{space is compiled from extents (Volume~I, Chain~5), so the object that can modulate is $h_{ij}$, and the
+frame's three internal rotations are redundancy in it (they leave $g_{ij}=e^a_ie^a_j$ fixed at all orders).
+Split the six by propagation direction --- $2$ scalar, $2$ vector, $2$ tensor --- and the framework removes
+four of them: the scalars because a uniform rescaling of extents \emph{is} a clock-rate change, which the
+radiation rule forbids from propagating (Volume~I, Chain~5) and the gravity field law fixes elliptically
+(Chain~1); the vectors because space is compiled, so relabelling points within a slice is not a physical change.}
+\resultpy{6-2\,(\text{scalar})-2\,(\text{vector})=2\ \text{transverse-traceless}}
+{DTF\_radiative\_content\_constructive.py}{2, forward from the premises}
+\dtfresult{\text{exactly two tensor polarisations, no breathing mode}}
+{This is the framework's cleanest falsifiable stake: a detected scalar/breathing gravitational-wave
+polarisation would refute it. Time (the scalar $u$) does not radiate --- and the count is now read forward
+from what space is, with the familiar TT projector appearing as a \emph{consequence} of the split rather
+than as its premise (Volume~I, \S A.4).}
+\end{chainbox}
+\oneobject{inertia \& gravity}{One rate $\omega_C$: it \emph{is} the inertia (linear in $m$,
+definitional), and it \emph{sources} the gravitational well in $u$ (the $G$-coupled $\sim(m/m_P)^2$
+dent), whose extremum is free fall. The equivalence principle is that single identity --- read forward
+into the chain below, where inertia is the rate, not a wake.}
+
+\clearpage
+\chainhead{4}{Inertia --- the rate, not a wake}
+\setup{Inertia needs no mechanism. Mass \emph{is} the clock's ticking rate; inertia is that rate, carried by a moving body.}
+\begin{chainbox}
+\known{\mathbf p=\nabla S=\gamma m\mathbf v,\qquad E=-\partial_t S=\gamma mc^2}{Hamilton--Jacobi: the moving clock's momentum and energy}
+\dtfresult{\text{inertia}=\text{the rate }\omega_C\ \text{itself}\ (m=\hbar\omega_C/c^2),\ \text{linear in }m,\ \text{no }G}
+{There is no self-energy to compute. Mass \emph{is} the ticking rate (Volume~I, ``a note on mass''); inertia
+is that rate carried by a moving body --- linear in $m$, $\hbar$-set, carrying no $G$. The coefficient
+$mc^2$ is not a debt but a unit conversion ($E=\hbar\omega_C$). A self-field reaction to the body's own
+$u$-well could not be the source: that well is $G$-coupled and $\sim(m/m_P)^2$ shallow --- some
+forty-five orders too weak to be inertia, which in any case needs no such mechanism. What remains owed is
+only the \emph{pattern} of ticking rates (the mass hierarchy) --- a free parameter for every theory alike;
+deferred, not claimed.}
+\end{chainbox}
+
+\clearpage
+\chainhead{5}{The singularity: time de-emerges}
+\setup{Curvature does not diverge --- the description does. Where the clock can no longer complete a tick, Row-1 time ends.}
+\begin{chainbox}
+\known{K=R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma}=\frac{48\,(GM/c^2)^2}{r^6},\quad L_{\rm curv}=K^{-1/4}}
+{Kretschmann invariant, Schwarzschild}
+\assume{Row-1 time de-emerges where the clock loses definiteness: one coherent tick no longer fits in a
+curvature time, $N\equiv L_{\rm curv}/\lp\to1$ (Planck curvature, coefficient-free). The Planck-curvature
+\emph{threshold} is imported --- most quantum-gravity programmes agree curvature saturates there; what
+is \emph{native} is the interpretation: de-emergence of Row-1 time, not a bounce or a new phase.}
+\resultpy{r_*=48^{1/6}\lp\,(M/m_P)^{1/3},\quad \frac{r_*}{r_s}\simeq0.95\,(M/m_P)^{-2/3}}
+{DTF\_singularity\_deemergence.py}{deep interior, fat core}
+\dtfresult{\text{a finite core at } r_*,\ \text{never the point } r=0}
+{The de-emergence surface sits parametrically \emph{inside} the horizon ($\sim10^{-26}\,r_s$ for a solar
+mass); the horizon stays curvature-regular. The singularity is a question in a language that has ceased
+to exist --- and what is left at the core is Row~0 showing through: the timeless substrate, uncovered
+where Row-1 time ends. The ontology closes on itself.}
+\end{chainbox}
+
+\clearpage
+\chainhead{6}{The interior: a clock that halts before the crunch}
+\setup{Read through a geodesic comoving clock, collapse stops a Planck time short of the classical singularity.}
+\begin{chainbox}
+\known{\rho(\tau_{\rm rem})=\frac{1}{6\pi G\,\tau_{\rm rem}^2}}{matter-dominated collapse, comoving proper time}
+\assume{the same criterion in density: de-emergence at $\rho\to\rho_P=c^5/\hbar G^2$ (Planck density).}
+\resultpy{\tau_{\rm rem}^*=\frac{t_P}{\sqrt{6\pi}}\approx0.23\,t_P\ \text{before the crunch}}
+{DTF\_LTB\_collapse.py}{mass- \& profile-indep.}
+\dtfresult{\text{halt at finite scale factor, never } a=0}
+{The comoving clock reaches $\delta u/u\sim1$ a universal $0.23\,t_P$ before the classical singularity ---
+independent of mass and (for inhomogeneous LTB dust~\cite{LTB}) of the density profile. A fat Planck-density core,
+not a point.}
+\end{chainbox}
+
+\clearpage
+\chainhead{7}{Observables --- how the finite core differs from its rivals}
+\setup{A finite core in place of a singularity has consequences at both ends of a black hole's life.}
+\begin{chainbox}
+\known{r_s\propto M,\qquad R_*=(M/\rho_P)^{1/3}\propto M^{1/3}}{horizon and core shrink at different rates}
+\resultpy{M_{\rm rem}=\frac{m_P}{\sqrt8}\approx0.35\,m_P,\quad \text{no echoes},\ \text{no bounce}}
+{DTF\_singularity\_observable.py}{stable Planck-mass relic}
+\dtfresult{\text{a stable, horizonless Planck-mass remnant}}
+{Evaporation halts when the core meets the shrinking horizon --- no complete evaporation, no final burst.
+The structure sits at $\sim10^{-26}r_s$, so \emph{no} post-ringdown echoes; time de-emerges rather than
+bouncing, so \emph{no} radio/gamma bounce transient. Whether a population of such relics could contribute to
+dark matter is a separate question this volume does not assess.}
+\end{chainbox}
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}L{5.0cm}L{3.6cm}L{4.2cm}@{}}
+\toprule
+\textbf{Signature} & \textbf{DTF (de-emergence)} & \textbf{Rivals}\\
+\midrule
+Post-ringdown GW echoes & none (regular horizon) & fuzzball/firewall\cite{Mathur2005,AMPS2013}: yes\\
+Evaporation endpoint & Planck remnant $\sim0.35\,m_P$ & complete / burst\\
+Primordial-hole fate & stable Planck-mass relic & Planck star\cite{RovelliVidotto2014}: bounces\\
+Radio/gamma bounce transient & none & Planck star: yes\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
+\chainhead{8}{The rotating sector --- Kerr matched (exterior; forward through $O(a^3)$, higher orders inherited)}
+\setup{Rotation is the one place the conformally-flat reconstruction stops. Sourced forward from DTF's own sectors --- not read off Kerr --- it is reached even so: frame-dragging is the proper now dragged, and the spatial geometry follows to second order in spin.}
+\begin{chainbox}
+\known{\mathrm{tr}\,K=-\tfrac{1}{N}D_i\beta^i=0}{a stationary axisymmetric const-$u$ slice is \emph{maximal} --- a legitimate proper now}
+\assume{rotation enters only through the shift $\beta^i$, sourced by the matter momentum $\rho v^i$ \emph{alone} ($\pi_u\equiv0$: no clock current to be dragged alongside it).}
+\resultpy{\omega=\frac{2GJ}{c^2r^3}\ (\text{DTF, forward})=\omega_{\rm Kerr}^{\rm far},\qquad N_{\rm dof}=2}
+{DTF\_kerr\_constructive.py}{frame-dragging is native; rotation adds no mode}
+\end{chainbox}
+\begin{chainbox}
+\known{C_{ijk}=0\ \Longleftrightarrow\ \text{conformally flat}\ \Longleftrightarrow\ \text{no physical tensor content}}
+{the coordinate-invariant obstruction (Cotton tensor)}
+\nodetext{compute $C_{ijk}$ of the Kerr spatial 3-geometry on that slice, order by order in spin: it is
+zero at $O(a^0)$ (Schwarzschild) and $O(a^1)$ (frame-dragging does not curve space), and \emph{first
+nonzero at $O(a^2)$}. So the tensor sector must switch on exactly there --- and its source is the
+\emph{quadratic} of the $O(a)$ shift, a gravitomagnetic dipole (hence angular content $\ell=0,2$).}
+\resultpy{\delta R[g_2]=-\,\delta^2R[g_1]\quad\text{balances to}\ 10^{-126}}
+{DTF\_kerr\_oa2\_sufficiency.py}{frame-drag$^2$ sources the $O(a^2)$ TT mode}
+\dtfresult{\textbf{DTF}=\textbf{Kerr through }O(a^2),\ \text{coefficient-exact}}
+{The frame-drag$^2$ source, pushed through DTF's radiative tensor operator, reproduces Kerr's
+second-order geometry \emph{exactly}; by uniqueness of the elliptic problem the forward solve \emph{is}
+Kerr. This is proven explicitly here at $O(a^2)$; the extension to \emph{all orders} is \emph{inherited}
+from the Deser bootstrap (box below), not computed order by order. It is
+the \emph{exterior} rotating geometry (frame-dragging, ergosphere $|\beta|=uc$); rotating collapse is a
+separate question, not claimed here.}
+\end{chainbox}
+
+\begin{tcolorbox}[keybox,unbreakable]
+\textbf{What the rotating sector rests on --- and why it closes to all orders.}
+\begin{itemize}[leftmargin=1.5em,itemsep=3pt,topsep=3pt]
+  \item \textbf{The reframe.} Conformal flatness is the \emph{computational} (IWM/CFC) scheme, not the
+    ontology. Kerr admits a maximal ($K=0$) slice --- the very slice DTF calls the proper now ---
+    and Garat--Price~\cite{GaratPrice2000} forbids only a \emph{conformally-flat} one. The theorem bounds
+    the old reconstruction, not the framework.
+  \item \textbf{The operator is not a premise --- it is Lorentz invariance.} That DTF's \emph{stationary}
+    tensor operator equals its \emph{radiative} one is not an extra assumption: universal $c$ (Volume~I,
+    Chain~5) makes the wave operator $\Box=-c^{-2}\partial_t^2+\nabla^2$ the \emph{only} second-order
+    operator the transverse-traceless frame field can obey. The linearised field operator on a TT mode is
+    exactly $-\tfrac12\Box h_{ij}$ (two propagating polarisations), and its stationary reduction
+    ($\partial_t\!\to\!0$) is $-\tfrac12\nabla^2$ --- the very operator that balanced the frame-drag$^2$
+    source. Radiative and near-zone are one operator, evaluated at two values of $\partial_t$.
+    \pychip{DTF\_kerr\_premise\_oneoperator.py}{$\delta R[h^{\rm TT}]=-\tfrac12\Box h$, stationary $=\nabla^2$}
+  \item \textbf{Native through $O(a^3)$; all orders by Deser --- and the two are graded.} The operator
+    ($\Box$, all orders) and the quadratic vertex (the radiative milestone) fix the solution \emph{through}
+    $O(a^2)$; $O(a^3)$ is the first order whose source is \emph{cubic} (frame-drag sector, by parity), probing
+    the cubic vertex. That vertex is not free: DTF's frame field is established to be a two-polarisation
+    spin-2 metric (App.~A / Volume~I) whose internal $SO(3)$ is gauge (invisible in $g_{ij}=e^a_ie^a_j$ to all
+    orders) and whose clock $u$ is non-propagating ($\pi_u\equiv0$), so its physical propagating content is
+    precisely a consistent, Lorentz-invariant, two-derivative, two-polarisation spin-2 field --- for which
+    Deser's self-coupling bootstrap~\cite{Deser1970} makes general relativity the \emph{unique} completion,
+    every vertex GR's. \textbf{The grading matters, and we state it:} the $O(a^2)$ and $O(a^3)$ agreements are
+    \emph{computed forward} in DTF (closing to $10^{-126}$ and $10^{-131}$); the extension to \emph{all}
+    orders is \emph{inherited} from Deser's theorem --- which any two-polarisation spin-2 theory shares ---
+    not an order-by-order DTF calculation. Granted that inheritance, DTF $=$ Kerr to all orders in the
+    exterior, and the rotating sector adds no distinctive signature (the distinctive stakes remain the GW
+    polarisations and the black-hole cores). The one honest residual is the rotating \emph{interior}
+    (rotating collapse / de-emergence), untouched here.
+    \pychip{DTF\_kerr\_deser\_closure.py}{native $\le O(a^3)$; all orders inherited via Deser (2-pol spin-2)}
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[keybox]
+\textbf{What Deser closes, and what it does not.}\enspace The bootstrap~\cite{Deser1970} is a theorem about
+a \emph{field}: any consistent, Lorentz-invariant, two-derivative, two-polarisation spin-2 field completes
+uniquely to general relativity. DTF's frame field is such a field, so wherever that field is defined DTF's
+vertices are GR's --- which is what closes the rotating exterior to all orders, and \emph{equally} what
+makes the gravitational sector observationally indistinguishable from GR in every tested regime. It follows
+that no result of this volume's core sector can be a modification of GR's field equations, and none is
+offered as one. De-emergence is a claim about \emph{where the spin-2 description ceases to be defined} ---
+at $\delta u/u\sim1$ --- and Deser's theorem, like every perturbative uniqueness result, is silent there.
+This places the finite core, the halt, and the remnant at the epistemic level of a \emph{boundary
+conjecture}: the same level as the Planck star and the fuzzball, differing in \emph{what} is claimed to lie
+at the boundary, not in derivational status. The comparison table (Chain~7) is a comparison of boundary
+conjectures by signature, not a derivation discriminating against rivals.
+\end{tcolorbox}
+
+\begin{tcolorbox}[keybox,unbreakable]
+\textbf{What it stakes, and what it owes.}
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt,topsep=3pt]
+  \item \textbf{Falsifiable stakes, and which discriminate.} Two tensor GW polarisations, no
+    breathing mode --- a falsifiable stake, but one \emph{shared with} GR, not a discriminator. The
+    echo-free finite core, the stable Planck-mass remnant, and the absence of a bounce distinguish DTF's
+    boundary conjecture from rival \emph{conjectures} (fuzzball, Planck star) \emph{by signature} --- a
+    comparison of conjectures at one epistemic level, not a derivation ranking DTF above them (see the Deser
+    box after Chain~8).
+  \item \textbf{Honest limits.} What is removed is the \emph{curvature} singularity and the classical
+    endpoint; whether the object is geodesically \emph{complete} --- as opposed to a worldline exiting
+    Row~1 --- is a separate, open question. Every numerical coefficient ($r_*$, the $0.23\,t_P$ halt,
+    $M_{\rm rem}$) is an $O(1)$ illustration in a tractable model; the load-bearing claim (de-emergence at
+    Planck curvature) is coordinate-invariant and coefficient-free.
+  \item \textbf{Rotation: reached (Chain~8), not excluded.} That Kerr admits no conformally-flat
+    slicing~\cite{GaratPrice2000} bounds only the IWM/CFC \emph{reconstruction}, not the ontology:
+    Kerr does admit a maximal ($K=0$) slice --- DTF's
+    proper now --- and sourced forward on it, DTF reproduces Kerr's frame-dragging natively (with $N_{\rm
+    dof}=2$) and its full $O(a^2)$ geometry coefficient-exactly (Chain~8), the tensor operator being fixed by
+    Lorentz invariance rather than assumed. And it closes: because the physical frame field is a
+    two-polarisation spin-2 metric ($SO(3)$ internal gauge, $\pi_u\equiv0$), Deser's uniqueness forces every
+    vertex to GR's, so DTF $=$ Kerr to \emph{all orders} in the exterior (computed forward at $O(a^2)$ and
+    $O(a^3)$; the rest inherited from Deser, not computed order-by-order).
+    What remains open is only the \emph{interior} of a rotating hole (rotating collapse / de-emergence),
+    which Chain~8 does not claim.
+  \item \textbf{Owed.} The $O(1)$ core coefficient; an anisotropic (BKL) illustration; the full nonlinear
+    closure of $S_u+S_m+S_{\rm frame}$. (\emph{Not} owed: the magnitude of inertia ---
+    mass \emph{is} the ticking rate, so there is no self-energy to compute; only the dimensionless rate
+    \emph{ratios}, the hierarchy, remain, and those every theory owes alike. Chain~4.)
+\end{itemize}
+\noindent \textbf{Volume~I} builds the ontology; \textbf{Volume~III} reads the quantum. The three volumes
+are one \emph{organizing principle} (Volume~I) checked in three sectors --- and this volume's finite core
+is not a separate result but the \emph{same} clock-definiteness surface as quantum measurement
+(Volume~III), crossed in the opposite direction: there a clock \emph{becomes} definite, here it
+\emph{de-emerges}. The singularity and the measurement event are one transition, run both ways. A fourth
+paper --- deep cosmology (the proper now as cosmic time) --- is in preparation.
+\end{tcolorbox}
+
+\begin{tcolorbox}[keybox,unbreakable]
+\textbf{Provenance of the checks (ontology-first).}\enspace This volume carries the trilogy's genuinely
+\textbf{DTF-native} computational content: the de-emergence surface and fat-core scaling
+(\texttt{DTF\_singularity\_deemergence}), the profile-independent $0.23\,t_P$ collapse halt
+(\texttt{DTF\_LTB\_collapse}), and the remnant / no-echo observables
+(\texttt{DTF\_singularity\_observable}) --- real results, with Hawking evaporation~\cite{Hawking1975}
+invoked only as an external Row-2 input. The rotating sector (Chain~8) is likewise \textbf{computed forward}
+--- though \emph{confirmatory rather than discriminating}, since the Deser closure already fixes the
+vertices, so these agreements could not have come out otherwise; their value is as a self-test of the
+construction, and it passes (to $10^{-126}$/$10^{-131}$): the frame-dragging coefficient (\texttt{DTF\_kerr\_constructive}), the order-by-order Cotton
+census on the maximal slice (\texttt{DTF\_kerr\_forward\_tensor}, self-tested to give zero at $O(a^0)$ and
+$O(a^1)$), the coefficient-exact $O(a^2)$ and $O(a^3)$ balances $\delta R[g_n]=-\,\delta^{\ge2}R[g_{<n}]$
+(\texttt{DTF\_kerr\_oa2\_sufficiency}, \texttt{DTF\_kerr\_oa3\_balance}), the one-operator identity
+$\delta R[h^{\rm TT}]=-\tfrac12\Box h$ (\texttt{DTF\_kerr\_premise\_oneoperator}), and the Deser closure
+(\texttt{DTF\_kerr\_deser\_closure}) --- Kerr entering only as the target compared against, never as an
+input to the derivation. The provenance is graded honestly: the rotating sector is computed
+forward \emph{through $O(a^3)$} (confirmatory, per above); the extension to all orders is \emph{inherited} from the Deser bootstrap
+(shared by any two-polarisation spin-2 theory), a theorem, not an order-by-order DTF computation. The
+gravity chains (1--4) are \textbf{consistency}: GR is \emph{proposed as} what
+the clock field is made of (conformally-flat-approximate, $g_{rr}$ open), and the two-polarisation count
+is standard linearised gravity. Nothing here rests on circular reasoning.
+\end{tcolorbox}
+
+\appendix
+\section*{Appendix A --- The DTF Core in brief}
+\addcontentsline{toc}{section}{Appendix A}
+\noindent For readers coming to this volume first. The Distorted Time Framework takes the local
+\emph{rate} of time as the one physical primitive, and builds outward in three layers (Volume~I).
+\begin{itemize}[leftmargin=1.4em,itemsep=3pt,topsep=3pt]
+  \item \textbf{Row 0 --- the timeless substrate.} $\hat H\Psi=0$, no external time; correlations
+    simultaneous, not ordered.
+  \item \textbf{Row 1 --- the clock.} A definite clock-rate field $u(\mathbf x)>0$; its reading
+    $\tau=\int u\,dt$ accumulates monotonically --- time, and its arrow. Gravity, inertia, and phase live
+    here.
+  \item \textbf{Row 2 --- space.} An extent is a period radiated at $c$ ($\lambda_C=c\,T_C$): space is
+    time's radiation, compiled by a frame field. Because $c$ is one universal exchange rate, Lorentz
+    invariance is its signature.
+  \item \textbf{One object, four faces.} Extremising the interval (Fermat, applied to time) gives one
+    phase read four ways: inertia ($\mathbf p=\nabla S$), free fall (geodesic), the pilot wave
+    ($\mathbf v=\nabla S/m$), and the path integral. Inertia (the rate $\omega_C$) and the pilot wave (the
+    space-face gradient $\nabla S$) are tied by $\mathbf p=\nabla S=m\mathbf v$, both $\hbar$-set; the
+    $G$-coupled well the rate digs is gravity, a separate object.
+  \item \textbf{Non-propagating time.} $u$ enters the action with no time-derivative, so $\pi_u\equiv0$:
+    zero propagating degrees of freedom, and a preferred slice (the \emph{proper now}) that is real but
+    empirically inert. Space radiates (two tensor polarisations, read forward from the extent structure); time does not (no breathing mode).
+  \item \textbf{Definiteness.} A single clock-definiteness threshold governs the black-hole core (this
+    volume) and quantum measurement (Volume~III).
+\end{itemize}
+
+\section*{Code and data availability}
+\addcontentsline{toc}{section}{Code and data availability}
+{\small The SymPy/NumPy verification scripts named throughout (\texttt{DTF\_singularity\_deemergence},
+\texttt{DTF\_LTB\_collapse}, \texttt{DTF\_singularity\_observable}, and the six-script Kerr suite named in
+the Provenance box --- \texttt{DTF\_kerr\_constructive}, \texttt{DTF\_kerr\_forward\_tensor},
+\texttt{DTF\_kerr\_oa2\_sufficiency}, \texttt{DTF\_kerr\_oa3\_balance},
+\texttt{DTF\_kerr\_premise\_oneoperator}, \texttt{DTF\_kerr\_deser\_closure}) are publicly available at
+\url{https://github.com/billd-dtf/Distorted-Time-Framework} (release \texttt{v1.0}, matching this
+revision); see the repository's README for a script-to-claim index and run instructions.\par}
+
+\section*{Author's Note: the role of AI}
+\addcontentsline{toc}{section}{Author's Note: the role of AI}
+{\small
+The Distorted Time Framework---its central hypothesis (time's local \emph{rate}, the ADM lapse,
+as the one physical primitive), its ontology-first strategy, and the physical
+interpretations---was conceived and developed by the author over several years of independent
+research outside academic institutions. The mathematical formalization was carried out in
+collaboration with Claude (Anthropic): the gravitational field equations and degree-of-freedom
+count, the black-hole singularity de-emergence and Planck-remnant calculations, the rotating-sector
+(Kerr) derivations, and the symbolic/numerical verification scripts (SymPy/NumPy) referenced
+throughout. Separately, other large language models (ChatGPT, Grok, Gemini) were used as independent
+referees, providing adversarial review of the manuscript; their critiques shaped the revisions but
+not the derivations.
+
+In each case the author specified the physical target, the constraints the result had to satisfy,
+and the direction of the argument, and reviewed and approved each result; the AI executed and
+checked the formal derivations. Without that assistance the author could not have produced the
+mathematical formalization at this level of detail.
+
+This is disclosed because intellectual honesty requires it. It does not change the epistemic status
+of the results---a derivation is correct or it is not, independent of how it was produced---but it
+does mean they warrant careful independent scrutiny rather than assumed authority. The author
+welcomes that scrutiny; the explicit claim-type labels and the reproducible verification scripts are
+provided precisely to enable it.
+\par}
+
+\begingroup\small
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{Hawking1975} S.~W.~Hawking, ``Particle Creation by Black Holes,''
+  \emph{Commun.\ Math.\ Phys.} \textbf{43}, 199--220 (1975).
+\bibitem{WeisbergHuang2016} J.~M.~Weisberg and Y.~Huang, ``Relativistic Measurements from Timing the
+  Binary Pulsar PSR~B1913+16,'' \emph{Astrophys.\ J.} \textbf{829}, 55 (2016).
+\bibitem{Will2014} C.~M.~Will, ``The Confrontation between General Relativity and Experiment,''
+  \emph{Living Rev.\ Relativity} \textbf{17}, 4 (2014).
+\bibitem{LTB} G.~Lema\^itre, \emph{Ann.\ Soc.\ Sci.\ Bruxelles} \textbf{A53}, 51 (1933);
+  R.~C.~Tolman, \emph{Proc.\ Natl.\ Acad.\ Sci.\ USA} \textbf{20}, 169 (1934);
+  H.~Bondi, \emph{Mon.\ Not.\ R.\ Astron.\ Soc.} \textbf{107}, 410 (1947).
+\bibitem{Mathur2005} S.~D.~Mathur, ``The fuzzball proposal for black holes: an elementary review,''
+  \emph{Fortsch.\ Phys.} \textbf{53}, 793--827 (2005).
+\bibitem{AMPS2013} A.~Almheiri, D.~Marolf, J.~Polchinski, and J.~Sully, ``Black Holes:
+  Complementarity or Firewalls?'' \emph{J.\ High Energy Phys.} \textbf{02}, 062 (2013).
+\bibitem{RovelliVidotto2014} C.~Rovelli and F.~Vidotto, ``Planck stars,''
+  \emph{Int.\ J.\ Mod.\ Phys.\ D} \textbf{23}, 1442026 (2014).
+\bibitem{Isenberg2008} J.~Isenberg, ``Waveless approximation theories of gravity,''
+  \emph{Int.\ J.\ Mod.\ Phys.\ D} \textbf{17}, 265--273 (2008) [1978 unpublished manuscript].
+\bibitem{WilsonMathews1995} J.~R.~Wilson and G.~J.~Mathews, ``Instabilities in Close Neutron Star
+  Binaries,'' \emph{Phys.\ Rev.\ Lett.} \textbf{75}, 4161--4164 (1995).
+\bibitem{Deser1970} S.~Deser, ``Self-interaction and gauge invariance,''
+  \emph{Gen.\ Relativ.\ Gravit.} \textbf{1}, 9--18 (1970).
+\bibitem{GaratPrice2000} A.~Garat and R.~H.~Price, ``Nonexistence of conformally flat slices of the
+  Kerr spacetime,'' \emph{Phys.\ Rev.\ D} \textbf{61}, 124011 (2000).
+\end{thebibliography}
+\endgroup
+
+\end{document}
