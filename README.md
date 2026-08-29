@@ -20,8 +20,7 @@ a specific paper revision.
 ## Start with one paper
 
 **`Papers/DTF_OnePrimitive_v1.pdf`** — *Local Rate as Primitive: Ontological Economy
-Without Global Structure* (24 pp). The framework in a single self-contained paper. Read
-this first; the trilogy is the earlier long-form development.
+Without Global Structure* (24 pp). The framework in a single self-contained paper.
 
 What it claims:
 
@@ -40,26 +39,6 @@ What it claims:
 - **One falsifiable claim:** a horizonless, echo-free black-hole remnant in place of the
   singularity.
 
-## The trilogy
-
-The earlier three-volume development, in `Papers/` (`.tex` + `.pdf`):
-
-- **Volume I — The Forgotten Primitive.** The core ontology, the no-go theorems it evades
-  structurally, the equivalence principle as one identity, and the clock-definiteness
-  threshold.
-- **Volume II — The Shape of Time.** Gravity as the shape of the clock-rate field, matched
-  to general relativity in the tested regime, and the black-hole singularity resolved as
-  the de-emergence of Row-1 time at Planck curvature — an explicitly labelled boundary
-  conjecture, not a modification of GR's field equations.
-- **Volume III — The Definite Clock.** The Born rule as the equilibrium of a conserved
-  rate-density; the Wallstrom obstruction given a physical reason; Nelson's stochastic
-  noise identified with the internal flexing of bound energy.
-
-> **Note on the trilogy's framing.** Volumes I–III were written with a *global* proper now.
-> That commitment has since been retracted: DTF is local-now only, and cosmic time is
-> derived as a limit rather than posited. `Papers/DTF_OnePrimitive_v1.pdf` supersedes the
-> trilogy wherever the two differ.
-
 ## Verification scripts
 
 Every result a paper marks **verified** is backed by a script that prints its own pass
@@ -73,10 +52,13 @@ python OnePrimitive/DTF_native_arrow.py           # S = ln N, with N ~ omega * s
 python OnePrimitive/DTF_o8_tsirelson.py           # the CHSH bound, 2 sqrt 2
 ```
 
-- **`OnePrimitive/`** — the 37 scripts the flagship paper cites.
-- **`Vol1/`, `Vol2/`, `Vol3/`** — scripts for the corresponding volumes.
+All scripts live in **`OnePrimitive/`** — the 37 the paper cites, plus the `sparc_io`
+reader one of them imports. The paper's Code Availability section says which script backs
+which claim.
 
-The Code Availability section of each paper says which script backs which claim.
+An earlier three-volume presentation of this material is deposited on Zenodo under the DOI
+above. It is not carried here: it was written with a *global* proper now, a commitment
+since retracted in favour of local-now only, and the paper above supersedes it.
 
 **Third-party data is not redistributed here.** All but two scripts are fully
 self-contained. `DTF_sparc_fixed_a0.py` needs the SPARC mass-model table (Lelli, McGaugh &
