@@ -8,7 +8,16 @@ between r_min and r_max directly measures the apsidal angle. Compare to 180 (DTF
 directly-integrated AQUAL orbit of the same peri/apo.
 """
 import numpy as np, os
-TR=r"C:\Users\billd\AppData\Local\Programs\Python\Python310\Lib\site-packages\galstreams\tracks"
+TR = os.environ.get("GALSTREAMS_TRACKS")
+if not TR:
+    try:
+        import galstreams
+        TR = os.path.join(os.path.dirname(galstreams.__file__), "tracks")
+    except ImportError:
+        raise SystemExit(
+            "Stream tracks not found. This script uses tracks from the galstreams package "
+            "(Mateu 2023); they are not redistributed here. Run: pip install galstreams, "
+            "or set GALSTREAMS_TRACKS to a directory of stream-track .ecsv files.")
 c=2.99792458e8; G=6.674e-11; Msun=1.989e30; kpc=3.0857e19
 Mpc=3.0856775815e22; H0=67.4e3/Mpc; a0=c*H0/(2*np.pi); R0=8.122; Mb=6.0e10*Msun
 A_G=np.array([[-0.0548755604,-0.8734370902,-0.4838350155],

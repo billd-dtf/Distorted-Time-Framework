@@ -6,11 +6,20 @@ Compare rms(dex) of the committed standard-mu RAR at:
   (iii) fixed a0 = 1.2e-10 (literature RAR value, for reference)
 Also bin the residuals to show the fixed-a0 curve tracks the data.
 """
+import os
 import numpy as np, sparc_io as s
 KMS=1e3; KPC=3.0856775814913673e19; c=2.99792458e8; Mpc=3.0856775815e22
 H0=67.4e3/Mpc; cH0=c*H0; a0_derived=cH0/(2*np.pi)
 
-mm=s.read_mrt("../../Data/MassModels_Lelli2016c.mrt")
+_MRT = os.environ.get("SPARC_MRT") or os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "Data", "MassModels_Lelli2016c.mrt")
+if not os.path.exists(_MRT):
+    raise SystemExit(
+        "SPARC mass-model file not found. This script uses MassModels_Lelli2016c.mrt "
+        "from the SPARC database (Lelli, McGaugh & Schombert 2016, AJ 152, 157; "
+        "http://astroweb.case.edu/SPARC/). The data is not redistributed here: download "
+        "it from SPARC, then place it in Data/ or set SPARC_MRT to its path.")
+mm = s.read_mrt(_MRT)
 ML_d,ML_b=0.5,0.7
 Vbar2=mm.Vgas.values*np.abs(mm.Vgas.values)+ML_d*mm.Vdisk.values**2+ML_b*mm.Vbul.values**2
 good=(mm.R.values>0)&(Vbar2>0)&(mm.Vobs.values>0)

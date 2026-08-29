@@ -1,0 +1,1065 @@
+\documentclass[11pt]{article}
+\pdfobjcompresslevel=0 % force classic uncompressed xref table (avoids MiKTeX broken-xref-stream bug)
+\usepackage[margin=2.3cm]{geometry}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tcolorbox}\tcbuselibrary{skins,breakable}
+\usepackage{booktabs}\usepackage{array}\usepackage{enumitem}
+\usepackage{fancyhdr}\setlength{\headheight}{14.5pt}
+\usepackage{parskip}\usepackage{xcolor}\usepackage{hyperref}
+\usepackage{tikz}\usetikzlibrary{arrows.meta,positioning}
+
+% ---- DTF chain-flow identity ------------------------------------------------
+\definecolor{dtfblue}{HTML}{1a1a2e}\definecolor{dtflight}{HTML}{0f3460}
+\definecolor{boxblue}{HTML}{e8f4f8}\definecolor{knownblue}{HTML}{1a3a6e}
+\definecolor{chainbg}{HTML}{f7f9fc}\definecolor{chainframe}{HTML}{c0cce0}
+\definecolor{cbKnownBg}{HTML}{E9E9FA}\definecolor{cbKnownFr}{HTML}{8E97C9}
+\definecolor{cbNodeBg}{HTML}{F4F5F8}\definecolor{cbNodeFr}{HTML}{CDD2DB}
+\definecolor{cbAssumeBg}{HTML}{FBEBEB}\definecolor{cbAssumeFr}{HTML}{C0392B}
+\definecolor{cbResultBg}{HTML}{FBF4D2}\definecolor{cbResultFr}{HTML}{C8A21E}
+\definecolor{cbTagBg}{HTML}{E2F1EF}\definecolor{cbTagFr}{HTML}{4FA295}
+\definecolor{cbArrow}{HTML}{8A93A6}\definecolor{cbPyBg}{HTML}{ECEFF4}
+\definecolor{rowbg}{HTML}{EEF3F8}\definecolor{rowfr}{HTML}{9DB4CE}
+
+\tcbset{
+  keybox/.style={enhanced,breakable,colback=boxblue,colframe=dtfblue,boxrule=0.8pt,
+    arc=3pt,left=10pt,right=10pt,top=8pt,bottom=8pt},
+  cbflow/.style={enhanced,arc=3.5pt,boxrule=0.7pt,left=12pt,right=12pt,top=10pt,bottom=10pt,
+    before skip=4pt,after skip=4pt},
+}
+\newcommand{\chainarrow}{\vspace{1pt}\centerline{\tikz{\draw[-{Latex[length=2.6mm,width=2.2mm]},
+  line width=1pt,cbArrow](0,0.28)--(0,0);}}\vspace{1pt}}
+\newcommand{\known}[2]{\begin{tcolorbox}[cbflow,colback=cbKnownBg,colframe=cbKnownFr]
+  \centering\(\displaystyle #1\)\\[3pt]{\color{knownblue}\small[\,\textit{known: #2}\,]}\par
+  \nobreak\vspace{1pt}\hfill{\tiny\color{gray}Known}\end{tcolorbox}}
+\newcommand{\assume}[1]{\chainarrow\begin{tcolorbox}[cbflow,colback=cbAssumeBg,colframe=cbAssumeFr]
+  {\color{cbAssumeFr}\bfseries[DTF input:]\ }{\color{cbAssumeFr}\small #1}\par
+  \nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF input}\end{tcolorbox}}
+\newcommand{\nodetext}[1]{\chainarrow\begin{tcolorbox}[cbflow,colback=cbNodeBg,colframe=cbNodeFr]
+  \small #1\par\nobreak\vspace{1pt}\hfill{\tiny\color{gray}Derivation}\end{tcolorbox}}
+\newcommand{\dtfresult}[2]{\chainarrow
+  \begin{tcolorbox}[cbflow,colback=cbResultBg,colframe=cbResultFr,boxrule=1.3pt]
+  \centering\(\displaystyle #1\)\par\nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF result}\end{tcolorbox}\chainarrow
+  \begin{tcolorbox}[cbflow,colback=cbTagBg,colframe=cbTagFr]
+  \centering{\itshape\color{dtflight}#2}\par\nobreak\vspace{1pt}\hfill{\tiny\color{gray}Takeaway}\end{tcolorbox}}
+\newcommand{\pychip}[2]{{\footnotesize\colorbox{cbPyBg}{\ttfamily\,#1\,}\,{\color{gray}$\to$ #2}}}
+\newcommand{\resultpy}[3]{\chainarrow
+  \begin{tcolorbox}[cbflow,colback=cbResultBg,colframe=cbResultFr,boxrule=1.3pt]
+  \centering\(\displaystyle #1\)\par\smallskip\centering\pychip{#2}{#3}\par
+  \nobreak\vspace{1pt}\hfill{\tiny\color{gray}DTF result --- verified}\end{tcolorbox}}
+\newcommand{\statusline}[1]{\par\vspace{1pt}\noindent{\small\textbf{Status.}\ #1}\par\addvspace{3pt}}
+\newcommand{\worksin}[1]{\par\addvspace{4pt}\noindent{\setlength{\fboxsep}{5pt}%
+  \fcolorbox{rowfr}{rowbg}{\small\color{dtflight}\textsf{\textbf{Works in:}\ #1}}}\par\addvspace{6pt}}
+\newenvironment{chainbox}{\par\addvspace{4pt}\noindent\ignorespaces}{\par\addvspace{4pt}}
+\newcommand{\chainhead}[2]{\subsection*{Chain #1\quad\normalfont\itshape #2}}
+\newcommand{\setup}[1]{\noindent\emph{#1}\par\smallskip}
+
+\hypersetup{colorlinks=true,linkcolor=knownblue,citecolor=knownblue,urlcolor=knownblue,
+  pdftitle={The Distorted Time Framework --- Local Rate as Primitive},pdfauthor={William de Dufour}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\itshape The Distorted Time Framework}
+\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+\fancypagestyle{firstpage}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+\thispagestyle{firstpage}
+
+\begin{center}
+{\LARGE\bfseries The Distorted Time Framework}\\[7pt]
+{\large Local Rate as Primitive: Ontological Economy Without Global Structure}\\[5pt]
+{\small The rate of time as a physical primitive: gravity, inertia, and quantum mechanics}\\[6pt]
+{\normalsize William de Dufour}\\[2pt]
+{\small\itshape Independent Researcher, Austin, TX}\\[2pt]
+{\small\texttt{billd.dtf@gmail.com}\quad ORCID: \href{https://orcid.org/0009-0008-3470-1231}{0009-0008-3470-1231}}\\[3pt]
+{\small Distorted Time Framework, Version 8: \href{https://doi.org/10.5281/zenodo.21659853}{doi:10.5281/zenodo.21659853}}
+\end{center}
+
+\begin{abstract}\noindent
+We take the rate of time as primitive: how fast a clock ticks, measured against its neighbours, is a physical
+fact, not a consequence of geometry. There is no global ``now'', and geometry follows from the rate.
+
+One move, three consequences. Gravitational time dilation and quantum phase are \emph{one} accumulated
+quantity: a redshift and an interference fringe measure the same clock. Gravitational and inertial mass are
+equal because there is only one rate. And local nows stitch into one cosmic time only if the cosmic flow has
+no twist; ours has almost none, which is a fact about how the universe began rather than anything the
+expansion produced, so cosmic time is an excellent approximation and not an exact fact.
+
+Theories of this kind fail in two ways: those that make time global die on that global object, and those that
+keep it local must add one back to recover cosmology and entanglement. DTF needs neither. We start where the
+Wheeler--DeWitt equation does, with no time, and let time build from the local rates, so entanglement stays on
+that timeless layer rather than on a spatial slice. Realist quantum mechanics needs no preferred frame, and
+the correlations remain non-signalling.
+
+This is an organizing-principle claim in the sense of Laughlin and Pines~\cite{LaughlinPines2000}: the content
+is the reorganization, not a new number. Where general relativity and quantum mechanics have been tested DTF
+agrees with both, and only the assumption count changes: the equivalence principle and cosmic simultaneity
+stop being separate postulates. It stakes one falsifiable claim, a horizonless, echo-free black-hole remnant
+replacing the singularity. Kill it and the reframe is dead.
+\end{abstract}
+
+%======================================================================
+\section{Introduction --- why this ontology}\label{sec:intro}
+
+One commitment organizes this paper. The local rate at which a clock ticks is proper time, read from each
+point to its neighbours, and we treat it as a physical primitive rather than a gauge coordinate. Making it primitive does not
+relabel general relativity; it \emph{forces} connections the separate tellings of gravity and quantum
+mechanics have no reason to draw. The sharpest: a particle's quantum phase accumulates at its internal
+frequency $\omega_C$ over proper time, and gravitational redshift is the variation of that same proper-time
+rate $u$, the lapse. Both run through one lapse,
+\[ \Phi=\omega_C\!\int u\,dt , \]
+so time dilation and phase accumulation are two readings of a single accumulated $\Phi$, though general
+relativity and quantum mechanics keep them in separate chapters. A reader who sees an accumulated phase and
+thinks of Fermat's principle is reading it correctly: making $\Phi$ stationary gives classical motion and
+summing over it gives quantum motion, which is the one variational rule used throughout (\S\ref{sec:rate}, \S\ref{sec:quantum}). That mass \emph{is} a frequency $\omega_C$ is de~Broglie's
+clock~\cite{deBroglie1925}, now measured~\cite{Lan2013} and formalised~\cite{Dolce2011}; the new step is to make
+the \emph{lapse} $u$ primitive --- \emph{not} to call it $\omega_C$, but to see that this one geometric rate
+both redshifts every clock and clocks every phase.
+
+\paragraph{The moves, stated plainly.} We do not ask the reader to uncover the commitments; here they are, each
+made good in the section named.
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt,topsep=2pt,label=\textbf{\arabic*.}]
+\item \textbf{Three rows, each emerging from the one before.}
+  \begin{itemize}[leftmargin=1.2em,itemsep=0pt,topsep=1pt]
+  \item \emph{Row 0} --- the timeless substrate ($\hat H\psi=0$~\cite{DeWitt1967}, no external
+    time~\cite{Isham1993}): the ledger of entanglement and conservation.
+  \item \emph{Row 1} --- the local clock-rate $u$ emerges: time, energy, and the clock's tick-count $N$
+    whose logarithm is the entropy; also gravity, inertia, guidance.
+  \item \emph{Row 2} --- space emerges as the rate's radiation: distance, the two gravitational-wave
+    polarisations, $\hbar$, and coarse-grained \emph{statistical} thermodynamics (temperature, heat, Hawking
+    radiation) --- emergent, never fundamental.
+  \end{itemize}
+  \noindent (\emph{Entropy} is not divided by this. There is one entropy, $S=\ln N$, the ordinary logarithm
+  of the number of distinguishable states. The rows answer a prior question, \emph{what makes states distinguishable}, and at Row 1 the answer is the clock. Heat is a Row-2 way of
+  reaching a large $N$, not a second kind of entropy, so no Row-0/Row-1 derivation here may use a thermal
+  quantity. Made good in \S\ref{sec:rate} and Appendix~G.)
+\item \textbf{Energy is a frequency:} $E=\hbar\omega_C$ --- mass is an internal frequency, which the lapse $u$
+  modulates ($u$ is the primitive, not $\omega_C$) (\S\ref{sec:rate}).
+\item \textbf{Space is time's radiation:} the radiating sector is the spatial metric's transverse-traceless
+  part (two polarisations); the clock-rate itself does not radiate (\S\ref{sec:gravity}).
+\item \textbf{The now is local:} no global slice; a shared cosmic time emerges only as a limit. Entanglement is a Row-0 phenomenon that cannot signal (\S\ref{sec:quantum}).
+\end{enumerate}
+
+\paragraph{What these recover.} From these blocks the standard results follow as \emph{consequences, not
+inputs}: the equivalence principle (\S\ref{sec:equiv}); Newtonian and weak-field gravity, and Kerr (\S\ref{sec:equiv}); the two
+gravitational-wave modes with $\alpha_1=\alpha_2=0$ (\S\ref{sec:gravity}); Schr\"odinger's equation and the Born rule (\S\ref{sec:quantum});
+and the Tsirelson bound (\S\ref{sec:quantum}). In every tested regime the framework is general relativity plus quantum
+mechanics.
+
+\paragraph{What these unify, dissolve, and predict.} Beyond recovery, the one primitive does three things GR
+and QM, told separately, do not:
+\begin{itemize}[leftmargin=1.4em,itemsep=1.5pt,topsep=2pt]
+\item \textbf{Unify} --- gravitational redshift $=$ quantum phase (the shared $\Phi$); gravity and inertia (one
+  rate, \S\ref{sec:equiv}); measurement and the black-hole core as one clock-definiteness surface (\S\ref{sec:quantum},\S\ref{sec:consistency}); the galactic
+  scale $a_0$ tied to the dark-energy horizon (\S\ref{sec:consistency}).
+\item \textbf{Dissolve} --- three questions stop being askable rather than being answered: why gravitational and
+  inertial mass match (\S\ref{sec:equiv}); why realist QM needs a preferred frame (it does not, since entanglement lives on the timeless Row~0, \S\ref{sec:quantum}); and the black-hole information paradox (no singularity destroys information; it is held
+  in Row~0, \S\ref{sec:consistency}).
+\item \textbf{Predict} --- a horizonless, echo-free black-hole remnant (\S\ref{sec:consistency}): the one falsifiable owe; and,
+  at plausibility level, the \emph{value} $a_0\approx cH_0/2\pi$ MOND leaves as a free constant (\S\ref{sec:consistency}). The
+  decaying frame-dragging residual (\S\ref{sec:rate}) is \emph{not} offered as a test: it is unobservable by fifty
+  orders of magnitude.
+\end{itemize}
+
+\paragraph{What we then show.} The body makes each move good and consistent with existing mathematics and
+experiment, and is honest about the one place DTF commits to something new that could be wrong: a horizonless,
+echo-free black-hole remnant in place of the singularity (\S\ref{sec:consistency}). \textbf{Kill it and the reframe is dead.} This is an organizing-principle claim in the sense of Laughlin
+and Pines~\cite{LaughlinPines2000} --- its value is the reorganization, not a new number; the posit-count is
+quantified in Appendix~F.
+
+\paragraph{Why this set of moves, and not the neighbours'.} The time-primitive neighbourhood is a graveyard where global-time-only and local-time-only theories all have well-known failure points. DTF solves for each of these issues.
+
+\emph{Global time first.} Neo-Lorentzian frames, dynamical clock fields (Einstein-\ae ther, khronometric,
+Ho\v{r}ava~\cite{Jacobson2001,BlasPujolasSibiryakov2011,Horava2009}), varying-$c$, and preferred-foliation
+quantum theories~\cite{DGMZ1999} each die on a \emph{global} time.
+
+\emph{Local time first.} Programmes that reject a background time recover the local fact only by
+\emph{adding} a global object (a clock-subsystem correlation~\cite{PageWootters1983}, modular
+flow~\cite{ConnesRovelli1994}, or a preferred foliation~\cite{Barbour2002}). If they stay purely
+epistemic~\cite{Rovelli1996}, they add no physics.
+
+\emph{DTF escapes both.} It is local, so it never owns the global object the first group dies
+on. And its rate is a real physical relation, not a bookkeeping convention: it is how fast this clock runs
+against its neighbour, which is what a redshift measurement reads. That is why it need
+not \emph{add} a global structure the way the second group does: a shared cosmic time comes back
+as a limiting case, valid wherever the vorticity is negligible, as it is in our universe (\S\ref{sec:rate}).
+
+\paragraph{Organization.} \S\ref{sec:rate} states the primitive and the removal of global structure; \S\ref{sec:equiv}--\S\ref{sec:quantum} draw the
+equivalence, gravity, and quantum consequences; \S\ref{sec:consistency} collects the remaining owe alongside the agreement with GR and
+QM. The Technical Appendix holds the detailed recoveries and the economy ledger (Appendix~F); scripts back
+every \emph{verified} result (Code Availability).
+
+%======================================================================
+\section{The local rate and the removal of global structure}\label{sec:rate}
+\worksin{Row 0 $\to$ Row 1 (Wheeler--DeWitt sector $\to$ lapse sector)}
+
+Physics is usually built on space, time a coordinate. DTF wagers the opposite: the local rate at which clocks
+run (the ADM lapse) is a physical primitive, emerging from Row 0 (the Wheeler--DeWitt sector, $\hat H\psi=0$,
+no time). The primitive is \emph{relational}: how fast a clock ticks relative to its neighbours, chained point to
+point. Three consequences follow.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+\item \textbf{No global slice.} Each comparison needs only a local rest frame, and the choice is
+  non-integrable, so no global $u$ exists. That absence \emph{is} the absence of a preferred foliation.
+\item \textbf{Gravity is GR's.} The rate does not propagate ($\pi_u\equiv0$, standard ADM) and the dynamics
+  stay Einstein's, so gravity, the two wave modes, and $\alpha_1=\alpha_2=0$ are inherited. No
+  gravitational-sector discriminator --- the price of adding nothing.
+\item \textbf{The drive.} Covariantly $u$ is the proper-time rate of the matter congruence $n^\mu$, whose
+  four-acceleration is the drive, $a^\mu=\nabla^\mu\ln u$ (\S\ref{sec:equiv}).
+\end{itemize}
+
+The non-integrability is concrete: the vorticity of $n^\mu$ --- the twist of the worldline congruence,
+the quantity frame-dragging measures --- which by Frobenius forbids a global time function
+--- and, for a given congruence, \emph{is} the non-integrability measured as frame-dragging ($g_{0i}\neq0$;
+GPB~\cite{GravityProbeB2011}, LARES~\cite{LARES2016}). So a \emph{global} now is a theorem, not a posit: it
+exists \emph{iff} the vorticity vanishes. One might expect the expansion to supply that limit, since
+\[ \omega\sim a^{-2}, \qquad \omega/H\to0 , \]
+but the work it does is small: the smallness of cosmic vorticity is an \emph{initial condition}, since single-field inflation excites no first-order vector modes. The expansion only mildly reinforces it; it does not drive the limit. Cosmic time is therefore inherited rather than manufactured, and standard cosmology is recovered as a
+gauge, not contradicted (\texttt{DTF\_localnow\_integrability.py}). The same division of labour as the arrow
+(\S\ref{sec:rate} above): the framework supplies the boundary condition and inherits the dynamics.
+
+\emph{The numbers behind that sentence.} Three facts settle how much the expansion does and whether the
+residual can be measured.
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=3pt]
+\item \textbf{The decay law is exact.} $\partial_\tau(Sa^2)=0$ for the vector metric perturbation, so
+  $\omega\sim a^{-2}$.
+\item \textbf{The expansion does little of the work.} In the radiation era $H\propto a^{-2}$ as well, so
+  $\omega/H$ is \emph{frozen}. The approach to integrability begins only at matter--radiation equality, and
+  has achieved a factor of $74$ since.
+\item \textbf{The residual is unobservable.} At horizon scale $\Omega\sim H_0S/2$ gives
+  $\lesssim10^{-11}$\,mas/yr, against Gravity Probe~B's $7.4$\,mas/yr; the tightest bound on a homogeneous
+  vector mode, $(\sigma_V/H)_0<4.7\times10^{-11}$~\cite{Saadeh2016}, sits fifty orders above any realistic
+  seed.
+\end{itemize}
+\noindent The residual is therefore \textbf{not a test}. DTF inherits general relativity's vector sector
+equation for equation, so this is a consistency check the reframe passes rather than a place it sticks its
+neck out (\texttt{DTF\_vorticity\_residual.py}).
+
+Two boundaries: the holographic IR cutoff is the causal (future-event) horizon, not the Hubble sphere, so
+$w\!\to\!-1$ is not forced (Hsu--Li~\cite{Hsu2004,Li2004}); and the rate is \emph{not} prior to the metric ---
+clock-vs-neighbour is co-equal with the causal order ($c$) it is defined against, which is what
+\emph{relational} means.
+
+\setup{The primitive is the local relational rate $u$ --- clock-vs-neighbour, no global ``now''; nothing is added beyond taking it as physical.}
+\begin{chainbox}
+\known{S=-\,mc^2\!\int d\tau}{a worldline accumulates proper time (particle sector, Row 1)}
+\assume{the primitive is the local relational rate --- clock vs neighbour, no global slice; the lapse only as
+read in a chosen coordinate ($\pi_u\equiv0$, standard ADM); not an independent field}
+\nodetext{A single global rate field would need a slice; DTF asks only for \emph{local} comparisons, which
+need only a local rest frame, not a global slice --- and that local choice is non-integrable, so no global $u$
+exists (the non-integrability \emph{is} the absence of a preferred frame). Path-dependent at a distance, like
+proper time. The field equations remain Einstein's, so DOF$=2$ and no scalar mode --- inherited from GR.}
+\dtfresult{\text{no structure added to GR};\qquad \pi_u\equiv0,\ \ \text{DOF}=2,\ \ \text{no preferred frame}}
+{the primitive is a local relational rate; gravity is GR, frame-neutral}
+\end{chainbox}
+\statusline{Nothing added --- contrast shape dynamics~\cite{Barbour2002} and Ho\v{r}ava~\cite{Horava2009},
+which \emph{do} add a preferred foliation and (in Ho\v{r}ava) a propagating scalar; DTF adds neither.}
+
+\subsection*{The engine: energy is a frequency, the lapse is the rate}
+
+With the primitive fixed we read dynamics off, not add them. Two distinct ``rates'' meet here, and keeping them
+apart is the whole point:
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \textbf{The Compton frequency $\omega_C=mc^2/\hbar$} --- the particle's internal clock, \emph{per-species}
+  and dimensionful (Hz). That energy is this frequency ($E=\hbar\omega_C$, with $E=mc^2$) is de~Broglie's
+  clock~\cite{deBroglie1925}, measured in electron channeling~\cite{Catillon2008} and as a Compton-frequency
+  clock~\cite{Lan2013}, and formalised by Dolce~\cite{Dolce2011} --- established prior art, not ours.
+\item \textbf{The lapse $u=d\tau/dt$} --- the local proper-time rate, \emph{per-location}, geometric and
+  dimensionless (the same for every species). This is the primitive.
+\end{itemize}
+These are \emph{not} equal. The new step, which de~Broglie and Dolce do not take, is to make $u$ the primitive and to notice that it does two jobs GR and QM keep apart: it \emph{redshifts} the clock (gravitational time
+dilation is the variation of $u$) and it \emph{clocks} the phase, $\Phi=\omega_C\!\int u\,dt$. So redshift and phase are two readings of the one lapse (the shared $\Phi$), because both run through $u$, not because
+$\omega_C$ is $u$. Whether the local $u$'s admit a global time function is then a separate Frobenius question
+(\S\ref{sec:rate}), answered only in the vorticity-free limit, so cosmic time is emergent, not posited.
+
+One drive then follows, matter falling toward slower clocks, under one rule: Fermat's principle on $\Phi$,
+read at two sharpnesses (stationary $=$ classical mechanics, \S\ref{sec:equiv}; full sum $=$ quantum mechanics, \S\ref{sec:quantum}).
+
+\setup{Everything below is \emph{forced} by the interval; energy is not a second ingredient.}
+\begin{chainbox}
+\known{S=-mc^2\!\int d\tau=-mc^2\!\int\!\sqrt{u^2-v^2/c^2}\,dt}{the full interval (not the rest form)}
+\nodetext{$E=-\partial_t S=\gamma\,\hbar\omega_C\to\hbar\omega_C$ at rest. In the weak ($u=1+\phi/c^2$),
+slow ($v\ll c$) limit $\mathcal L=-mc^2u+\tfrac12 mv^2$, whose Euler--Lagrange equation is
+$\ddot{\mathbf x}=-c^2\nabla u=-\nabla\phi$. (The rest form $\int u\,dt$ alone gives $\nabla u=0$; the
+heading term is required.)}
+\dtfresult{E=\hbar\omega_C,\qquad \ddot{\mathbf x}=-c^2\nabla u}
+{energy \emph{is} the internal frequency $\omega_C$; the drive falls down the gradient of the lapse $u$}
+\end{chainbox}
+\begin{tcolorbox}[keybox]
+\textbf{One drive, one rule, two sharpnesses.}\ The drive is $\ddot{\mathbf x}=-c^2\nabla u$; the rule is
+Fermat on the accumulated clock reading
+$\Phi=S/\hbar=-\omega_C\!\int d\tau=-\omega_C\!\int\!\sqrt{u^2-v^2/c^2}\,dt$ --- the \emph{one} variational
+object used throughout (its rest reduction $\int u\,dt$ drops the heading $v^2$ term and gives $\nabla u=0$,
+so the full interval is required; \S\ref{sec:quantum} varies this same $\Phi$). Stationary path $\Rightarrow$ gravity and
+inertia (\S\ref{sec:equiv}); full sum $\Rightarrow$ quantum mechanics (\S\ref{sec:quantum}). The three constants are one tick seen three ways:
+$c$ (period $\to$ length, Row $1\!\to\!2$), $mc^2=\hbar\omega_C$ (rate in energy units, Row 1),
+$\hbar$ (the localisation tax $\lambda_C=\hbar/mc$, Row 2).
+\end{tcolorbox}
+\statusline{Same $\Phi$ throughout (\texttt{DTF\_phase\_unification.py}). Two rates, not conflated: $\omega_C$
+is the particle's Compton tick, $u$ the gravitational rate that redshifts it ($d\tau=u\,dt$ at rest) --- so
+``one primitive'' means one \emph{kind} of rate, not one number (masses stay inputs, Appendix~E).}
+
+%======================================================================
+\section{Entropy and the arrow of time}\label{sec:arrow}
+\worksin{Row 0 $\to$ Row 1 (the timeless state $\to$ the clock's tick-count)}
+
+
+Entropy here means the ordinary microstate count,
+\[ S=\ln N , \]
+the logarithm of the number of distinguishable states a system has reached, and the paper uses no other. That
+the thermal entropy of a bath follows from this count is textbook and is not re-derived; the question taken up
+here is the one before it. The rate primitive answers a question statistical mechanics takes as already settled: \emph{what makes states distinguishable at all.} Temperature cannot be that
+answer, because it is \emph{defined} from the entropy ($1/T=\partial S/\partial E$) and so presupposes the
+count. The primitive can be: $N$ is the number of ticks the clock has resolved since the Row-0 state, and the
+same $N$ is read three ways,
+\[
+E=N\hbar\omega\ \ (\text{linearly}),\qquad \Phi=2\pi N\ \ (\text{as phase}),\qquad S=\ln N\ \ (\text{as a log}),
+\]
+with temperature nowhere among them.
+\begin{itemize}[leftmargin=1.4em,itemsep=2.5pt,topsep=3pt]
+\item \textbf{The zero is definitional.} Row 0 is one synced state: $N=1$, so $S=0$ exactly. The ``past hypothesis''~\cite{Albert2000} is the low-entropy start that a time-symmetric dynamics must be handed. It is not postulated here; it is what \emph{being} Row 0 means.
+\item \textbf{Ticks are what become distinguishable.} A spread $\sigma_u$ in the local rates desynchronises
+  phases, resolving $N\simeq\omega\,\sigma_u t$ states, so $S=\ln N$ grows as $\ln t$. The simulation checks the \emph{bookkeeping}, not the arrow: the fit $S=a\ln t+b$ returns $a=0.982$ against the
+  predicted $1$, and doubling \emph{either} $\omega$ or $\sigma_u$ shifts $S$ by $0.693$ against $\ln2=0.6931$
+  --- confirming that both enter multiplicatively \emph{inside} $N$ and never additively in $S$. Since
+  $N\propto\omega\sigma_u t$ was put in, this is a consistency check on a definition, not evidence for it.
+\item \textbf{Growth is entanglement, not loss.} Row 0 stays globally pure ($S_{\rm global}=0$ at all times);
+  what rises is a subsystem's share, linearly in the tick count (slope $0.66$ in a transverse-field Ising
+  quench). The arrow is the Row-0 ledger distributing correlations, which is also why nothing is destroyed at a
+  black-hole core (\S\ref{sec:consistency}). Consistent with experiment: in an isolated six-atom lattice the global state stays pure
+  while subsystems reach the values a thermometer would report~\cite{Kaufman2016} --- an illustration of the
+  reading, not a test of it.
+\item \textbf{Counting before heating is standard.} Landauer's erasure cost $k_BT\ln2$ already separates the
+  count $\ln2$ from its price $k_BT$~\cite{Landauer1961,Berut2012}; a count survives at
+  $T\to0$~\cite{Pauling1935}; the Kolmogorov--Sinai rate counts \emph{per unit time} with no temperature in
+  it~\cite{Pesin1977}. None of this is new. The one new step is to identify $N$ with the clock.
+\item \textbf{Where the arrow comes from, and where it does not.} The division of labour is worth stating
+  exactly, because only half of it is ours. The desync law is \emph{time-symmetric}: run $\phi_i=\omega u_it$ backwards and the clocks resynchronise. With commensurate rates it recurs (Poincar\'e). So the growth of
+  $N$ is ordinary mixing, inherited from statistical mechanics and not derived here; what breaks the symmetry
+  is the $N=1$ boundary condition, and \emph{that} is what the rows supply. DTF contributes the piece
+  Boltzmann must assume and inherits the piece he already had. The mechanism that grows $\sigma_u$ from the synced state is gravitational clumping, argued from the sign of the instability rather than simulated (O5).
+\item \textbf{$\ln N$ is a ceiling, not the value.} $S=\ln N$ is the equal-weight (microcanonical) reading;
+  the general entropy is $-\sum p\ln p$, which is smaller whenever the resolved states are unevenly weighted.
+  For a Gaussian spread in $u$ the gap is an additive constant of order $\ln\sqrt{2\pi e}$ (measured:
+  $0.70$--$0.79$ nats, slowly varying), so the growth law is unaffected and every rate statement above stands;
+  what is not licensed is reading $\ln N$ as the entropy itself. Write $S=\ln N+O(1)$.
+\end{itemize}
+
+\begin{tcolorbox}[keybox]
+\textbf{The thermodynamic firewall.} A bath is one way of resolving many states --- put a system in contact
+with one and $N\sim k_BT/\hbar\omega$, after which the same $S=\ln(eN)$ returns the textbook number. It is a
+\emph{way of reaching} a large count, not a different entropy, and it is available only once Row 2 exists.
+Hence: \textbf{no Row-0 or Row-1 derivation in this paper may use a thermal quantity.} The rule has teeth: it
+excludes an $a_0$ read off an Unruh temperature, which is why Appendix~B takes the geometric route, and it
+excludes a temperature-triggered de-emergence at the black-hole core, which is why \S\ref{sec:consistency} uses a Row-native
+$\delta u/u$ trigger. It also separates this from Jacobson's and Verlinde's entropic
+gravity~\cite{Jacobson1995,Verlinde2011} and from thermal time~\cite{ConnesRovelli1994}, which run a Row-2
+temperature down into Row 0/1.
+\end{tcolorbox}
+
+\noindent The firewall pays a second debt. Penrose's objection~\cite{Penrose1979} --- the early universe is
+hot, so how can it be the low-entropy start? --- is a question about \emph{shares of one count}. Measured
+budgets~\cite{EganLineweaver2010} put the black-hole share of the observable universe at $3\times10^{104}k_B$
+against the microwave background's $\sim\!10^{88}k_B$, with the cosmic event horizon at $2.6\times10^{122}k_B$:
+radiation holds a negligible fraction of $N$, and the dominant share --- the one carried by clumping, by
+departures of $u$ from uniformity --- is near its minimum when $u$ is uniform. A hot smooth start is therefore
+a \emph{small} $N$, and the Weyl-curvature hypothesis becomes a statement about which share dominates rather
+than an added postulate. Two honest limits: how to count the clumping share has no agreed formula (black-hole
+entropy is the proxy), and the dynamics that grows $\sigma_u$, gravitational clumping, is argued from the sign of the instability rather than simulated (O5).
+\statusline{Verified: \texttt{DTF\_native\_arrow.py} ($a{=}0.982$, $\ln2$ shifts),
+\texttt{DTF\_entropy\_clockcycle.py} ($E{=}N\hbar\omega$ and $S{=}\ln N$ from one $N$),
+\texttt{DTF\_entropy\_is\_entanglement.py} ($S_{\rm global}{=}0$), \texttt{DTF\_arrow\_grav\_thermal.py}
+(shares of the count). No temperature enters any Row-1 result.}
+
+%======================================================================
+\section{Equivalence and inertia as one rate}\label{sec:equiv}
+\worksin{Row 1 (the well in $u$; near-zone at 1PN, Kerr inherited, in Row 2)}
+
+Gravity and inertia are one rate from two sides. Matter carries energy, energy slows clocks, a slow clock is a
+dent in $u$, and a free body falls down it: Newtonian gravity. To accelerate is to re-rate the clock, which
+costs exactly the kinetic energy. One $\omega_C$ both sources the well and resists re-rating, so gravitational
+and inertial mass are a single identity.
+
+\emph{The primitive removes a coincidence.} GR \emph{assumes} $m_{\rm grav}=m_{\rm inertial}$; read from one
+rate there are not two masses to equate --- the equivalence principle is not explained but \emph{dissolved}, a
+coincidence that never had two sides, the strongest case in the ledger. The same identity fixes the
+coefficient: re-rating costs $mc^2(\gamma-1)$ with $mc^2=\hbar\omega_C$ definitional (\S\ref{sec:rate}), so no self-energy
+mechanism is owed.
+
+\setup{Energy slows clocks; the drive of \S\ref{sec:rate} does the rest.}
+\begin{chainbox}
+\known{\ddot{\mathbf x}=-\nabla\phi}{Newtonian free fall}
+\nodetext{In the weak-field limit the rate obeys $\nabla^2 u=\frac{4\pi G}{c^2}(\rho+3p/c^2)$ --- the Tolman
+active mass, exactly the combination that gravitates (reducing to $\rho$ for dust) --- the ordinary GR
+weak-field equation, no slicing invoked. A moving clock has $E=\gamma mc^2$, so setting it in motion costs
+$\Delta E=mc^2(\gamma-1)\to\tfrac12 mv^2$.}
+\dtfresult{\nabla^2 u=\frac{4\pi G}{c^2}\Big(\rho+\tfrac{3p}{c^2}\Big),\qquad \Delta E=mc^2(\gamma-1)}
+{gravity is the well in $u$ (GR weak field); inertia is the cost to re-rate the \emph{same} $\omega_C$}
+\end{chainbox}
+\noindent(The source is the \emph{active} gravitational mass $\rho+3p/c^2$, not $\rho$ alone: pressure carries
+energy and so also slows clocks --- the Komar/Tolman combination, unchanged from GR.)
+\statusline{Near-zone at 1PN via the conformally-flat scheme~\cite{IWM1980} (Kerr has no such
+slice~\cite{GaratPrice2000}); all-orders inheritance via the Deser spin-2 bootstrap~\cite{Deser1970}, whose
+equations are Einstein's, so vacuum solutions (Kerr included) are inherited, not reconstructed
+(\texttt{DTF\_kerr\_deser\_closure.py}). No tension with \S\ref{sec:gravity}: Deser is the \emph{classical} spin-2 completion,
+not a quantized mediator. The rotating interior is GR's open problem, inherited unchanged.}
+
+%======================================================================
+\section{Gravity without a force-carrier}\label{sec:gravity}
+\worksin{Row 1 $\to$ Row 2 (radiative sector of the spatial metric)}
+
+Gravity is the gradient of the primitive (\S\ref{sec:equiv}), so the attraction is carried by nothing --- no field whose
+quantum mediates it. The spatial metric's radiation propagates instead, and structure fixes its content: when the metric ripples it carries the two transverse-traceless polarisations of a gravitational wave. The constrained lapse (\S\ref{sec:rate})
+does not ripple --- no scalar ``breathing'' mode, no preferred-frame effect~\cite{Will2014}, and (unlike
+Ho\v{r}ava~\cite{Horava2009}) no leftover scalar. A breathing-mode detection would falsify DTF and GR alike:
+shared falsifiability, not a discriminator.
+
+\emph{The primitive buys no force-carrier.} In the field picture a spin-2 graviton mediates the pull by
+exchange; here the pull is the $u$-gradient and the two modes are space's \emph{radiation}, not a mediator.
+There is no spin-2 force field to quantise --- this removes the force-carrier, not the radiative quanta (the two
+modes are gravitational-wave quanta, not carriers of the static pull).
+
+\setup{The spatial metric is linearised about flat space, $\gamma_{ij}=\delta_{ij}+h_{ij}$.}
+\begin{chainbox}
+\known{\gamma_{ij}=\delta_{ij}+h_{ij}}{extents assembled into a spatial metric (Row 2)}
+\assume{radiation is in the spatial sector; the lapse is constrained ($\pi_u\equiv0$), so it does not propagate}
+\resultpy{h_{ij}^{TT}:\ \text{2 tensor pols};\quad \pi_u\equiv0\Rightarrow\alpha_1=\alpha_2=0}
+{DTF\_radiative\_content}{no breathing mode; $\Delta=0$ two ways}
+\end{chainbox}
+\statusline{Two tensor modes and $\alpha_1=\alpha_2=0$ \emph{identical to GR} --- shared falsifiability, no
+discriminator. The ADM phase-space count and the explicit $\alpha_1=0$ at 1PN are in Appendix~A
+(\texttt{DTF\_alpha1\_explicit\_1PN.py}).}
+
+%======================================================================
+\section{The quantum rate field}\label{sec:quantum}
+\worksin{Row 1 (single particle); Row 0 (entanglement); the tax is Row 2 ($\hbar$)}
+
+This section adds no equation to quantum mechanics: it is a \emph{compatibility} reading, importing Madelung,
+Fisher-uniqueness, Bohmian guidance, and Born-as-typicality wholesale and asking only what the rate primitive
+reidentifies. Its one net-new element is that the phase is a clock reading, which gives Wallstrom's condition a
+physical reason (now shown dynamically stable, \S\ref{sec:quantum}); everything else is standard, relabelled.
+
+The Fermat principle at its \emph{other} sharpness is quantum mechanics, and the wave is not abstract. Write
+\[ \psi=\sqrt{\rho}\;e^{i\Phi},\qquad \Phi=S/\hbar . \]
+Both symbols already have meanings from \S\ref{sec:rate}:
+\begin{itemize}[leftmargin=1.4em,itemsep=2.5pt,topsep=3pt]
+\item $\Phi$ is the accumulated clock reading.
+\item $\rho$ is the density of definite clock-rate; a particle is a localized excitation of it above the
+  Row-0 floor.
+\end{itemize}
+\noindent So the wavefunction \emph{is} the rate field rather than an abstraction over it.
+
+\emph{One honest cost.} That literal reading holds for one particle in ordinary space. For $N$ particles the
+guiding wave lives on the $3N$-dimensional configuration space, so the ontology carries $O(N^2)$ correlational
+structure where a naive space field would carry $O(N)$. Every realist quantum theory pays this, and it is why
+entanglement is booked on Row~0 rather than as a field in space.
+
+\medskip
+\noindent Substituted into Schr\"odinger's equation, the polar form splits \emph{exactly}~\cite{Madelung1927}:
+\[
+\underbrace{\partial_t\rho+\nabla\!\cdot\!\Big(\rho\,\frac{\nabla S}{m}\Big)=0}_{\text{continuity}}
+\qquad\qquad
+\underbrace{\partial_t S+\frac{(\nabla S)^2}{2m}+V+Q=0}_{\text{the clock-action, plus one term}}
+\]
+and that one extra term is the localization tax,
+\[ Q=-\frac{\hbar^2}{2m}\frac{\nabla^2\sqrt\rho}{\sqrt\rho}
+    =\frac{\delta}{\delta\rho}\int\frac{\hbar^2}{8m}\frac{(\nabla\rho)^2}{\rho}\,d^3x , \]
+the variation of the Fisher functional~\cite{Reginatto1998,Frieden1989}.
+
+\medskip
+\noindent DTF adds no term. It reads the two already there, and three results follow.
+\begin{itemize}[leftmargin=1.4em,itemsep=3pt,topsep=3pt]
+\item \textbf{The tax is forced, not chosen.} Among local terms with at most two derivatives, the Fisher form
+  is the \emph{unique} one that keeps the $\psi$-equation linear (\texttt{DTF\_o9\_fisher\_unique.py}). Why
+  quantum mechanics is linear is not addressed.
+\item \textbf{Born is not a separate axiom.} The current $j=\rho\nabla S/m$ makes $|\psi|^2$ equivariant, so
+  Born frequencies are a typicality assumption~\cite{DGZ1992,Valentini1991} rather than a theorem, and objects
+  stay definite under $v=\nabla S/m$~\cite{Bohm1952}. One residual remains: which outcome a lone detection
+  selects (O1).
+\item \textbf{Discreteness is topological.} A clock reading is $S^1$-valued, so $\psi$ is single-valued with
+  integer circulation around nodes. This gives Wallstrom's condition~\cite{Wallstrom1994} a physical reason,
+  and the winding stays exactly integer through moving nodes (\texttt{DTF\_winding\_dynamics.py}).
+  (Fermionic $\psi\to-\psi$ is spin structure, not a counterexample; single-valuedness is an input here.)
+\end{itemize}
+
+\emph{Entanglement.} It needs no cosmic ``now''. A joint state's correlations live in the \emph{timeless} Row-0 ledger,
+not on a slice: each outcome is definite \emph{locally}, and the correlation appears only when results are
+brought together. Nothing orders spacelike-separated outcomes, so the account is frame-neutral (contrast
+relativistic pilot-wave theories~\cite{DGMZ1999,Tumulka2006}, which must postulate a foliation). The ledger is timeless rather than a past hidden variable, so it evades Bell's factorisation and is compatible with the quantum bound. The CHSH operator obeys
+\[ C^2 = 4I-[A,A'][B,B'], \qquad \text{so}\quad \|C\|\le 2\sqrt2 \]
+(the standard Tsirelson bound, which QM saturates; the classical $2$ is the commuting case;
+\texttt{DTF\_o8\_tsirelson.py}). This is the recognised locally-mediated/atemporal
+class~\cite{WhartonArgaman2020}, Row 0 the timeless bookkeeper. What remains: a dynamical ledger, and
+no-signalling, which the row ordering \emph{motivates} without yet deriving.
+
+\emph{No-signalling, and how far the rows account for it.} Read the pair as \emph{one} Row-0 object $\Omega$
+with two handles rather than as two systems, and let $\pi$ be the projection whose \emph{output} is space:
+\[ P(\alpha,\beta\mid x,y)=\big|\langle\alpha\beta\mid\pi(x,y)\,\Omega\rangle\big|^2 ,
+   \qquad \sum_\beta|\beta\rangle\langle\beta|=\mathbb 1 . \]
+The second equation is completeness of the reads on each handle, which here is Born as the conserved
+rate-density. It erases any handle-local far operation from the near marginal, so the far setting $y$ could
+reach it only by riding an operator that couples the two handles. Such an operator relates handle
+\emph{locations}, and locations are downstream of $\pi$. Hence
+\[ \partial_y\!\sum_\beta P(\alpha,\beta\mid x,y)=0 \]
+while the joint keeps both settings and Bell remains violable.
+
+\begin{itemize}[leftmargin=1.4em,itemsep=3pt,topsep=3pt]
+\item \textbf{What this does not do.} It does not \emph{derive} the restriction. The same computation returns
+  zero for \emph{every} link value, including the unentangled $\theta=0$, so no property of the Row-0 object
+  is doing work. The one active ingredient is the product form of $\pi$, the handle tensor structure itself,
+  and writing $\Omega$ in a product space already presupposes the separability whose consequence is at issue.
+\item \textbf{What it does do.} It gives a \emph{reason to expect} locality of reads --- space is an output, so
+  Row 1 offers only handle-local ones --- where the atemporal accounts simply posit it.
+\end{itemize}
+\noindent The residue is sharp and is listed as O3.
+\statusline{Verified: \texttt{DTF\_no\_signalling\_projection.py}.}
+
+\setup{The wave is the rate field; the polar form splits Schr\"odinger into conservation plus the tax.}
+\begin{chainbox}
+\known{\psi=\sqrt\rho\,e^{iS/\hbar}}{the rate field: $\rho$ its density, $S/\hbar$ the clock reading (\S\ref{sec:rate})}
+\assume{the rate-stuff is conserved ($\rho$ obeys continuity) and localizing it costs the tax
+$\int\tfrac{\hbar^2}{8m}(\nabla\rho)^2/\rho$}
+\nodetext{Continuity plus \S\ref{sec:rate}'s classical Hamilton--Jacobi equation plus the tax's variation
+$Q=-\tfrac{\hbar^2}{2m}\nabla^2\!\sqrt\rho/\sqrt\rho$ recombine \emph{exactly} into one complex equation.
+The current $j=\rho\nabla S/m$ makes $|\psi|^2$ the unique equivariant measure; detection is all-or-nothing.}
+
+\resultpy{i\hbar\,\partial_t\psi=-\tfrac{\hbar^2}{2m}\nabla^2\psi+V\psi,\quad Q=\tfrac{\delta}{\delta\rho}\!\!\int\!\tfrac{\hbar^2}{8m}\tfrac{(\nabla\rho)^2}{\rho}}{DTF\_localization\_tax}{split exact; $Q$ is the tax}
+\end{chainbox}
+
+\emph{A declined discriminator.} A 2025 measurement~\cite{Sharoglazova2025}, building on earlier
+density-gradient work~\cite{KlaersDensityGradient2023}, seemed to hand DTF one, and we
+declined it. Where $\psi\sim e^{-\kappa x}$ is real the current vanishes ($\nabla S\to0$) and the beable is at
+rest, yet a nonzero transit speed is measured --- which the tax reproduces as $v_{\rm op}=\sqrt{2|Q|/m}=\hbar\kappa/m$
+(\texttt{DTF\_evanescent\_speed.py}; Appendix~C). We built nothing on it: the value is dimensionally automatic
+(as with $a_0$), the operational speed is not a beable velocity, and a directed amplitude term would break Born
+equivariance; the underlying challenge to Bohmian mechanics has since been
+rebutted~\cite{DrezetLazaroviciNabet2026,Nikolic2025} (authors maintaining their
+position~\cite{SharoglazovaReply2025}). DTF keeps $v=\nabla S/m$; whether the tax could nonetheless act as a
+second channel is settled next.
+\setup{Could the localization tax carry a \emph{second} beable channel --- a velocity built from the
+amplitude rather than the phase, alive exactly where $\nabla S\to0$? The general condition settles it, and
+the special case that motivated the question is one line of it.}
+\begin{chainbox}
+\known{v=\frac{\nabla S}{m},\qquad j=\rho\,v,\qquad \partial_t\rho+\nabla\!\cdot\!j=0}
+{the phase channel: one beable current, $|\psi|^2$ equivariant}
+\assume{a second channel adds \emph{any} current: $v\to v+w/\rho$}
+\nodetext{Equivariance, meaning $\rho=|\psi|^2$ is preserved at \emph{all} times, holds iff the addition is divergence-free, $\nabla\!\cdot\!w=0$ (Deotto--Ghirardi~\cite{DeottoGhirardi1998}). That single condition
+exhausts the possibilities:
+\[
+\nabla\!\cdot\!w=0\ \Rightarrow\ \text{every single-time statistic unchanged};\qquad
+\nabla\!\cdot\!w\neq0\ \Rightarrow\ \big\|\rho-|\psi|^2\big\|_1\simeq0.7\,\varepsilon ,
+\]
+the latter measured for an admixture $\varepsilon$ in a free packet, and bounded by the precision to which
+Born is confirmed. The one compensated case --- restoring equivariance with noise of matching strength --- is
+Nelson's stochastic mechanics, whose diffusion cancels the drift's divergence identically,
+\[ \partial_t\rho=-\nabla\!\cdot\!\big(\rho[v+D\nabla\ln\rho]\big)+D\nabla^2\rho
+   =-\nabla\!\cdot\!(\rho v)\underbrace{-\,D\nabla^2\rho+D\nabla^2\rho}_{=\,0},\]
+returning continuity exactly, and Nelson mechanics is empirically standard quantum mechanics.
+\emph{Illustration.} An amplitude-directed law $w=f(\rho)\nabla\rho$ cannot even reach the first branch:
+$\nabla\!\cdot\!w=f'|\nabla\rho|^2+f\nabla^2\rho$, and at a local extremum of $\rho$ the first term vanishes
+while $\nabla^2\rho\neq0$, forcing $f=0$ there; an extremum sits at any density value, so $f\equiv0$.}
+\dtfresult{\text{deterministic}\Rightarrow\text{off-Born};\quad
+\text{compensated}\Rightarrow\text{QM};\quad \nabla\!\cdot\!w=0\Rightarrow\text{single-time invisible}}
+{no beable channel discriminates on single-time statistics}
+\end{chainbox}
+
+\noindent The trichotomy is exhaustive for a beable with a current and optional noise, and since
+Schr\"odinger's equation is untouched (\S\ref{sec:quantum}) that is the only place a discriminator could hide. \emph{Does the
+tax source a surviving channel?} The divergence-free additions $w=\nabla\times\chi$ are the Deotto--Ghirardi
+non-uniqueness, and they matter here only if the localization tax fixes some $\chi\neq0$. It does not, for an
+elementary reason: the current is the quantity conjugate to the phase,
+\[ j=-\frac{\delta\mathcal A}{\delta(\nabla S)}=\frac{\rho\nabla S}{m},
+   \qquad \mathcal A=\!\int\!\Big[\rho\,\partial_tS+\frac{\rho(\nabla S)^2}{2m}+\rho V
+   +\underbrace{\frac{\hbar^2}{8m}\frac{(\nabla\rho)^2}{\rho}}_{\text{the tax}}\Big] , \]
+and \emph{the tax contains no $S$}, so it contributes exactly zero to $j$. Its entire dynamical role is the
+scalar $\delta(\text{tax})/\delta\rho=Q$ in the phase equation --- and a scalar potential shifts $S$, whose
+gradient is already the current. Hence $\chi=0$: a divergence-free channel would have to be postulated by
+hand, and this framework postulates none.
+\begin{tcolorbox}[keybox]
+\textbf{The ambiguity is removed, not inherited.} Deriving the current from an action rather than positing a
+guidance law is what fixes $\chi$: theories that postulate guidance independently inherit the
+Deotto--Ghirardi freedom, and a chosen $\chi\neq0$ does shift finite-aperture detection rates (a $-4.8\%$
+example, resolved at our simulation's sample size --- a statement about numerical resolution for that
+$\chi$, not about detectability). With $\chi=0$ forced, none of it is available here.
+\textbf{DTF is identical to quantum mechanics not only in single-time statistics but in arrival
+statistics too, and its whole empirical exposure is gravitational (\S\ref{sec:consistency}).}
+\end{tcolorbox}
+\statusline{Verified: \texttt{DTF\_o2\_amplitude\_channel.py} (trichotomy; $0.7\varepsilon$ rate;
+Fokker--Planck cancellation exact), \texttt{DTF\_o2\_tax\_sources\_chi.py} ($\chi=0$: the tax contributes
+$(0,0)$ to $j$), \texttt{DTF\_o2\_arrival\_time.py} (complete-plane flux null; aperture shift for $\chi\neq0$),
+\texttt{DTF\_o2\_deotto\_ghirardi.py}.}
+
+
+\medskip
+\noindent\textbf{Compatibility: electromagnetism.}\ \
+Since only phase \emph{differences} are physical, the origin has no global referent --- fixing one would be
+exactly the global structure \S\ref{sec:rate} forgoes --- so it resets locally, and the standard $U(1)$
+construction applies verbatim~\cite{Weyl1929,AharonovBohm1959}: $A_\mu$ is a clock-phase connection,
+$F_{\mu\nu}$ its holonomy. Minimal coupling adds the Lorentz force to the drive,
+\[
+m\ddot{\mathbf x}=-mc^2\nabla u+q(\mathbf E+\mathbf v\times\mathbf B),
+\]
+and the lowest-order gauge-invariant dynamics is Maxwell (\texttt{DTF\_em\_from\_phase.py}; Appendix~D). The
+gauge \emph{principle} is then not an added posit but the no-global-structure core read on the phase, and the
+surviving group is the frame-\emph{orthogonal} $U(1)$ --- gauging the frame's own internal rotations yields
+mass from the metric's vacuum, not a photon (Appendix~D). It remains a \emph{consistency check, not a
+derivation}: DTF fixes neither $\alpha$ nor the charge spectrum and makes no non-abelian claim.
+
+%======================================================================
+\section{Consistency and limits}\label{sec:consistency}
+
+The core claim is complete with the preceding sections. This section states plainly what the reframe owes and
+where it agrees with existing physics --- in that order, because the owes are the point. Where general
+relativity and quantum mechanics have been tested, the framework agrees with them (it adds no equation there);
+that agreement is a consequence of the same locality that forces the owes, not a hedge against them.
+
+That identity is \emph{not} a reinterpretation dressed as physics, for three reasons.
+\begin{itemize}[leftmargin=1.4em,itemsep=2.5pt,topsep=3pt]
+\item \textbf{Roles are removed, not constants.} The equivalence principle, the energy--frequency bridge law,
+  and a preferred frame for realist quantum mechanics stop being separate assumptions and are read from one
+  primitive (the ledger of \S\ref{sec:intro}). The dimensionful inputs ($c,G,\hbar,H_0$, the mass spectrum) are unchanged
+  (Appendix~E).
+\item \textbf{A structure is forbidden.} The non-propagating clock ($\pi_u\equiv0$) is not a DTF stipulation
+  but the ADM lapse's inherited status (Appendix~A), a constraint any free retelling would have to respect.
+\item \textbf{A scale gets a reason.} A global-now general relativity supplies none for MOND; a local-now one
+  does, because a local now has only a finite causal horizon and that horizon \emph{is} an acceleration of
+  order $cH_0$ (\S\ref{sec:consistency}(ii), Appendix~B). This tethers $a_0$; it does not derive the force law.
+\end{itemize}
+\noindent Beyond the tested regimes the falsifiable content is narrow and labelled as such: the black-hole
+core (conjecture) and the MOND scale (plausibility). Within quantum mechanics no channel survives the closure
+of \S\ref{sec:quantum}, so no laboratory test can discriminate.
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}>{\raggedright}p{0.30\textwidth} >{\raggedright}p{0.34\textwidth} p{0.28\textwidth}@{}}
+\toprule
+\textbf{Result} & \textbf{Equation} & \textbf{Status}\\\midrule
+Gravity, GR limit & $\nabla^2u=\tfrac{4\pi G}{c^2}(\rho+3p/c^2)$; Kerr & identical to GR\\
+Two tensor GW pols; $\alpha_1{=}\alpha_2{=}0$ & $h_{ij}^{TT}$ & identical to GR (shared falsifiability)\\
+Inertia / equivalence & $\Delta E=mc^2(\gamma-1)$ & identical to GR\\
+Quantum mechanics, Born & Schr\"odinger $=$ clock-action $+$ tax; $|\psi|^2$ & identical to QM (Born: typicality)\\
+Evanescent transit speed & $v_{\rm op}=\sqrt{2|Q|/m}$ (operational) & order matches~\cite{Sharoglazova2025}; not a Bohm test~\cite{DrezetLazaroviciNabet2026}\\
+Black-hole core & de-emergence, remnant & conjecture\\
+Dark sector / MOND & $\mu$, $a_0=cH_0/2\pi$ & explains $a_0$ (plausibility)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Three applications push $u$ to its extremes. The economy claim of \S\ref{sec:intro}--\S\ref{sec:quantum} rests on none of them --- local-now
+and the Bell account stand if all three fell --- but one, the MOND scale, is where the ontology makes contact
+with a live anomaly and so is the paper's so-what against a rival algorithm.
+
+\emph{(i) The black-hole core --- de-emergence, not singularity.} The \emph{static} lapse vanishes at the
+horizon, but a regular infaller crosses it with nonzero rate; time does not de-emerge there. Inside, read the
+crossing through a geodesic comoving clock (Oppenheimer--Snyder dust~\cite{OppenheimerSnyder1939}, horizon-regular): curvature tracks
+density, so $L_{\rm curv}\sim\ell_P$ becomes $\rho\sim\rho_P$, reached at \emph{finite} proper time before the
+classical crunch,
+\[
+\tau_{\rm rem}=\frac{1}{\sqrt{6\pi G\rho_P}}=\frac{t_P}{\sqrt{6\pi}}\approx0.23\,t_P .
+\]
+The clock reaches $\delta u/u\sim1$ at \emph{finite} scale factor --- never $a=0$. What de-emerges is its
+\emph{coherence} ($N=L_{\rm curv}/\ell_P$ Planck ticks per curvature time; the crossing $N=1$ is
+coefficient-free for any $p\in[\tfrac12,1]$), not the proper time --- and Row-natively, \emph{not} via
+temperature (a Row-2 concept whose periodicity-in-time cannot govern the failure of time without circularity).
+The surface sits parametrically inside the horizon: a fat, finite, Planck-density core, not a point, robust to
+inhomogeneity (a shell-by-shell front, \texttt{DTF\_LTB\_collapse.py}).
+
+\emph{Remnant, not bounce.} Evaporation halts at a horizonless relic,
+\[ M_{\rm rem}=m_P/\sqrt8 , \]
+and the de-emerged energy stays in Row 0 rather than bouncing: there is no Row-1 time at the core to reverse in
+(collapse \emph{exits} Row 1), the energy still gravitates by Einstein's equations, and a static core has no
+re-emergence driver. Hence a stable relic and \emph{no} post-ringdown gravitational-wave echoes (the horizon is
+regular) --- a falsifiable split from Planck-star phenomenology. (Whether such relics contribute to
+cosmological dark matter is a separate open question; DTF's dark sector is the MOND shadow below, \emph{not}
+particle relics.)
+
+This is \emph{one definiteness surface}, shared with \S\ref{sec:quantum}: a clock \emph{becoming} definite (Row~0$\to$Row~1) is
+quantum measurement; a clock \emph{de-emerging} (Row~1$\to$Row~0) is the core; the timeless Row-0 entanglement
+ledger sits on the far side of both. Only the $O(1)$ coefficient of $\delta u/u\sim(\ell_P/L)^p$ is open (O2;
+\texttt{DTF\_singularity\_deemergence.py}, \texttt{DTF\_singularity\_observable.py}).
+
+\emph{The information paradox dissolves the same way.} There is no singularity to destroy information: infalling
+matter de-emerges from Row~1 to the \emph{timeless} Row-0 ledger --- the same ledger that already holds
+entanglement correlations (\S\ref{sec:quantum}). The correlations are not erased, only removed from Row-1 time; Hawking
+radiation (a Row-2, statistical property) carries off energy, while the information sits in Row~0 and in the
+stable horizonless remnant. It appears thermal only because its entanglement partner de-emerged to Row~0 rather
+than being destroyed --- trace out that partner and one gets thermality, keep it and the total state is pure.
+This evades the usual species/entropy objection to remnants: the information is \emph{not} in the remnant's
+local degrees of freedom (whose capacity is set by its Planck mass) but in Row~0, whose capacity is not.
+Loss of unitarity was an artifact of assuming a singular endpoint in Row-1 time; with none, there is nothing to
+lose. (Retention class, at the conjecture level of the core; no Page-curve or evaporation dynamics are claimed.)
+
+\emph{(ii) MOND scale --- $a_0$ grounded.} MOND's standing complaint is that its acceleration $a_0$ is a
+\emph{free measured constant}: the algorithm is untethered. Local-now supplies a tether, from Row-1 geometry
+alone (no temperature). A body's self-field reach $c^2/a$ can cohere with the cosmic clock out to one full cycle, the horizon
+circumference $2\pi R_H=2\pi c/H_0$. Dynamics therefore depart from Newton at $a_0=c^2/2\pi R_H=cH_0/2\pi$
+(Appendix~B), where the $2\pi$ is the clock's radians-per-cycle rather than a thermal factor. The relevant
+horizon is the late de~Sitter (future-event) horizon, the same one \S\ref{sec:rate} requires for $w\!\to\!-1$. So $a_0$ is
+\emph{constant} at $\sim cH_0$ today rather than tracking $H(z)$, which avoids tension with high-$z$ disks. The Milgrom
+interpolation
+\[ \mu=\frac{a}{\sqrt{a^2+a_0^2}} \]
+then follows from a two-horizon quadrature (Rindler $\kappa_a=a$, de~Sitter
+$cH_0$)~\cite{DeserLevin1997,Milgrom1983} \emph{as an assignment, not a theorem}. The modified-\emph{inertia}
+route that would distinguish DTF from MOND is \emph{falsified} (stellar-stream apsides); orbits are MOND's
+modified-\emph{gravity} (AQUAL) shadow, with no new galactic prediction. Appendix~B carries the grade and the caveats. The chief one: $cH_0$, $cH_0/2\pi$ and $cH_0/6$ all sit inside
+the SPARC band ($0.205$ against $0.201$ dex~\cite{Lelli2016}), so the fit alone does not pin the coefficient.
+
+\emph{(iii) Cosmological origin --- time's emergence.} The Big Bang is the \emph{onset of a coherent now} (the
+Row-0$\to$Row-1 transition at cosmic scale), the time-reverse of the core (i): coherence sets in at the Planck
+floor $N=1$ (finite, not $a=0$), so there is no initial singularity and no ``before,'' and the horizon problem
+does not arise --- uniformity is inherited from the timeless Row-0 floor, not established across a global slice.
+Whether the emergence also drives inflation is \emph{left open} (it would need a transiently incomplete
+invariance, $\pi_u\neq0$; O4).
+
+Late times: the redshift is unchanged ($1+z=a_{\rm obs}/a_{\rm emit}$; homogeneous $u(t)$ is gauge), and the
+one finite causal horizon $L=c/H_0$ fixes both dark scales,
+\[ \Omega_\Lambda=d^2\sim O(1), \qquad a_0\sim cH_0, \qquad \rho_\Lambda/\rho_P\sim(\ell_P/L)^2\sim10^{-122} . \]
+All at conjecture level: the observed $\Omega_\Lambda=0.68$ \emph{would require} $d\approx0.82$ (not forced),
+and $w=-1$ needs the future event horizon (Hsu--Li~\cite{Hsu2004,Li2004}). Scripts:
+\texttt{DTF\_cosmology\_timeline}, \texttt{DTF\_de\_horizon}, \texttt{DTF\_darksectors\_unified}.
+
+%======================================================================
+\section{Limitations and open problems}\label{sec:open}
+\noindent These open problems are of a particular kind, and the kind follows from the choice this paper
+makes. Adding no equation to general relativity or quantum mechanics means the debts owed here are
+arguments rather than measurements; a framework that changed predictions would owe experiments instead,
+and should be judged by them. Several results above are supplied with motivated resolutions rather than
+theorems, and are listed here at that strength. On single-time statistics and on any complete-plane flux, DTF is \emph{provably}
+identical to quantum mechanics (\S\ref{sec:quantum}), so no experiment of that kind can discriminate; the framework's
+gravitational exposure is the black-hole remnant (\S\ref{sec:consistency}), and within quantum mechanics no channel survives
+at all (\S\ref{sec:quantum}): the divergence-free freedom that could have carried one is not sourced by the tax.
+Two quantities that might be expected to serve as discriminators do not: monotonic mean curvature
+($\dot H\le0$) requires a preferred slice this framework does not have, and the decaying-vorticity residual
+is unobservable by fifty orders of magnitude (\S\ref{sec:rate}).\par\smallskip
+\begin{enumerate}[leftmargin=1.9em,itemsep=2pt,topsep=2pt,label=\textbf{O\arabic*.}]
+\item \textbf{Outcome selection.} Guidance $v=\nabla S/m$ plus an actual beable makes $|\psi|^2$ the typicality
+measure over the beable's unknown initial value; the residual --- \emph{why this initial configuration} --- is
+the typicality floor every no-collapse theory shares, not a debt peculiar to DTF (\S\ref{sec:quantum}).
+\item \textbf{Black-hole core coefficient.} The core \emph{location} is coefficient-free ($N=L_{\rm
+curv}/\ell_P=1$, Planck curvature, for any $p\in[\tfrac12,1]$); open is the $O(1)$ coefficient of
+$\delta u/u\sim(\ell_P/L)^p$ --- the precise shell radius --- needing a Row-0 foam propagator (\S\ref{sec:consistency}).
+\item \textbf{Does the projection generate the tensor structure?} No-signalling follows from
+handle-local reads plus completeness (\S\ref{sec:quantum}), and the row ordering explains why reads should be
+handle-local --- but the two-handle tensor structure is assumed, not built. Whether the
+Row-0$\to$Row-2 projection \emph{generates} that structure or presupposes it decides whether
+no-signalling is derived or only motivated here.
+\item \textbf{Transient inflation.} If the Row-0$\to$Row-1 emergence drives inflation (\S\ref{sec:consistency}), it needs a
+transiently incomplete reparametrization invariance ($\pi_u\neq0$); an action for that phase and any CMB
+observables ($n_s,r$) are unshown (\S\ref{sec:consistency}).
+\item \textbf{The driver of clock desync.} The arrow follows from a spread $\sigma_u$ in local rates
+(\S\ref{sec:rate}, App.~G), but what \emph{grows} $\sigma_u$ from the Row-0 synced state is gravitational clumping ---
+argued from the sign of the instability, not simulated. The entropy results are conditional on it.
+\end{enumerate}
+
+%======================================================================
+\section*{Technical Appendix}
+
+\noindent\textbf{A.\ \ Two polarisations and $\alpha_1=\alpha_2=0$ (\S\ref{sec:gravity}).}\ \
+Count in ADM variables~\cite{ADM1962}: the spatial metric $\gamma_{ij}$ and conjugate $\pi^{ij}$ give a
+12-dimensional phase space per point, with four first-class constraints (one Hamiltonian, three momentum), each
+removing two dimensions:
+\[ N_{\rm dof}=\tfrac12\big(12-2\times4\big)=2 \qquad (\text{the transverse-traceless pair } h_{ij}^{TT}), \]
+exactly the GR count, since the dynamics are Einstein's. The lapse and shift are multipliers; the lapse has
+$\pi_u\equiv0$ (\S\ref{sec:rate}), so it contributes no scalar (breathing) mode and no vector clock-current. That absence
+forces the preferred-frame parameters to vanish --- the gravitomagnetic $g_{0i}$ from boosting the static
+solution and from solving for a moving source agree exactly:
+\[ \Delta g_{0i}=0 \quad\Rightarrow\quad \alpha_1=\alpha_2=0 . \]
+Scripts: \texttt{DTF\_radiative\_content\_constructive.py}, \texttt{DTF\_alpha1\_explicit\_1PN.py}.
+
+\medskip
+\noindent\textbf{B.\ \ The interpolation function and $a_0$ (\S\ref{sec:consistency}), a Row-1 derivation.}\ \
+The MOND scale is derived here from Row-1 quantities only --- causal-horizon geometry and the rate primitive
+--- with \emph{no} appeal to temperature, which is a Row-2 (statistical) object and may not enter a derivation
+of a Row-1 scale.
+
+\emph{The scale.} The primitive is a clock, and a clock is defined by cycles: one cycle is $2\pi$ of phase. The
+cosmic causal horizon has radius $R_H=c/H_0$, so one full cycle of the horizon-scale clock spans its
+circumference $2\pi R_H$. A body's self-field reach is the Rindler length $L_a=c^2/a$. Coherence with the cosmic
+clock is lost once the reach exceeds one cosmic cycle, $L_a=2\pi R_H$, giving
+\[
+a_0=\frac{c^2}{2\pi R_H}=\frac{cH_0}{2\pi}=1.08\times10^{-10}\ \mathrm{m\,s^{-2}},
+\]
+against Milgrom's measured $1.20\times10^{-10}$ (a $\sim10\%$ match under a $\sim20\%$ systematic). The $2\pi$
+is the fundamental clock's radians-per-cycle times the horizon circumference --- both Row-1 --- \emph{not} a
+thermal $2\pi$; a temperature route (Unruh $\propto a/2\pi$ against de~Sitter $\propto H_0/2\pi$) instead
+\emph{cancels} the $2\pi$ and gives $a_0=cH_0$, which is why DTF does not take it.
+
+\emph{The interpolation.} A body's acceleration and the cosmic horizon define two \emph{surface gravities}
+$\kappa_a=a$ and $\kappa_{\rm dS}=cH_0=a_0$ --- geometric, Row-1. They add in quadrature~\cite{DeserLevin1997},
+\[
+\kappa_{\rm eff}=\sqrt{a^2+a_0^2},
+\]
+and assigning the acceleration-attributable share $\mu=\kappa_a/\kappa_{\rm eff}=a/\sqrt{a^2+a_0^2}$ reproduces
+Milgrom's form. This projection is an \emph{assignment}, not a theorem, and it uses only surface gravities ---
+geometry, not temperature.
+
+\emph{Fit and caveats.} At fixed $a_0=cH_0/2\pi$ the $175$-galaxy SPARC scatter is $0.205$ dex, versus $0.201$
+at best-fit $a_0$ --- a $2\%$ degradation, so ``zero free parameters'' is defensible, though the fit alone
+cannot distinguish $2\pi$ from a nearby $O(1)$, and the one residual is firming that the reach saturates at
+\emph{exactly} one cycle (not a half or two). Orbits precess as MOND and dark matter do (Orphan~\cite{Koposov2019},
+Sagittarius~\cite{Vasiliev2021}); the modified-\emph{inertia} route that would have distinguished DTF is
+falsified, so DTF reproduces MOND's modified-\emph{gravity} (AQUAL) shadow. This is distinct from
+thermodynamic entropic-gravity routes~\cite{Jacobson1995,Verlinde2011}, which pass through Row-2 temperature.
+Scripts: \texttt{DTF\_mond\_quadrature\_zeta.py}, \texttt{DTF\_sparc\_fixed\_a0.py},
+\texttt{DTF\_stream\_apsidal.py}.
+
+\medskip
+\noindent\textbf{C.\ \ Schr\"odinger from the localization tax (\S\ref{sec:quantum}).}\ \
+In polar form $\psi=\sqrt\rho\,e^{iS/\hbar}$ the Schr\"odinger equation
+\[ i\hbar\,\partial_t\psi=-\tfrac{\hbar^2}{2m}\nabla^2\psi+V\psi \]
+separates \emph{exactly}~\cite{Madelung1927} into an imaginary part (continuity, conservation of the rate
+density) and a real part (the quantum Hamilton--Jacobi equation):
+\[ \partial_t\rho+\nabla\!\cdot\!\big(\rho\,\tfrac{\nabla S}{m}\big)=0 , \qquad
+   \partial_t S+\frac{(\nabla S)^2}{2m}+V+Q=0 , \qquad
+   Q=-\frac{\hbar^2}{2m}\frac{\nabla^2\!\sqrt\rho}{\sqrt\rho} . \]
+The first two terms of the real part are \S\ref{sec:rate}'s classical clock-action; the sole non-classical term is $Q$,
+and it is the Euler--Lagrange variation of the localization-tax (Fisher/von Weizs\"acker) functional,
+\[
+Q=\frac{\delta}{\delta\rho}\int\frac{\hbar^2}{8m}\frac{(\nabla\rho)^2}{\rho}\,d^3x
+\qquad\text{(Reginatto~\cite{Reginatto1998})},
+\]
+carrying the same $\hbar$ the ledger names in $\lambda_C=\hbar/mc$. Both identities are verified symbolically
+(\texttt{DTF\_localization\_tax.py}). Born's measure is not a second postulate: the native current
+$j=\rho\nabla S/m$ makes $\rho=|\psi|^2$ the unique equivariant density, read out by all-or-nothing detection.
+\emph{An operational transit speed.} Guidance is the current $v=\nabla S/m$ (Born-equivariant). In a forbidden
+region $\psi\sim e^{-\kappa x}$ is real, so $\nabla S\to0$ (beable at rest), yet the tax is nonzero, giving an
+\emph{operational} speed
+\[ Q=-\tfrac{\hbar^2}{2m}\kappa^2 , \qquad v_{\rm op}=\sqrt{2|Q|/m}=\hbar\kappa/m , \]
+which matches the $10^3$--$10^4\,$km\,s$^{-1}$ magnitudes of Sharoglazova \emph{et al.}~\cite{Sharoglazova2025}
+at photonic mass (\texttt{DTF\_evanescent\_speed.py}). Two caveats: the $O(1)$ coefficient is not pinned by the
+data (as for $a_0$); and $v_{\rm op}$ is \emph{not} a beable velocity --- the challenge to Bohmian mechanics
+has been rebutted~\cite{DrezetLazaroviciNabet2026,Nikolic2025}, the authors maintaining their
+position~\cite{SharoglazovaReply2025}.
+
+\medskip
+\noindent\textbf{D.\ \ Electromagnetism on the clock-phase (compatibility, \S\ref{sec:quantum}).}\ \
+Only phase differences are physical, so the phase origin may be reset locally, $\psi\to e^{i\alpha(x)}\psi$; a
+connection restores covariance,
+\[ A_\mu\to A_\mu+\tfrac{\hbar c}{q}\partial_\mu\alpha, \qquad D_\mu=\partial_\mu-\tfrac{iq}{\hbar c}A_\mu . \]
+Then $F_{\mu\nu}$ is gauge-invariant, the homogeneous Maxwell pair holds identically, varying
+$-\tfrac14 F_{\mu\nu}F^{\mu\nu}-J^\mu A_\mu$ gives the source pair, a mass term is forbidden (massless photon),
+and minimal coupling adds the Lorentz force to the \S\ref{sec:rate} drive:
+\[ m\ddot{\mathbf x}=-mc^2\nabla u+q(\mathbf E+\mathbf v\times\mathbf B) \]
+(\texttt{DTF\_em\_from\_phase.py}). This is the standard $U(1)$ construction under the phase${}={}$clock-reading
+identification --- a \emph{consistency check}, not a derivation: DTF fixes neither $\alpha$ nor the charge
+assignments. Two points make it Row-native, not bolted on:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+\item \textbf{Local reset is not an extra postulate.} A global phase convention is the global reference \S\ref{sec:rate}
+  forgoes; with none, the origin is fixed only locally. A globally single-valued phase exists iff $F\equiv0$,
+  so denying a global referent is what admits a radiating $F\neq0$ (\texttt{DTF\_em\_clockphase\_forced.py}).
+\item \textbf{Clock-phase, not the frame.} Gauging the frame's internal $SO(3)$ instead gives three
+  Planck-mass vectors and no photon (the tetrad VEV is a full-rank order parameter,
+  \texttt{DTF\_em\_frame\_gauge.py}); gravity (frame) and electromagnetism (frame-orthogonal $U(1)$) exhaust
+  the long-range content from the triad VEV (\texttt{DTF\_force\_census.py}).
+\end{itemize}
+Charge quantisation would rest on the single-valuedness discussed in \S\ref{sec:quantum}, so none is asserted.
+
+\medskip
+\noindent\textbf{E.\ \ Inputs and outputs.}\ \
+What goes in versus what comes out:
+\begin{center}\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}p{0.47\textwidth} p{0.47\textwidth}@{}}
+\toprule
+\textbf{Inputs} & \textbf{Outputs}\\\midrule
+$c,\ G,\ \hbar,\ H_0$ & GR weak-field limit; Kerr inherited\\
+particle mass spectrum ($\omega_C$ values) & two tensor GW pols; $\alpha_1=\alpha_2=0$\\
+\textbf{no structure added to GR (frame-neutral local rate)} & inertia $=mc^2(\gamma-1)$; equivalence as identity\\
+localization-tax (Fisher) form; Born typicality & Schr\"odinger $=$ clock-action $+$ tax; $|\psi|^2$ measure\\
+ & $a_0=cH_0/2\pi$ (coefficient, plausibility level)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\noindent\textbf{F.\ \ The economy ledger and posit-counting.}\ \
+Stated as a ledger, the economy is a drop in the count of independent posits: things general relativity and
+quantum mechanics assume separately become one thing seen from different sides.
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}>{\raggedright}p{0.38\textwidth} >{\raggedright}p{0.40\textwidth} p{0.12\textwidth}@{}}
+\toprule
+\textbf{Posited separately in GR/QM} & \textbf{Once the rate is the primitive} & \textbf{Grade}\\\midrule
+Equivalence principle ($m_{\rm grav}=m_{\rm inertial}$) & one rate: never two masses to equate (\S\ref{sec:equiv}) & dissolved\\
+Gravity as spin-2 graviton exchange & no force-carrier; the propagating pair is space's radiation, not a mediator (\S\ref{sec:gravity}) & reclassified\\
+Preferred frame for realist QM & not needed: local rate $+$ timeless Row 0 (\S\ref{sec:rate},\S\ref{sec:quantum}) & dissolved\\
+Energy vs.\ frequency ($E=\hbar\omega$) & energy \emph{is} the rate; definitional (\S\ref{sec:rate}) & identity\\
+Gravity and inertia (two mechanisms) & one rate, read from two sides (\S\ref{sec:equiv},\S\ref{sec:gravity}) & unified\\
+Classical vs.\ quantum (two theories) & stationary vs.\ summed reading of one $\Phi$ (\S\ref{sec:rate},\S\ref{sec:quantum}) & unified\\
+Born probability (separate axiom) & the rate-density itself; surprise isolated to O1 (\S\ref{sec:quantum}) & clarified\\
+Space (independent primitive) & the rate's radiative sector (\S\ref{sec:gravity}) & reconceived\\
+Guidance law chosen from a family (Deotto--Ghirardi non-uniqueness) & the current is conjugate to the phase in the action, not an independent postulate (\S\ref{sec:quantum}) & dissolved\\
+Past hypothesis (low-entropy start, posited) & $N=1$ \emph{is} Row 0; not assumable away (\S\ref{sec:rate}) & dissolved\\
+Growth of the entropy (the arrow's rate) & ordinary mixing, inherited not derived; driver open (O5) & inherited\\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent The ledger is an argument only if ``one posit'' has a criterion a skeptic cannot re-count away. We use
+one: \emph{a posit is an independent input if the theory stays consistent and predictive when it is negated with
+the others held.} By that test the ledger is deliberately conservative --- most rows grade below ``dissolved'':
+the equivalence principle \emph{dissolves} (GR is consistent with $m_{\rm grav}\neq m_{\rm inertial}$, but with
+one $\omega_C$ the inequality is not expressible); $E=\hbar\omega$ is an \emph{identity} (a unit conversion, not
+a removed posit); the preferred frame \emph{dissolves} (rivals must \emph{add} a negatable foliation, DTF has
+none to add); Born is only \emph{clarified} (typicality survives negation, the axiom stands). The honest
+boundary: individuation is not fully observer-independent, so the claim is economy of \emph{roles} played by one
+quantity --- never a count of dimensionful constants, which stay inputs (Appendix~E).
+
+\medskip
+\noindent\textbf{G.\ \ The entropy ledger (\S\ref{sec:rate}): one entropy, one count.}\ \
+Throughout this appendix the entropy is $S=\ln N$, the ordinary logarithm of a count of distinguishable
+states. No second quantity is introduced. What is derived is $N$ --- how many states the clock has resolved ---
+and every number below is obtained without temperature; heat appears in exactly one paragraph, as an
+alternative way of reaching a large $N$.
+
+\emph{One count, three readings.} With $N$ the accumulated distinguishable ticks,
+\[
+E=N\hbar\omega,\qquad \Phi=2\pi N,\qquad S=\ln N ,
+\]
+so $S=\ln(E/\hbar\omega)$: entropy and energy are not independent bookkeeping. At Row 0, $N=1$ and $S=0$.
+
+\emph{The desync law, and what it does not do.} Give the local rates a spread $\sigma_u$ about the mean.
+Phases separate as $\phi_i=\omega u_i t$, so the occupied phase width --- the tick count --- is
+$N\simeq\omega\sigma_u t$ and $S=\ln N=\ln(\omega\sigma_u t)$. Numerically ($4\times10^{5}$ clocks, $4096$
+phase cells, unsaturated window): the fit $S=a\ln t+b$ gives $a=0.982$ against the predicted $1$; doubling
+$\sigma_u$ at fixed $t$ shifts $S$ by $0.6936$ and doubling $\omega$ by $0.6924$, against $\ln2=0.6931$ ---
+both to better than $0.1\%$. Two disclaimers, since this is the section's most quotable number. First, the
+input was $N\propto\omega\sigma_u t$, so the fit verifies that the code implements the definition and that
+$\omega,\sigma_u$ act multiplicatively inside $N$; it is not independent evidence that entropy grows.
+Second, the simulated quantity is $-\sum p\ln p$, which sits $0.70$--$0.79$ nats below $\ln(\text{occupied
+cells})$ for a Gaussian spread --- an additive offset, not a change in the law --- so the honest statement is
+$S=\ln N+O(1)$, with $\ln N$ the equal-weight ceiling. A discrete, commensurate set of rates instead recurs
+(Poincar\'e; $S$ oscillates in $[0,1.79]$): the law is reversible, the monotone arrow needs many degrees of
+freedom plus the $N=1$ start, and DTF's contribution is the start, not the mixing.
+
+\emph{Purity is preserved.} In a transverse-field Ising quench the global state stays pure
+($S_{\rm global}=0$ to machine precision at all times) while a subsystem's entanglement entropy grows linearly
+in the tick count (slope $0.663$) before saturating at $\ln(\dim)$. The Row-1 arrow is therefore the
+\emph{redistribution} of a conserved Row-0 correlation budget, which is why nothing is destroyed at a
+black-hole core (\S\ref{sec:consistency}).
+
+\emph{The rate bound.} Margolus--Levitin~\cite{MargolusLevitin1998} caps the tick rate at
+$dN/d\tau\le 2E/\pi\hbar$; applied to the observable universe this returns Lloyd's $N\sim10^{120}$
+ticks~\cite{Lloyd2002}. The arrow's maximum speed \emph{is} the energy --- the same identity as $E=N\hbar\omega$
+differentiated.
+
+\emph{Reaching a large count by heating instead.} Put the oscillator in a bath, so occupation rather than
+desync resolves the states. With the zero-point half-tick included the count is
+$N_{\rm th}=\tfrac12+1/(e^{\hbar\omega/k_BT}-1)$, and the large-$N$ form of the same $S=\ln N$ is
+$\ln(eN_{\rm th})$. Against the exact oscillator entropy $S=(1{+}n)\ln(1{+}n)-n\ln n$ with
+$n=1/(e^{\hbar\omega/k_BT}-1)$:
+\begin{center}\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$k_BT/\hbar\omega$ & $N_{\rm th}$ & exact $S$ & $\ln(eN_{\rm th})$\\\midrule
+$0.5$ & $0.657$ & $0.458$ & $0.579$\\
+$1$ & $1.082$ & $1.041$ & $1.079$\\
+$5$ & $5.017$ & $2.611$ & $2.613$\\
+$50$ & $50.00$ & $4.912$ & $4.912$\\
+$500$ & $500.0$ & $7.215$ & $7.215$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent The agreement is \emph{asymptotic}: four digits once $N_{\rm th}\gtrsim5$, but a $26\%$ error at
+$N_{\rm th}<1$, where a count-of-states reading is not valid anyway. (Dropping the zero-point half-tick makes
+$\ln(eN)$ negative at low $T$, which is the diagnostic that the half belongs in the count.) The point is not
+numerical precision but that nothing about the \emph{entropy} changed --- only what resolved the states. That
+ordering is not ours to choose: temperature is \emph{defined} from entropy ($1/T=\partial S/\partial E$), and
+Landauer's $k_BT\ln2$ likewise separates a count $\ln2$ from a price $k_BT$~\cite{Landauer1961,Berut2012}. A
+count without a bath is routine physics --- it survives at $T\to0$~\cite{Pauling1935}, it is what is measured
+in a globally pure state~\cite{Kaufman2016}, and the Kolmogorov--Sinai rate counts per unit time with no
+temperature in it~\cite{Pesin1977}. DTF adds no entropy; it identifies $N$ with the clock.
+
+\emph{Which share dominates.} Measured budgets~\cite{EganLineweaver2010} put the black-hole share of the
+observable universe at $3.1\times10^{104}k_B$ against the microwave background's $\sim\!10^{88}k_B$, with the
+cosmic event horizon at $2.6\times10^{122}k_B$; our coarse estimate reproduces these to an order of magnitude.
+Radiation holds a negligible fraction of $N$, and the dominant share --- carried by clumping, i.e.\ by
+departures of $u$ from uniformity --- is near its minimum when $u$ is uniform. A hot but smooth start is
+therefore a \emph{small} $N$, which is Penrose's point~\cite{Penrose1979} restated as a question of shares
+rather than an added postulate. Honest limit: how to count the clumping share has no agreed formula, and
+black-hole entropy is doing duty as the proxy.
+Scripts: \texttt{DTF\_entropy\_clockcycle.py}, \texttt{DTF\_native\_arrow.py},
+\texttt{DTF\_entropy\_is\_entanglement.py}, \texttt{DTF\_arrow\_grav\_thermal.py}.
+
+%======================================================================
+\section*{Code availability}
+\small All results marked \emph{verified} are reproduced by short Python scripts (NumPy/SciPy/SymPy) at
+\url{https://github.com/billd-dtf/Distorted-Time-Framework} (all names carry the \texttt{DTF\_} prefix):
+\begin{itemize}[leftmargin=1.4em,itemsep=1.5pt,topsep=2pt]
+\item \textbf{\S\ref{sec:rate}:} \texttt{which\_reading\_is\_DTF}, \texttt{phase\_unification}, \texttt{o6\_congruence}, \texttt{localnow\_integrability}, \texttt{native\_arrow}, \texttt{entropy\_clockcycle}, \texttt{entropy\_is\_entanglement}, \texttt{arrow\_grav\_thermal}, \texttt{vorticity\_residual}
+\item \textbf{\S\ref{sec:equiv}:} \texttt{kerr\_deser\_closure}
+\item \textbf{\S\ref{sec:gravity}:} \texttt{radiative\_content\_constructive}, \texttt{alpha1\_explicit\_1PN}
+\item \textbf{\S\ref{sec:quantum}:} \texttt{localization\_tax}, \texttt{evanescent\_speed}, \texttt{born\_relaxation\_2d}, \texttt{o8\_tsirelson}, \texttt{o9\_fisher\_unique}, \texttt{o1\_wallstrom}, \texttt{o2\_deotto\_ghirardi}, \texttt{winding\_dynamics}, \texttt{o2\_amplitude\_channel}, \texttt{o2\_arrival\_time}, \texttt{o2\_tax\_sources\_chi}, \texttt{no\_signalling\_projection}
+\item \textbf{\S\ref{sec:consistency}:} \texttt{singularity\_deemergence}, \texttt{LTB\_collapse}, \texttt{singularity\_observable}, \texttt{mond\_quadrature\_zeta}, \texttt{sparc\_fixed\_a0}, \texttt{stream\_apsidal}, \texttt{cosmology\_timeline}, \texttt{de\_horizon}, \texttt{darksectors\_unified}, \texttt{localnow\_eventhorizon}
+\item \textbf{App.\ D:} \texttt{em\_from\_phase}, \texttt{em\_clockphase\_forced}, \texttt{force\_census}, \texttt{em\_frame\_gauge}
+\end{itemize}
+
+\section*{Note on methods}
+\small The author specified the physical targets, claims, and their epistemic grades; a large language model
+(Anthropic Claude) was used as a collaborator for derivations, symbolic and numerical checks, and drafting.
+All results flagged \emph{verified} are reproduced by the scripts above, and the author is responsible for the
+content.
+
+%======================================================================
+\begin{thebibliography}{99}\small
+\bibitem{LaughlinPines2000} R.~B. Laughlin and D.~Pines, \emph{The Theory of Everything}, Proc. Natl. Acad. Sci. USA \textbf{97}, 28 (2000).
+\bibitem{deBroglie1925} L.~de~Broglie, \emph{Recherches sur la th\'eorie des quanta}, Ann. de Physique \textbf{10}(3), 22 (1925) [PhD thesis, 1924].
+\bibitem{Lan2013} S.-Y.~Lan, P.-C.~Kuan, B.~Estey, D.~English, J.~M.~Brown, M.~A.~Hohensee, and H.~M\"uller, \emph{A clock directly linking time to a particle's mass}, Science \textbf{339}, 554 (2013).
+\bibitem{Dolce2011} D.~Dolce, \emph{Compact time and determinism for bosons: foundations}, Found. Phys. \textbf{41}, 178 (2011).
+\bibitem{DeWitt1967} B.~S. DeWitt, \emph{Quantum Theory of Gravity. I. The Canonical Theory}, Phys. Rev. \textbf{160}, 1113 (1967).
+\bibitem{Isham1993} C.~J. Isham, \emph{Canonical Quantum Gravity and the Problem of Time}, in \emph{Integrable Systems, Quantum Groups, and Quantum Field Theories} (Kluwer, 1993), p.~157.
+\bibitem{Jacobson2001} T.~Jacobson and D.~Mattingly, \emph{Gravity with a dynamical preferred frame}, Phys. Rev. D \textbf{64}, 024028 (2001).
+\bibitem{BlasPujolasSibiryakov2011} D.~Blas, O.~Pujol\`as, and S.~Sibiryakov, \emph{Models of non-relativistic quantum gravity: the good, the bad and the healthy}, JHEP \textbf{04}, 018 (2011).
+\bibitem{Horava2009} P.~Ho\v{r}ava, \emph{Quantum Gravity at a Lifshitz Point}, Phys. Rev. D \textbf{79}, 084008 (2009).
+\bibitem{DGMZ1999} D.~D\"urr, S.~Goldstein, K.~M\"unch-Berndl, and N.~Zangh\`i, \emph{Hypersurface Bohm--Dirac models}, Phys. Rev. A \textbf{60}, 2729 (1999).
+\bibitem{PageWootters1983} D.~N. Page and W.~K. Wootters, \emph{Evolution without evolution: Dynamics described by stationary observables}, Phys. Rev. D \textbf{27}, 2885 (1983).
+\bibitem{ConnesRovelli1994} A.~Connes and C.~Rovelli, \emph{Von Neumann algebra automorphisms and time--thermodynamics relation in generally covariant quantum theories}, Class. Quantum Grav. \textbf{11}, 2899 (1994).
+\bibitem{Barbour2002} J.~Barbour, B.~Z. Foster, and N.~\'O Murchadha, \emph{Relativity without relativity}, Class. Quantum Grav. \textbf{19}, 3217 (2002).
+\bibitem{Rovelli1996} C.~Rovelli, \emph{Relational quantum mechanics}, Int. J. Theor. Phys. \textbf{35}, 1637 (1996).
+\bibitem{GravityProbeB2011} C.~W.~F. Everitt et al., \emph{Gravity Probe B: Final Results of a Space Experiment to Test General Relativity}, Phys. Rev. Lett. \textbf{106}, 221101 (2011).
+\bibitem{LARES2016} I.~Ciufolini et al., \emph{A test of general relativity using the LARES and LAGEOS satellites and a GRACE Earth gravity model}, Eur. Phys. J. C \textbf{76}, 120 (2016).
+\bibitem{Saadeh2016} D.~Saadeh, S.~M. Feeney, A.~Pontzen, H.~V. Peiris, and J.~D. McEwen, \emph{How Isotropic is the Universe?}, Phys. Rev. Lett. 	extbf{117}, 131302 (2016).
+\bibitem{Hsu2004} S.~D.~H. Hsu, \emph{Entropy bounds and dark energy}, Phys. Lett. B \textbf{594}, 13 (2004).
+\bibitem{Li2004} M.~Li, \emph{A model of holographic dark energy}, Phys. Lett. B \textbf{603}, 1 (2004).
+\bibitem{Catillon2008} P.~Catillon \emph{et al.}, \emph{A search for the de Broglie particle internal clock by means of electron channeling}, Found. Phys. \textbf{38}, 659 (2008).
+\bibitem{Albert2000} D.~Z. Albert, \emph{Time and Chance} (Harvard University Press, 2000).
+\bibitem{Kaufman2016} A.~M. Kaufman, M.~E. Tai, A.~Lukin, M.~Rispoli, R.~Schittko, P.~M. Preiss, and M.~Greiner, \emph{Quantum thermalization through entanglement in an isolated many-body system}, Science \textbf{353}, 794 (2016).
+\bibitem{Landauer1961} R.~Landauer, \emph{Irreversibility and Heat Generation in the Computing Process}, IBM J. Res. Dev. \textbf{5}, 183 (1961).
+\bibitem{Berut2012} A.~B\'erut, A.~Arakelyan, A.~Petrosyan, S.~Ciliberto, R.~Dillenschneider, and E.~Lutz, \emph{Experimental verification of Landauer's principle linking information and thermodynamics}, Nature \textbf{483}, 187 (2012).
+\bibitem{Pauling1935} L.~Pauling, \emph{The Structure and Entropy of Ice and of Other Crystals with Some Randomness of Atomic Arrangement}, J. Am. Chem. Soc. \textbf{57}, 2680 (1935).
+\bibitem{Pesin1977} Ya.~B. Pesin, \emph{Characteristic Lyapunov exponents and smooth ergodic theory}, Russ. Math. Surv. \textbf{32}, 55 (1977).
+\bibitem{Jacobson1995} T.~Jacobson, \emph{Thermodynamics of Spacetime: The Einstein Equation of State}, Phys. Rev. Lett. \textbf{75}, 1260 (1995).
+\bibitem{Verlinde2011} E.~Verlinde, \emph{On the Origin of Gravity and the Laws of Newton}, JHEP \textbf{04}, 029 (2011).
+\bibitem{Penrose1979} R.~Penrose, \emph{Singularities and time-asymmetry}, in \emph{General Relativity: An Einstein Centenary Survey}, eds. S.~W. Hawking and W.~Israel (Cambridge, 1979), p.~581.
+\bibitem{EganLineweaver2010} C.~A. Egan and C.~H. Lineweaver, \emph{A Larger Estimate of the Entropy of the Universe}, Astrophys. J. \textbf{710}, 1825 (2010).
+\bibitem{IWM1980} J.~A. Isenberg, \emph{Waveless approximation theories of gravity}, Int. J. Mod. Phys. D \textbf{17}, 265 (2008) [orig. 1978]; J.~R. Wilson and G.~J. Mathews, in \emph{Frontiers in Numerical Relativity} (Cambridge, 1989).
+\bibitem{GaratPrice2000} A.~Garat and R.~H. Price, \emph{Nonexistence of conformally flat slices of the Kerr spacetime}, Phys. Rev. D \textbf{61}, 124011 (2000).
+\bibitem{Deser1970} S.~Deser, \emph{Self-interaction and gauge invariance}, Gen. Relativ. Gravit. \textbf{1}, 9 (1970).
+\bibitem{Will2014} C.~M. Will, \emph{The Confrontation between General Relativity and Experiment}, Living Rev. Relativ. \textbf{17}, 4 (2014).
+\bibitem{Madelung1927} E.~Madelung, \emph{Quantentheorie in hydrodynamischer Form}, Z. Phys. \textbf{40}, 322 (1927).
+\bibitem{Reginatto1998} M.~Reginatto, \emph{Derivation of the equations of nonrelativistic quantum mechanics using the principle of minimum Fisher information}, Phys. Rev. A \textbf{58}, 1775 (1998).
+\bibitem{Frieden1989} B.~R. Frieden, \emph{Fisher information as the basis for the Schr\"odinger wave equation}, Am. J. Phys. \textbf{57}, 1004 (1989).
+\bibitem{DGZ1992} D.~D\"urr, S.~Goldstein, and N.~Zangh\`i, \emph{Quantum equilibrium and the origin of absolute uncertainty}, J. Stat. Phys. \textbf{67}, 843 (1992).
+\bibitem{Valentini1991} A.~Valentini, \emph{Signal-locality, uncertainty, and the subquantum $H$-theorem. I}, Phys. Lett. A \textbf{156}, 5 (1991).
+\bibitem{Bohm1952} D.~Bohm, \emph{A Suggested Interpretation of the Quantum Theory in Terms of ``Hidden'' Variables. I}, Phys. Rev. \textbf{85}, 166 (1952).
+\bibitem{Wallstrom1994} T.~C. Wallstrom, \emph{Inequivalence between the Schr\"odinger equation and the Madelung hydrodynamic equations}, Phys. Rev. A \textbf{49}, 1613 (1994).
+\bibitem{Tumulka2006} R.~Tumulka, \emph{A Relativistic Version of the Ghirardi--Rimini--Weber Model}, J. Stat. Phys. \textbf{125}, 821 (2006).
+\bibitem{WhartonArgaman2020} K.~B. Wharton and N.~Argaman, \emph{Colloquium: Bell's theorem and locally mediated reformulations of quantum mechanics}, Rev. Mod. Phys. \textbf{92}, 021002 (2020).
+\bibitem{Sharoglazova2025} V.~Sharoglazova, M.~Puplauskis, C.~Mattschas, C.~Toebes, and J.~Klaers, \emph{Energy--speed relationship of quantum particles challenges Bohmian mechanics}, Nature \textbf{643}, 67 (2025).
+\bibitem{KlaersDensityGradient2023} J.~Klaers, V.~Sharoglazova, and C.~Toebes, \emph{Particle motion associated with wave-function density gradients}, Phys. Rev. A \textbf{107}, 052201 (2023).
+\bibitem{DrezetLazaroviciNabet2026} A.~Drezet, D.~Lazarovici, and B.~M. Nabet, \emph{Bohmian mechanics remains unchallenged by tunnelling experiment}, Nature \textbf{653}, E13 (2026).
+\bibitem{Nikolic2025} H.~Nikoli\'c, \emph{Overcoming a challenge for Bohmian mechanics}, arXiv:2507.08049 (2025).
+\bibitem{SharoglazovaReply2025} J.~Klaers, V.~Sharoglazova, and M.~Puplauskis, \emph{Reaffirming a Challenge to Bohmian Mechanics}, arXiv:2509.06584 (2025).
+\bibitem{DeottoGhirardi1998} E.~Deotto and G.~C. Ghirardi, \emph{Bohmian mechanics revisited}, Found. Phys. \textbf{28}, 1 (1998).
+\bibitem{Weyl1929} H.~Weyl, \emph{Elektron und Gravitation. I}, Z. Phys. \textbf{56}, 330 (1929).
+\bibitem{AharonovBohm1959} Y.~Aharonov and D.~Bohm, \emph{Significance of Electromagnetic Potentials in the Quantum Theory}, Phys. Rev. \textbf{115}, 485 (1959).
+\bibitem{OppenheimerSnyder1939} J.~R. Oppenheimer and H.~Snyder, \emph{On Continued Gravitational Contraction}, Phys. Rev. \textbf{56}, 455 (1939).
+\bibitem{DeserLevin1997} S.~Deser and O.~Levin, \emph{Accelerated detectors and temperature in (anti-)de Sitter spaces}, Class. Quantum Grav. \textbf{14}, L163 (1997).
+\bibitem{Milgrom1983} M.~Milgrom, \emph{A modification of the Newtonian dynamics as a possible alternative to the hidden mass hypothesis}, Astrophys. J. \textbf{270}, 365 (1983).
+\bibitem{Lelli2016} F.~Lelli, S.~S. McGaugh, and J.~M. Schombert, \emph{SPARC: Mass Models for 175 Disk Galaxies}, Astron. J. \textbf{152}, 157 (2016); S.~S. McGaugh, F.~Lelli, and J.~M. Schombert, Phys. Rev. Lett. \textbf{117}, 201101 (2016).
+\bibitem{ADM1962} R.~Arnowitt, S.~Deser, and C.~W. Misner, \emph{The Dynamics of General Relativity}, in \emph{Gravitation}, ed. L.~Witten (Wiley, 1962); repr. Gen. Relativ. Gravit. \textbf{40}, 1997 (2008).
+\bibitem{Koposov2019} S.~E. Koposov et al., \emph{Piercing the Milky Way: the Orphan stream}, Mon. Not. R. Astron. Soc. \textbf{485}, 4726 (2019).
+\bibitem{Vasiliev2021} E.~Vasiliev, V.~Belokurov, and D.~Erkal, \emph{Tango for three: Sagittarius, LMC, and the Milky Way}, Mon. Not. R. Astron. Soc. \textbf{501}, 2279 (2021).
+\bibitem{MargolusLevitin1998} N.~Margolus and L.~B. Levitin, \emph{The maximum speed of dynamical evolution}, Physica D \textbf{120}, 188 (1998).
+\bibitem{Lloyd2002} S.~Lloyd, \emph{Computational Capacity of the Universe}, Phys. Rev. Lett. \textbf{88}, 237901 (2002).
+\end{thebibliography}
+
+\end{document}
