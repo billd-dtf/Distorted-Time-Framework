@@ -1,15 +1,16 @@
 """
 The DTF-NATIVE arrow: entropy growth from clock DESYNC (the u-field itself).
 
-No generic map, no external bath -- just the primitive. Row 0 = all clocks in sync
-(one phase, one state, S=0). Row 1 = the clocks have a SPREAD of rates u (the desync
-from uniformity). Their phases  phi_i(t) = omega * u_i * t  drift apart; the number of
+No generic map, no external bath -- just the primitive. Start of Row 1 (the Row 0->1
+transition) = all clocks in sync (one phase, one state, S=0); this start is a boundary
+condition the framework locates but does not derive. Row 1 = the clocks have a SPREAD
+of rates u (the desync from uniformity). Their phases  phi_i(t) = omega * u_i * t  drift apart; the number of
 DISTINGUISHABLE phase-cells is the tick-count  N ~ omega * sigma_u * t, and
 
         S = ln N   (the Row-1 arrow-entropy = the clock's log-count).
 
 Checks:
-  (i)   monotone growth from S=0 (Row-0 sync) with a continuous u-spread;
+  (i)   monotone growth from S=0 (synced start of Row 1) with a continuous u-spread;
   (ii)  S = ln(omega * sigma_u * t) EXACTLY -- i.e. coefficient of ln t is 1, and
         doubling (omega * sigma_u) SHIFTS S by ln 2 (it does NOT double dS/dt).
         Energy and desync enter INSIDE the log because they set N, not S:
@@ -33,7 +34,7 @@ def entropy_of_phases(phi, M=4096):
 Nclocks = 400000
 Smax = np.log(4096)
 
-print("Row-0 start: all clocks synced -> S=0. Continuous u-spread -> desync arrow.\n")
+print("Start of Row 1: all clocks synced -> S=0. Continuous u-spread -> desync arrow.\n")
 
 print("(i) native arrow: monotone growth from the synced state")
 u = 1.0 + 0.01*rng.standard_normal(Nclocks)
@@ -68,7 +69,7 @@ print(f"    discrete K={K}: S in [{Sd.min():.3f}, {Sd.max():.3f}], "
 print("    => the monotone arrow needs the CONTINUUM/many-DOF, not the (reversible) law.")
 
 print("\n=== NATIVE ARROW ESTABLISHED ===")
-print("From the Row-0 synced state (N=1, S=0), a spread in clock rates opens")
+print("From the synced start of Row 1 (N=1, S=0), a spread in clock rates opens")
 print("N ~ omega*sigma_u*t distinguishable ticks, and S = ln N rises monotonically.")
 print("Energy (E = N hbar omega) and entropy (S = ln N) are the SAME count N,")
 print("read linearly and logarithmically. No temperature anywhere: Row-1 native.")

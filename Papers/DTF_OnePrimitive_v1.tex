@@ -215,7 +215,7 @@ exists \emph{iff} the vorticity vanishes. One might expect the expansion to supp
 \[ \omega\sim a^{-2}, \qquad \omega/H\to0 , \]
 but the work it does is small: the smallness of cosmic vorticity is an \emph{initial condition}, since single-field inflation excites no first-order vector modes. The expansion only mildly reinforces it; it does not drive the limit. Cosmic time is therefore inherited rather than manufactured, and standard cosmology is recovered as a
 gauge, not contradicted (\texttt{DTF\_localnow\_integrability.py}). The same division of labour as the arrow
-(\S\ref{sec:rate} above): the framework supplies the boundary condition and inherits the dynamics.
+(\S\ref{sec:rate} above): the framework locates the boundary condition and inherits the dynamics.
 
 \emph{The numbers behind that sentence.} Three facts settle how much the expansion does and whether the
 residual can be measured.
@@ -309,14 +309,14 @@ the logarithm of the number of distinguishable states a system has reached, and 
 the thermal entropy of a bath follows from this count is textbook and is not re-derived; the question taken up
 here is the one before it. The rate primitive answers a question statistical mechanics takes as already settled: \emph{what makes states distinguishable at all.} Temperature cannot be that
 answer, because it is \emph{defined} from the entropy ($1/T=\partial S/\partial E$) and so presupposes the
-count. The primitive can be: $N$ is the number of ticks the clock has resolved since the Row-0 state, and the
+count. The primitive can be: $N$ is the number of ticks the clock has resolved since the clocks first emerged in sync (the Row~0$\to$1 transition), and the
 same $N$ is read three ways,
 \[
 E=N\hbar\omega\ \ (\text{linearly}),\qquad \Phi=2\pi N\ \ (\text{as phase}),\qquad S=\ln N\ \ (\text{as a log}),
 \]
 with temperature nowhere among them.
 \begin{itemize}[leftmargin=1.4em,itemsep=2.5pt,topsep=3pt]
-\item \textbf{The zero is definitional.} Row 0 is one synced state: $N=1$, so $S=0$ exactly. The ``past hypothesis''~\cite{Albert2000} is the low-entropy start that a time-symmetric dynamics must be handed. It is not postulated here; it is what \emph{being} Row 0 means.
+\item \textbf{Orientation is derived; the low-entropy start is not.} Proper time $\tau=\int u\,dt$ only grows, since $u>0$, so each clock has a native orientation. That is not yet the thermodynamic arrow. The arrow needs the clocks to begin in sync: $N=1$, so $S=0$ exactly, at the Row~0$\to$1 transition. That is the ``past hypothesis''~\cite{Albert2000} that a time-symmetric dynamics must be handed, restated as the clocks' common origin. The framework locates it and does not supply a reason for it.
 \item \textbf{Ticks are what become distinguishable.} A spread $\sigma_u$ in the local rates desynchronises
   phases, resolving $N\simeq\omega\,\sigma_u t$ states, so $S=\ln N$ grows as $\ln t$. The simulation checks the \emph{bookkeeping}, not the arrow: the fit $S=a\ln t+b$ returns $a=0.982$ against the
   predicted $1$, and doubling \emph{either} $\omega$ or $\sigma_u$ shifts $S$ by $0.693$ against $\ln2=0.6931$
@@ -335,8 +335,8 @@ with temperature nowhere among them.
 \item \textbf{Where the arrow comes from, and where it does not.} The division of labour is worth stating
   exactly, because only half of it is ours. The desync law is \emph{time-symmetric}: run $\phi_i=\omega u_it$ backwards and the clocks resynchronise. With commensurate rates it recurs (Poincar\'e). So the growth of
   $N$ is ordinary mixing, inherited from statistical mechanics and not derived here; what breaks the symmetry
-  is the $N=1$ boundary condition, and \emph{that} is what the rows supply. DTF contributes the piece
-  Boltzmann must assume and inherits the piece he already had. The mechanism that grows $\sigma_u$ from the synced state is gravitational clumping, argued from the sign of the instability rather than simulated (O5).
+  is the $N=1$ boundary condition. The rows locate it, at the Row~0$\to$1 transition, but do not derive it. DTF contributes the
+  orientation ($\tau$ monotone) and a place for the boundary condition, and inherits the rest from Boltzmann. The mechanism that grows $\sigma_u$ from the synced state is gravitational clumping, argued from the sign of the instability rather than simulated (O5).
 \item \textbf{$\ln N$ is a ceiling, not the value.} $S=\ln N$ is the equal-weight (microcanonical) reading;
   the general entropy is $-\sum p\ln p$, which is smaller whenever the resolved states are unevenly weighted.
   For a Gaussian spread in $u$ the gap is an additive constant of order $\ln\sqrt{2\pi e}$ (measured:
@@ -888,7 +888,7 @@ Classical vs.\ quantum (two theories) & stationary vs.\ summed reading of one $\
 Born probability (separate axiom) & the rate-density itself; surprise isolated to O1 (\S\ref{sec:quantum}) & clarified\\
 Space (independent primitive) & the rate's radiative sector (\S\ref{sec:gravity}) & reconceived\\
 Guidance law chosen from a family (Deotto--Ghirardi non-uniqueness) & the current is conjugate to the phase in the action, not an independent postulate (\S\ref{sec:quantum}) & dissolved\\
-Past hypothesis (low-entropy start, posited) & $N=1$ \emph{is} Row 0; not assumable away (\S\ref{sec:rate}) & dissolved\\
+Past hypothesis (low-entropy start, posited) & $N=1$ is where Row~1 begins; located, not derived (\S\ref{sec:rate}) & located\\
 Growth of the entropy (the arrow's rate) & ordinary mixing, inherited not derived; driver open (O5) & inherited\\
 \bottomrule
 \end{tabular}
@@ -914,7 +914,7 @@ alternative way of reaching a large $N$.
 \[
 E=N\hbar\omega,\qquad \Phi=2\pi N,\qquad S=\ln N ,
 \]
-so $S=\ln(E/\hbar\omega)$: entropy and energy are not independent bookkeeping. At Row 0, $N=1$ and $S=0$.
+so $S=\ln(E/\hbar\omega)$: entropy and energy are not independent bookkeeping. At the start of Row~1, $N=1$ and $S=0$.
 
 \emph{The desync law, and what it does not do.} Give the local rates a spread $\sigma_u$ about the mean.
 Phases separate as $\phi_i=\omega u_i t$, so the occupied phase width --- the tick count --- is
@@ -928,7 +928,7 @@ Second, the simulated quantity is $-\sum p\ln p$, which sits $0.70$--$0.79$ nats
 cells})$ for a Gaussian spread --- an additive offset, not a change in the law --- so the honest statement is
 $S=\ln N+O(1)$, with $\ln N$ the equal-weight ceiling. A discrete, commensurate set of rates instead recurs
 (Poincar\'e; $S$ oscillates in $[0,1.79]$): the law is reversible, the monotone arrow needs many degrees of
-freedom plus the $N=1$ start, and DTF's contribution is the start, not the mixing.
+freedom plus the $N=1$ start, and DTF locates the start, at the Row~0$\to$1 transition, without deriving it; the mixing is inherited.
 
 \emph{Purity is preserved.} In a transverse-field Ising quench the global state stays pure
 ($S_{\rm global}=0$ to machine precision at all times) while a subsystem's entanglement entropy grows linearly
