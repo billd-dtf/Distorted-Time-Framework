@@ -54,7 +54,9 @@ python OnePrimitive/DTF_o8_tsirelson.py           # the CHSH bound, 2 sqrt 2
 
 All scripts live in **`OnePrimitive/`** — the 37 the paper cites, plus the `sparc_io`
 reader one of them imports. The paper's Code Availability section says which script backs
-which claim.
+which claim. One script is not yet cited: `DTF_lensing_from_u.py` checks that weak lensing is
+the line-of-sight sum of u *with* GR's factor of 2 (PPN γ = 1), which the rate alone does not
+supply.
 
 An earlier three-volume presentation of this material is deposited on Zenodo under the DOI
 above. It is not carried here: it was written with a *global* proper now, a commitment
