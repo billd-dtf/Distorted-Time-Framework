@@ -58,7 +58,9 @@ which claim. Two scripts are not yet cited: `DTF_lensing_from_u.py` checks that 
 the line-of-sight sum of u *with* GR's factor of 2 (PPN γ = 1), which the rate alone does not
 supply; `DTF_two_dof_transverse.py` re-validates the 2 radiated dof and shows they are strains
 of the 2D plane transverse to the line of sight, arriving as functions of (sky angle,
-retarded time) — and that "radiated dof = transverse dimension" holds only in D = 4.
+retarded time); that "radiated dof = transverse dimension" holds only in D = 4; and that the
+static pull sits in the time-to-target component yet needs the 2D sky (in literal 2+1 GR the
+rate is forced constant).
 
 An earlier three-volume presentation of this material is deposited on Zenodo under the DOI
 above. It is not carried here: it was written with a *global* proper now, a commitment

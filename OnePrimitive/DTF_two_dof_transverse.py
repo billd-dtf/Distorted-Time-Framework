@@ -23,6 +23,13 @@ Checks:
      that same Q_ij.  For a circular binary, r*h depends only on (theta, phi, t - r/c):
      the emitted content is 2 functions on a 2+1 surface.
 
+  5. GRAVITY IS 2 AND +1 JOINTLY.  (a) Schwarzschild in retarded coordinates: the mass
+     sits only in g_uu, the time-to-target (+1) component -- the pull belongs to time.
+     (b) Gauss: the static potential falls as r^(2-d); inverse-square force only for a 2D
+     sky (d = 3). (c) Literal 2+1 GR: the spatial Einstein equations force every second
+     derivative of the lapse to vanish when matter has no stress -- the rate is constant,
+     so time carries no pull at all. Time alone does not make gravity; it needs the 2D sky.
+
 Honesty notes built in:
   * Everything computed here is GR's linearised radiation theory. The DTF content is
     the reading: the rate's time-varying quadrupole is the source, and what leaves is
@@ -153,6 +160,71 @@ check("the two functions are independent (+ and x both nonzero, 90 deg out of ph
       sp.simplify(h_plus.subs({th: 0, ph: 0, tr: sp.pi/(4*w)})) == 0 and indep != 0)
 
 # =====================================================================================
+head("5. GRAVITY IS 2 AND +1 JOINTLY: the pull lives in time, the dilution in the 2D sky")
+# (a) Schwarzschild, outgoing retarded time u = t - r*: where does M sit?
+M_, rr, uu, thh = sp.symbols('M r u theta', positive=True)
+f = 1 - 2*M_/rr
+rstar = rr + 2*M_*sp.log(rr/(2*M_) - 1)
+# t = u + r*(r):  dt = du + dr/f.  Pull back g = diag(-f, 1/f, r^2, r^2 sin^2) to (u, r, theta)
+J = sp.Matrix([[1, 1/f, 0], [0, 1, 0], [0, 0, 1]])        # d(t, r, theta)/d(u, r, theta)
+assert sp.simplify(sp.diff(rstar, rr) - 1/f) == 0
+g_trth = sp.diag(-f, 1/f, rr**2)
+g_ur = sp.simplify(J.T*g_trth*J)
+print(f"   Schwarzschild in (u, r, theta):  g_uu = {g_ur[0, 0]},  g_ur = {g_ur[0, 1]},"
+      f"  g_rr = {g_ur[1, 1]},  g_thth = {g_ur[2, 2]}")
+M_in = [(i, j) for i in range(3) for j in range(3) if M_ in g_ur[i, j].free_symbols]
+check("M appears ONLY in g_uu (the time-to-target component): the pull belongs to time",
+      M_in == [(0, 0)])
+
+# (b) Gauss: radial Laplace in d spatial dims -> potential ~ r^(2-d), force ~ r^(1-d)
+print("   static potential around a point mass in d spatial dimensions (sky dimension d-1):")
+rs = sp.symbols('r', positive=True); Fpot = sp.Function('F')
+inv_sq = []
+for d in (2, 3, 4, 5):
+    sol = sp.dsolve(sp.diff(rs**(d - 1)*sp.diff(Fpot(rs), rs), rs), Fpot(rs)).rhs
+    force = sp.simplify(sp.diff(sol, rs))
+    p_ = sp.simplify(rs*sp.diff(force, rs)/force)          # power law exponent of the force
+    inv_sq.append((d, p_))
+    print(f"     d = {d} (sky {d-1}D):  potential = {sol},   force ~ r^{p_}")
+check("inverse-square force only for a 2D sky (d = 3)",
+      [d for d, p_ in inv_sq if p_ == -2] == [3])
+
+# (c) literal 2+1 GR, static, linearised: does the rate (lapse) feel the mass?
+def lin_einstein(nsp):
+    e = sp.symbols('epsilon'); Xs = sp.symbols('t x0:%d' % nsp); sp_ = Xs[1:]
+    Ph = sp.Function('Phi')(*sp_); Ps = sp.Function('Psi')(*sp_)
+    g = sp.diag(-(1 + 2*e*Ph), *[1 - 2*e*Ps]*nsp); gi = g.inv(); N = nsp + 1
+    Gm = [[[sum(gi[a, d]*(sp.diff(g[d, b], Xs[cc]) + sp.diff(g[d, cc], Xs[b])
+                         - sp.diff(g[b, cc], Xs[d])) for d in range(N))/2
+            for cc in range(N)] for b in range(N)] for a in range(N)]
+    def Ric(b, cc):
+        r_ = 0
+        for a in range(N):
+            r_ += sp.diff(Gm[a][b][cc], Xs[a]) - sp.diff(Gm[a][b][a], Xs[cc])
+            for d in range(N):
+                r_ += Gm[a][a][d]*Gm[d][b][cc] - Gm[a][cc][d]*Gm[d][b][a]
+        return r_
+    lin_ = lambda ex: sp.simplify(sp.diff(ex, e).subs(e, 0))
+    R_ = sp.Matrix(N, N, lambda b, cc: lin_(Ric(b, cc)))
+    et = sp.diag(-1, *[1]*nsp)
+    Rs_ = sum(et[a, a]*R_[a, a] for a in range(N))
+    return sp.Matrix(N, N, lambda b, cc: sp.simplify(R_[b, cc] - et[b, cc]*Rs_/2)), Ph, Ps, sp_
+G3, Ph3, Ps3, (x0, x1) = lin_einstein(2)
+print(f"   2+1 linearised:  G_00 = {G3[0, 0]}")
+print(f"                    G_xx = {G3[1, 1]},  G_yy = {G3[2, 2]},  G_xy = {G3[1, 2]}")
+# exact: G_ij = delta_ij nabla^2 Phi - d_i d_j Phi  (only the lapse; vanishes iff Hessian of Phi = 0)
+lapPh = sp.diff(Ph3, x0, 2) + sp.diff(Ph3, x1, 2)
+expected = sp.Matrix(2, 2, lambda i, j: (lapPh if i == j else 0) - sp.diff(Ph3, [x0, x1][i], [x0, x1][j]))
+check("2+1: spatial equations are G_ij = delta_ij lap(Phi) - d_i d_j Phi: ONLY the lapse",
+      sp.simplify(G3[1:, 1:] - expected) == sp.zeros(2))
+check("2+1: mass sources only the spatial part (G_00 = nabla^2 Psi): conical deficit",
+      not G3[0, 0].has(Ph3))
+print("   with stress-free matter (dust, or vacuum) T_ij = 0, so every second derivative of")
+print("   the lapse vanishes: the rate is CONSTANT everywhere and a test clock feels no pull.")
+print("   Contrast 3+1 (Part 1 of DTF_lensing_from_u.py): G_ij ~ d_i d_j (Psi - Phi) ties the")
+print("   rate to the mass, and G_00 = 2 nabla^2 Psi then sources it.")
+
+# =====================================================================================
 head("VERDICT")
 print("   * The count holds: time (the rate) radiates 2 dof in D = 4, and the rate's own")
 print("     change (uniform rescaling) is not among them -- no breathing mode. Re-validated")
@@ -164,7 +236,11 @@ print("        time gives off 2 dof  ->  2D transverse strain  x  1 time-to-targ
 print("   * 'Radiated dof = transverse dimension' holds ONLY in D = 4. If DTF can show why it")
 print("     must hold, that is a 'why 4D' argument (conjecture grade). Not derived here.")
 print("   * It is not a dimensional reduction: the static pull (the rate's monopole) is not")
-print("     on the 2+1 surface; it is constraint, carried along as the Bondi mass.")
+print("     free data on the 2+1 surface; it appears there only as a charge (the mass in g_uu).")
+print("   * Gravity is 2 and +1 jointly. The pull lives in time: in retarded coordinates the")
+print("     mass sits only in g_uu. But time alone carries none: in literal 2+1 GR the rate is")
+print("     forced constant and a mass makes only a conical deficit. The 2D sky supplies the")
+print("     inverse-square dilution (area ~ r^2) that lets the rate fall off and pull.")
 print("   * All of it is GR's linearised theory; the DTF content is the reading. No discriminator.")
 print()
 print(f"OVERALL: {'PASS' if all(ok_all) else 'FAIL'} ({sum(ok_all)}/{len(ok_all)} checks)")
