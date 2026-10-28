@@ -29,6 +29,9 @@ Checks:
      sky (d = 3). (c) Literal 2+1 GR: the spatial Einstein equations force every second
      derivative of the lapse to vanish when matter has no stress -- the rate is constant,
      so time carries no pull at all. Time alone does not make gravity; it needs the 2D sky.
+  6. ENERGY -> u -> EXTENTS.  R_00 = nabla^2 Phi is sourced by dust with strength
+     8 pi G rho (D-3)/(D-2): energy slows the rate in 4D, not at all in 2+1. In 4D the
+     slowed rate then fixes the extents through G_ij (Psi = Phi).
 
 Honesty notes built in:
   * Everything computed here is GR's linearised radiation theory. The DTF content is
@@ -208,8 +211,9 @@ def lin_einstein(nsp):
     R_ = sp.Matrix(N, N, lambda b, cc: lin_(Ric(b, cc)))
     et = sp.diag(-1, *[1]*nsp)
     Rs_ = sum(et[a, a]*R_[a, a] for a in range(N))
-    return sp.Matrix(N, N, lambda b, cc: sp.simplify(R_[b, cc] - et[b, cc]*Rs_/2)), Ph, Ps, sp_
-G3, Ph3, Ps3, (x0, x1) = lin_einstein(2)
+    G_ = sp.Matrix(N, N, lambda b, cc: sp.simplify(R_[b, cc] - et[b, cc]*Rs_/2))
+    return G_, Ph, Ps, sp_, R_
+G3, Ph3, Ps3, (x0, x1), R3 = lin_einstein(2)
 print(f"   2+1 linearised:  G_00 = {G3[0, 0]}")
 print(f"                    G_xx = {G3[1, 1]},  G_yy = {G3[2, 2]},  G_xy = {G3[1, 2]}")
 # exact: G_ij = delta_ij nabla^2 Phi - d_i d_j Phi  (only the lapse; vanishes iff Hessian of Phi = 0)
@@ -223,6 +227,29 @@ print("   with stress-free matter (dust, or vacuum) T_ij = 0, so every second de
 print("   the lapse vanishes: the rate is CONSTANT everywhere and a test clock feels no pull.")
 print("   Contrast 3+1 (Part 1 of DTF_lensing_from_u.py): G_ij ~ d_i d_j (Psi - Phi) ties the")
 print("   rate to the mass, and G_00 = 2 nabla^2 Psi then sources it.")
+
+# =====================================================================================
+head("6. ENERGY SLOWS u, AND THE SLOWED u WARPS THE EXTENTS -- how strongly, per dimension?")
+# trace-reversed field equation: R_00 = 8 pi G (T_00 - g_00 T/(D-2)).  Dust: T_00 = rho, T = -rho.
+Dd, rho, Gn = sp.symbols('D rho G', positive=True)
+R00_dust = sp.simplify(8*sp.pi*Gn*(rho - (-1)*(-rho)/(Dd - 2)))
+print(f"   dust in D dimensions:  R_00 = {sp.factor(R00_dust)}")
+for D_ in (3, 4, 5):
+    print(f"     D = {D_}:  R_00 = {R00_dust.subs(Dd, D_)}")
+# the linearised R_00 IS the Laplacian of the rate perturbation, in 2+1 and in 3+1
+G4, Ph4, Ps4, sp4, R4 = lin_einstein(3)
+lap3 = sum(sp.diff(Ph3, v, 2) for v in (x0, x1)); lap4 = sum(sp.diff(Ph4, v, 2) for v in sp4)
+check("linearised R_00 = nabla^2 Phi (the rate) in both 2+1 and 3+1",
+      sp.simplify(R3[0, 0] - lap3) == 0 and sp.simplify(R4[0, 0] - lap4) == 0)
+check("3+1: energy slows the rate, nabla^2 u = 4 pi G rho/c^2 (the paper's equation)",
+      sp.simplify(R00_dust.subs(Dd, 4) - 4*sp.pi*Gn*rho) == 0)
+check("2+1: the same energy does NOT slow the rate (R_00 = 0 for dust)",
+      R00_dust.subs(Dd, 3) == 0)
+offd = sp.simplify(G4[1, 2])
+check("3+1: the slowed rate then fixes the extents, G_xy = d_x d_y (Psi - Phi) = 0 -> Psi = Phi",
+      sp.simplify(offd - sp.diff(Ps4 - Ph4, sp4[0], sp4[1])) == 0)
+print("   chain in 3+1:  energy --(R_00)--> slows u --(G_ij, no anisotropic stress)--> extents warp by the same u")
+print("   chain in 2+1:  energy --(R_00 = 0)--> u untouched; energy only cuts a conical deficit")
 
 # =====================================================================================
 head("VERDICT")
@@ -241,6 +268,9 @@ print("   * Gravity is 2 and +1 jointly. The pull lives in time: in retarded coo
 print("     mass sits only in g_uu. But time alone carries none: in literal 2+1 GR the rate is")
 print("     forced constant and a mass makes only a conical deficit. The 2D sky supplies the")
 print("     inverse-square dilution (area ~ r^2) that lets the rate fall off and pull.")
+print("   * Energy slows u with strength (D-3)/(D-2): 1/2 of 8 pi G rho in D = 4, zero in D = 3.")
+print("     In 4D the slowed u then warps the extents (Psi = Phi). In 2+1 the first link is")
+print("     missing, which is WHY 2+1 has no pull: the extra dimension is what lets energy slow time.")
 print("   * All of it is GR's linearised theory; the DTF content is the reading. No discriminator.")
 print()
 print(f"OVERALL: {'PASS' if all(ok_all) else 'FAIL'} ({sum(ok_all)}/{len(ok_all)} checks)")
