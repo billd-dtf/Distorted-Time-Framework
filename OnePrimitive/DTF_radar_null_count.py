@@ -42,7 +42,7 @@ print("   (d-1)d/2 - 1  -  (d+1)(d-2)/2 =", sp.simplify(null_count - adm_count))
 assert sp.simplify(null_count - adm_count) == 0
 print("   d | cross-section dim | conformal-shear components | ADM")
 for dd in range(2, 7):
-    print(f"   {dd} | {dd-1:>16} | {null_count.subs(d, dd):>26} | {adm_count.subs(d, dd)}")
+    print(f"   {dd} | {dd-1:>16} | {str(null_count.subs(d, dd)):>26} | {adm_count.subs(d, dd)}")
 assert null_count.subs(d, 3) == 2 and null_count.subs(d, 2) == 0
 
 print("""
