@@ -8,8 +8,8 @@ Also bin the residuals to show the fixed-a0 curve tracks the data.
 """
 import os
 import numpy as np, sparc_io as s
-KMS=1e3; KPC=3.0856775814913673e19; c=2.99792458e8; Mpc=3.0856775815e22
-H0=67.4e3/Mpc; cH0=c*H0; a0_derived=cH0/(2*np.pi)
+from dtf_constants import c, H0, kpc as KPC, a0_derived
+KMS=1e3; cH0=c*H0
 
 _MRT = os.environ.get("SPARC_MRT") or os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "..", "Data", "MassModels_Lelli2016c.mrt")

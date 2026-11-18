@@ -18,8 +18,9 @@ if not TR:
             "Stream tracks not found. This script uses tracks from the galstreams package "
             "(Mateu 2023); they are not redistributed here. Run: pip install galstreams, "
             "or set GALSTREAMS_TRACKS to a directory of stream-track .ecsv files.")
-c=2.99792458e8; G=6.674e-11; Msun=1.989e30; kpc=3.0857e19
-Mpc=3.0856775815e22; H0=67.4e3/Mpc; a0=c*H0/(2*np.pi); R0=8.122; Mb=6.0e10*Msun
+from dtf_constants import c, G, Msun, kpc, a0_derived as a0
+_trapz = getattr(np, "trapezoid", None) or np.trapz   # numpy >= 2.0 renamed trapz
+R0=8.122; Mb=6.0e10*Msun
 A_G=np.array([[-0.0548755604,-0.8734370902,-0.4838350155],
               [ 0.4941094279,-0.4448296300, 0.7469822445],
               [-0.8676661490,-0.1980763734, 0.4559837762]])
@@ -55,7 +56,7 @@ def aqual_apsidal(rp_kpc,ra_kpc):
     r=np.linspace(rp*1.0001,ra*0.9999,20000)
     vr2=2*(E-Phi_i(r))-L2/r**2; vr2=np.clip(vr2,1e-30,None)
     dphi=(L/r**2)/np.sqrt(vr2)
-    return np.degrees(np.trapz(dphi,r))
+    return np.degrees(_trapz(dphi,r))
 
 targets={"Orphan-Chenab":"track.st.Orphan-Chenab.koposov2019.ecsv",
          "Sagittarius":"track.st.Sagittarius.antoja2020.ecsv"}

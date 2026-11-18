@@ -37,7 +37,7 @@ print("     radiation (w=1/3): v ~ const ;  matter (w=0): v ~ 1/a")
 
 # ---------------------------------------------------------------- 2. background
 print(); print("="*70); print("2. omega/H : how fast does a global 'now' actually emerge?"); print("="*70)
-Om,Or,OL = 0.315, 9.2e-5, 0.685
+from dtf_constants import Omega_m as Om, Omega_r as Or, Omega_L as OL, H0 as H0_si, yr
 def Hubble(a): return np.sqrt(Or/a**4 + Om/a**3 + OL)      # H(a)/H0
 def ratio(a):  return (a**-2)/Hubble(a)                     # omega/H  (up to a constant)
 a_eq = Or/Om
@@ -51,8 +51,6 @@ print(f"   Total suppression of omega/H from equality to today: {ratio(1.0)/rati
 
 # ---------------------------------------------------------------- 3. amplitude today
 print(); print("="*70); print("3. AMPLITUDE TODAY -- the number that decides falsifiability"); print("="*70)
-H0_si   = 67.4*1e3/3.0857e22                    # s^-1
-yr      = 3.156e7
 rad2mas = 180/np.pi*3.6e6                       # rad -> milliarcsec
 H0_mas  = H0_si*yr*rad2mas
 print(f"   H0 itself, as a rotation rate      = {H0_mas:8.4f} mas/yr   (the natural scale)")

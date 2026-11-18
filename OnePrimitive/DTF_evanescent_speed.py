@@ -21,7 +21,7 @@ free parameters, using the paper's own effective photon mass m = 6.95e-36 kg.
 """
 import numpy as np
 
-hbar = 1.054571817e-34      # J s
+from dtf_constants import hbar   # J s
 e    = 1.602176634e-19      # C  (also J per eV)
 m    = 6.95e-36             # kg  effective photon mass, Sharoglazova et al. (2025)
 

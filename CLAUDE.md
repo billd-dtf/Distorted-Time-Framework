@@ -48,12 +48,10 @@ hypothesis (dissolved), E = ħω (identity), gravity+inertia and classical+QM (u
 graviton mediator (reclassified), space as primitive (reconceived), Born (clarified only),
 entropy growth rate (inherited, open O5).
 
-### Known loose ends in the scripts' constants
+### Constants live in one module
 
-- `H0` is not fixed across scripts: 70 km/s/Mpc in `DTF_cosmology_timeline.py`,
-  `DTF_darksectors_unified.py`, `DTF_de_horizon.py`; 67.4 in `DTF_sparc_fixed_a0.py`,
-  `DTF_stream_apsidal.py`; `DTF_mond_quadrature_zeta.py` scans 67.4/70/73. This moves
-  `a0 = cH0/2π` by ~4%, inside the cH0 vs cH0/2π vs cH0/6 ambiguity the paper flags.
-- Precision is mixed: CODATA in some scripts (`ħ = 1.054571817e-34`, `c = 2.99792458e8`),
-  rounded in others (`ħ = 1.054e-34` / `1.055e-34`, `c = 2.998e8`, `G = 6.674e-11`).
-  No shared constants module exists.
+`OnePrimitive/dtf_constants.py` is the single source for SI and cosmological numbers
+(CODATA 2018, IAU 2012/2015, Planck 2018). `H0 = 67.4` km/s/Mpc everywhere;
+`a0_derived = cH0/2π = 1.042e-10` m/s². New scripts import from it rather than
+hard-coding values. `DTF_mond_quadrature_zeta.py` deliberately scans H0 = 67.4/70/73.
+Scripts in natural units (ħ = m = 1) do not import it.

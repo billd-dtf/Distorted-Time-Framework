@@ -52,8 +52,11 @@ python OnePrimitive/DTF_native_arrow.py           # S = ln N, with N ~ omega * s
 python OnePrimitive/DTF_o8_tsirelson.py           # the CHSH bound, 2 sqrt 2
 ```
 
-All scripts live in **`OnePrimitive/`** — the 37 the paper cites, plus the `sparc_io`
-reader one of them imports. The paper's Code Availability section says which script backs
+All scripts live in **`OnePrimitive/`** — the 37 the paper cites, plus two helpers: the
+`sparc_io` reader one of them imports, and **`dtf_constants.py`**, the single source for every
+SI and cosmological number the scripts use (CODATA 2018, IAU, Planck 2018; `H0 = 67.4`
+km/s/Mpc). Run `python OnePrimitive/dtf_constants.py` to print them. Scripts in natural units
+(ħ = m = 1) do not import it. The paper's Code Availability section says which script backs
 which claim.
 
 An earlier three-volume presentation of this material is deposited on Zenodo under the DOI

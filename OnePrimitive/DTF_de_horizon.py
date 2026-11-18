@@ -16,9 +16,7 @@ The magnitude is automatic (dimensional), exactly as a0 = cH0/2pi is 'dimensiona
 import numpy as np
 
 # constants (SI)
-G = 6.674e-11; c = 2.998e8
-H0_kmsMpc = 70.0
-H0 = H0_kmsMpc*1000/3.086e22            # 1/s
+from dtf_constants import G, c, H0, Mpc, Omega_L
 rho_crit = 3*H0**2/(8*np.pi*G)          # kg/m^3
 
 print("="*76)
@@ -26,12 +24,12 @@ print("(1) Horizon / holographic dark-energy density vs the observed value")
 print("="*76)
 L = c/H0
 rho_holo = lambda d: 3*d**2/(8*np.pi*G)*(H0/c)**2 * c**2    # = d^2 * rho_crit
-print(f"  Hubble/de Sitter horizon  L = c/H0 = {L/3.086e22:.0f} Mpc")
+print(f"  Hubble/de Sitter horizon  L = c/H0 = {L/Mpc:.0f} Mpc")
 print(f"  rho_crit                          = {rho_crit:.3e} kg/m^3")
 print(f"  holographic rho_Lambda = d^2 * rho_crit  =>  Omega_Lambda = d^2")
 for d in [0.5, 0.70, 0.82, 1.0]:
     print(f"    d = {d:>4} -> Omega_Lambda = {d**2:.2f}")
-print(f"  => Omega_Lambda ~ O(1) AUTOMATICALLY. Observed 0.68 needs d = {np.sqrt(0.68):.2f} (an O(1)")
+print(f"  => Omega_Lambda ~ O(1) AUTOMATICALLY. Observed {Omega_L} needs d = {np.sqrt(Omega_L):.2f} (an O(1)")
 print("     coefficient, NOT derived -- exactly the status of a0's 2pi: scale yes, coeff no).")
 
 print("\n" + "="*76)

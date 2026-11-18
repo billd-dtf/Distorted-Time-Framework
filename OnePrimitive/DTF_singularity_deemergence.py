@@ -22,9 +22,7 @@ except Exception: pass
 def hr(t): print("="*74); print(t); print("="*74)
 
 # physical constants
-lP = 1.616e-35            # Planck length [m]
-mP = 2.176e-8             # Planck mass [kg]
-Msun = 1.989e30           # kg
+from dtf_constants import lP, mP, Msun   # Planck length [m], Planck mass [kg], solar mass [kg]
 
 # All lengths below in PLANCK UNITS (l_P = 1); masses in PLANCK MASSES (m_P = 1).
 def r_horizon(M):   return 2.0*M                       # u = 0 surface (redshift)

@@ -22,9 +22,9 @@ try: sys.stdout.reconfigure(encoding='utf-8')
 except Exception: pass
 def hr(t): print("="*74); print(t); print("="*74)
 
-hbar=1.054571817e-34; c=2.99792458e8; G=6.67430e-11
+from dtf_constants import hbar, c, G, Msun
 lP=np.sqrt(hbar*G/c**3); mP=np.sqrt(hbar*c/G); tP=lP/c
-rhoP=c**5/(hbar*G**2); Msun=1.989e30
+rhoP=c**5/(hbar*G**2)
 
 def r_s(M):   return 2*G*M/c**2
 def R_core(M):return (M/rhoP)**(1.0/3.0)     # fat de-emergence core (rho=rho_P), coeff O(1)

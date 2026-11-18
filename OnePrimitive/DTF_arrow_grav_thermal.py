@@ -4,7 +4,7 @@ Shoring up the foundation for the Row organizing principle:
   THREAD 1 -- gravitational vs thermal entropy sign (Penrose), row-resolved.
 """
 import numpy as np
-hbar=1.054e-34; c=2.998e8; G=6.674e-11; kB=1.381e-23
+from dtf_constants import hbar, c, G, kB, H0, rho_crit
 
 print("="*68)
 print("THREAD 2 -- native arrow: dN/dtau bounded by ENERGY (Margolus-Levitin)")
@@ -19,8 +19,8 @@ print("  -> 'entropy is a clock cycle, same as energy'  AND  'entropy = u speedi
 print("     are the SAME statement: energy sets how fast distinguishable ticks accrue.\n")
 
 # Lloyd's cosmic number: N of the observable universe
-rho = 9.9e-27                      # critical density ~ kg/m^3
-R_H = c/(2.2e-18)                  # Hubble radius (H0~2.2e-18 /s)
+rho = rho_crit                     # critical density, kg/m^3 (dtf_constants)
+R_H = c/H0                         # Hubble radius
 V = (4/3)*np.pi*R_H**3
 M = rho*V; E = M*c**2
 t_age = 4.35e17                    # s

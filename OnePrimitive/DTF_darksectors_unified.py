@@ -17,17 +17,16 @@ global now. 'Dark matter' here means the MOND shadow, not particles.
 """
 import numpy as np
 
-G = 6.674e-11; c = 2.998e8
-H0 = 70.0*1000/3.086e22            # 1/s
+from dtf_constants import G, c, H0, Mpc, Omega_L
 rho_crit = 3*H0**2/(8*np.pi*G)
 L = c/H0                            # the one horizon
-d = np.sqrt(0.68)                  # O(1) holographic coefficient s.t. Omega_L = d^2 = 0.68 (not derived)
+d = np.sqrt(Omega_L)               # O(1) holographic coefficient s.t. Omega_L = d^2 (observed, not derived)
 rho_L = d**2 * rho_crit            # dark-energy density
 
 print("="*76)
 print("ONE horizon L = c/H0, two dark sectors")
 print("="*76)
-print(f"  horizon           L      = c/H0      = {L/3.086e22:.0f} Mpc")
+print(f"  horizon           L      = c/H0      = {L/Mpc:.0f} Mpc")
 print(f"  DARK ENERGY       rho_L  ~ c^2/(G L^2) = d^2 rho_crit,  Omega_L = d^2 = {d**2:.2f}  (d={d:.2f}, O(1))")
 a0 = c**2/(2*np.pi*L)
 print(f"  DARK MATTER (MOND) a0    = c^2/(2 pi L) = cH0/2pi      = {a0:.2e} m/s^2")
