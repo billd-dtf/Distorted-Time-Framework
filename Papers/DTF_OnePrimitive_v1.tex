@@ -714,7 +714,7 @@ Late times: the redshift is unchanged ($1+z=a_{\rm obs}/a_{\rm emit}$; homogeneo
 one finite causal horizon $L=c/H_0$ fixes both dark scales,
 \[ \Omega_\Lambda=d^2\sim O(1), \qquad a_0\sim cH_0, \qquad \rho_\Lambda/\rho_P\sim(\ell_P/L)^2\sim10^{-122} . \]
 All at conjecture level: the observed $\Omega_\Lambda=0.68$ \emph{would require} $d\approx0.82$ (not forced),
-and $w=-1$ needs the future event horizon (Hsu--Li~\cite{Hsu2004,Li2004}). Scripts:
+and $w=-1$ needs the future event horizon (Hsu--Li~\cite{Hsu2004,Li2004}), which turns phantom for $d<1$ (O6). Scripts:
 \texttt{DTF\_cosmology\_timeline}, \texttt{DTF\_de\_horizon}, \texttt{DTF\_darksectors\_unified}.
 
 %======================================================================
@@ -748,6 +748,42 @@ observables ($n_s,r$) are unshown (\S\ref{sec:consistency}).
 \item \textbf{The driver of clock desync.} The arrow follows from a spread $\sigma_u$ in local rates
 (\S\ref{sec:rate}, App.~G), but what \emph{grows} $\sigma_u$ from the Row-0 synced state is gravitational clumping ---
 argued from the sign of the instability, not simulated. The entropy results are conditional on it.
+\item \textbf{The dark-energy coefficient and its equation of state.} The horizon fixes the \emph{scale}
+$\rho_\Lambda=d^2\rho_{\rm crit}$, not $d$; the observed $\Omega_\Lambda=0.68$ needs $d\approx0.82$
+(\S\ref{sec:consistency}). Taking $w=-1$ from the future-event-horizon cutoff~\cite{Li2004}, where
+$w=-\tfrac13-\tfrac{2}{3d}\sqrt{\Omega_\Lambda}$, has two costs. It is partly circular, since the event horizon exists only if the expansion
+accelerates. It also turns phantom for any $d<1$: $w\simeq-1.00$ today but $w\to-\tfrac13-\tfrac{2}{3d}\simeq-1.15$ as
+$\Omega_\Lambda\to1$, which contradicts the no-phantom future that $\pi_u=0$ implies (premise~(ii) below). So either $d=1$
+exactly, which keeps $w\to-1$ but leaves $\Omega_\Lambda$ today to the matter history and so unpredicted, or the event-horizon
+cutoff is dropped and only the $O(1)$ scale is claimed. Until this is resolved, $w$ is not a DTF output.
+\item \textbf{One cosmic input carries both dark scales.} $a_0=cH_0/2\pi$, $\rho_\Lambda\sim(cH_0)^2c^2/G$ and the
+horizon $L=c/H_0$ all descend from $H_0$, which stays an input (Appendix~E). The ``two faces of one horizon''
+unification is therefore a statement about \emph{shared} dependence on $H_0$; it becomes predictive only
+once the coefficients are fixed. Here the $2\pi$ in $a_0$ (argued from radians per cycle, App.~B) is not separated from
+$1$ or $6$ by SPARC (\S\ref{sec:consistency}), and $d$ is O6.
+\end{enumerate}
+
+\noindent\textbf{Premises in use, stated.}\ \ Three rules are used by the equations above without having been stated. They are
+listed because each one carries weight in the argument and each can be tested.
+\begin{enumerate}[leftmargin=1.9em,itemsep=2pt,topsep=2pt,label=(\roman*)]
+\item \textbf{No spatial gradient in $\omega_C$.} The energy is $E=\hbar\omega_C u$, so the drive is in general
+$\mathbf F=-\hbar\omega_C\nabla u-\hbar u\nabla\omega_C$. The drive of \S\ref{sec:rate} is the first term alone, so
+$\nabla\omega_C=0$ is assumed. This is the equivalence principle in DTF's variables. A $\nabla\omega_C\neq0$ would be a
+composition-dependent fifth force, which free-fall tests bound at $\sim10^{-15}$. It also follows that changing an
+object's $\omega_C$ on board produces no lift: shed rest energy that is radiated isotropically carries no momentum, and the
+lighten--lift--restore cycle closes to zero only because the energy sent up is redshifted by $u$.
+\item \textbf{$u\le1$ (energy conditions).} With $u=1$ for a clock at rest far from all sources, no clock ticks faster
+than that reference unless some source has $\rho<0$; a phantom component ($\rho+p<0$) violates the null energy
+condition in the same way. DTF admits neither. Classical electromagnetism satisfies this, since its field energy is positive and only deepens
+$u$. The Casimir vacuum would give $\delta u\lesssim10^{-50}$, which is not observable. This premise is what makes O6 a real tension
+rather than a free choice.
+\item \textbf{Homogeneous $u(t)$ is gauge; redshift needs $\omega_C$ relative to light.} The line element $-u(t)^2c^2dt^2+d\mathbf x^2$ becomes
+Minkowski under $T=\int u\,dt$, so a uniform $u(t)$ gives $z=0$: it rescales the photon and the atom alike. A
+redshift needs atomic frequencies to change \emph{relative to} light, $1+z=\omega_C^{\rm now}/\omega_C^{\rm then}$. A
+uniform $\omega_C(t)\propto a(t)$ for all species, $M_{\rm P}$ included, is a conformal frame of FRW~\cite{Wetterich2013}. It reproduces the
+$(1+z)$ light-curve stretch and $(1+z)^{-4}$ surface-brightness dimming exactly, so it is a re-description rather than a rival.
+A version with new content requires the local and cosmic drift of $\omega_C$ to differ, and laboratory clocks bound that
+at $\lesssim10^{-17}\,{\rm yr}^{-1}$.
 \end{enumerate}
 
 %======================================================================
@@ -1016,9 +1052,10 @@ content.
 \bibitem{Rovelli1996} C.~Rovelli, \emph{Relational quantum mechanics}, Int. J. Theor. Phys. \textbf{35}, 1637 (1996).
 \bibitem{GravityProbeB2011} C.~W.~F. Everitt et al., \emph{Gravity Probe B: Final Results of a Space Experiment to Test General Relativity}, Phys. Rev. Lett. \textbf{106}, 221101 (2011).
 \bibitem{LARES2016} I.~Ciufolini et al., \emph{A test of general relativity using the LARES and LAGEOS satellites and a GRACE Earth gravity model}, Eur. Phys. J. C \textbf{76}, 120 (2016).
-\bibitem{Saadeh2016} D.~Saadeh, S.~M. Feeney, A.~Pontzen, H.~V. Peiris, and J.~D. McEwen, \emph{How Isotropic is the Universe?}, Phys. Rev. Lett. 	extbf{117}, 131302 (2016).
+\bibitem{Saadeh2016} D.~Saadeh, S.~M. Feeney, A.~Pontzen, H.~V. Peiris, and J.~D. McEwen, \emph{How Isotropic is the Universe?}, Phys. Rev. Lett. \textbf{117}, 131302 (2016).
 \bibitem{Hsu2004} S.~D.~H. Hsu, \emph{Entropy bounds and dark energy}, Phys. Lett. B \textbf{594}, 13 (2004).
 \bibitem{Li2004} M.~Li, \emph{A model of holographic dark energy}, Phys. Lett. B \textbf{603}, 1 (2004).
+\bibitem{Wetterich2013} C.~Wetterich, \emph{A Universe without expansion}, Phys. Dark Univ. \textbf{2}, 184 (2013).
 \bibitem{Catillon2008} P.~Catillon \emph{et al.}, \emph{A search for the de Broglie particle internal clock by means of electron channeling}, Found. Phys. \textbf{38}, 659 (2008).
 \bibitem{Albert2000} D.~Z. Albert, \emph{Time and Chance} (Harvard University Press, 2000).
 \bibitem{Kaufman2016} A.~M. Kaufman, M.~E. Tai, A.~Lukin, M.~Rispoli, R.~Schittko, P.~M. Preiss, and M.~Greiner, \emph{Quantum thermalization through entanglement in an isolated many-body system}, Science \textbf{353}, 794 (2016).
