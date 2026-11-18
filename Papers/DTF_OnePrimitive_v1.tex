@@ -469,7 +469,7 @@ the variation of the Fisher functional~\cite{Reginatto1998,Frieden1989}.
 \noindent DTF adds no term. It reads the two already there, and three results follow.
 \begin{itemize}[leftmargin=1.4em,itemsep=3pt,topsep=3pt]
 \item \textbf{The tax is forced, not chosen.} Among local terms with at most two derivatives, the Fisher form
-  is the \emph{unique} one that keeps the $\psi$-equation linear (\texttt{DTF\_o9\_fisher\_unique.py}). Why
+  is the \emph{unique} one that keeps the $\psi$-equation linear (\texttt{DTF\_fisher\_unique.py}). Why
   quantum mechanics is linear is not addressed.
 \item \textbf{Born is not a separate axiom.} The current $j=\rho\nabla S/m$ makes $|\psi|^2$ equivariant, so
   Born frequencies are a typicality assumption~\cite{DGZ1992,Valentini1991} rather than a theorem, and objects
@@ -487,7 +487,7 @@ brought together. Nothing orders spacelike-separated outcomes, so the account is
 relativistic pilot-wave theories~\cite{DGMZ1999,Tumulka2006}, which must postulate a foliation). The ledger is timeless rather than a past hidden variable, so it evades Bell's factorisation and is compatible with the quantum bound. The CHSH operator obeys
 \[ C^2 = 4I-[A,A'][B,B'], \qquad \text{so}\quad \|C\|\le 2\sqrt2 \]
 (the standard Tsirelson bound, which QM saturates; the classical $2$ is the commuting case;
-\texttt{DTF\_o8\_tsirelson.py}). This is the recognised locally-mediated/atemporal
+\texttt{DTF\_tsirelson\_bound.py}). This is the recognised locally-mediated/atemporal
 class~\cite{WhartonArgaman2020}, Row 0 the timeless bookkeeper. What remains: a dynamical ledger, and
 no-signalling, which the row ordering \emph{motivates} without yet deriving.
 
@@ -1025,10 +1025,10 @@ Scripts: \texttt{DTF\_entropy\_clockcycle.py}, \texttt{DTF\_native\_arrow.py},
 \small All results marked \emph{verified} are reproduced by short Python scripts (NumPy/SciPy/SymPy) at
 \url{https://github.com/billd-dtf/Distorted-Time-Framework} (all names carry the \texttt{DTF\_} prefix):
 \begin{itemize}[leftmargin=1.4em,itemsep=1.5pt,topsep=2pt]
-\item \textbf{\S\ref{sec:rate}:} \texttt{which\_reading\_is\_DTF}, \texttt{phase\_unification}, \texttt{o6\_congruence}, \texttt{localnow\_integrability}, \texttt{native\_arrow}, \texttt{entropy\_clockcycle}, \texttt{entropy\_is\_entanglement}, \texttt{arrow\_grav\_thermal}, \texttt{vorticity\_residual}
+\item \textbf{\S\ref{sec:rate}:} \texttt{which\_reading\_is\_DTF}, \texttt{phase\_unification}, \texttt{congruence\_lapse}, \texttt{localnow\_integrability}, \texttt{native\_arrow}, \texttt{entropy\_clockcycle}, \texttt{entropy\_is\_entanglement}, \texttt{arrow\_grav\_thermal}, \texttt{vorticity\_residual}
 \item \textbf{\S\ref{sec:equiv}:} \texttt{kerr\_deser\_closure}
 \item \textbf{\S\ref{sec:gravity}:} \texttt{radiative\_content\_constructive}, \texttt{alpha1\_explicit\_1PN}
-\item \textbf{\S\ref{sec:quantum}:} \texttt{localization\_tax}, \texttt{evanescent\_speed}, \texttt{born\_relaxation\_2d}, \texttt{o8\_tsirelson}, \texttt{o9\_fisher\_unique}, \texttt{o1\_wallstrom}, \texttt{o2\_deotto\_ghirardi}, \texttt{winding\_dynamics}, \texttt{o2\_amplitude\_channel}, \texttt{o2\_arrival\_time}, \texttt{o2\_tax\_sources\_chi}, \texttt{no\_signalling\_projection}
+\item \textbf{\S\ref{sec:quantum}:} \texttt{localization\_tax}, \texttt{evanescent\_speed}, \texttt{born\_relaxation\_2d}, \texttt{tsirelson\_bound}, \texttt{fisher\_unique}, \texttt{o1\_wallstrom}, \texttt{o2\_deotto\_ghirardi}, \texttt{winding\_dynamics}, \texttt{o2\_amplitude\_channel}, \texttt{o2\_arrival\_time}, \texttt{o2\_tax\_sources\_chi}, \texttt{no\_signalling\_projection}
 \item \textbf{\S\ref{sec:consistency}:} \texttt{singularity\_deemergence}, \texttt{LTB\_collapse}, \texttt{singularity\_observable}, \texttt{mond\_quadrature\_zeta}, \texttt{sparc\_fixed\_a0}, \texttt{stream\_apsidal}, \texttt{cosmology\_timeline}, \texttt{de\_horizon}, \texttt{darksectors\_unified}, \texttt{localnow\_eventhorizon}
 \item \textbf{App.\ D:} \texttt{em\_from\_phase}, \texttt{em\_clockphase\_forced}, \texttt{force\_census}, \texttt{em\_frame\_gauge}
 \end{itemize}

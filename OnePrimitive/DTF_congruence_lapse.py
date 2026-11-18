@@ -1,4 +1,4 @@
-"""O6: covariant form of the local rate = proper-time rate of the matter congruence.
+"""covariant form of the local rate = proper-time rate of the matter congruence.
 Two verified claims: (a) the DTF drive gradient IS the congruence four-acceleration, a_mu = d_mu ln u
 (u = lapse); (b) a congruence with vorticity is NOT hypersurface-orthogonal (u^du != 0), so no global
 time function / no global u exists -- vorticity IS the non-integrability the paper asserts."""
