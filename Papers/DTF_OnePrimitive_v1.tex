@@ -714,7 +714,7 @@ Late times: the redshift is unchanged ($1+z=a_{\rm obs}/a_{\rm emit}$; homogeneo
 one finite causal horizon $L=c/H_0$ fixes both dark scales,
 \[ \Omega_\Lambda=d^2\sim O(1), \qquad a_0\sim cH_0, \qquad \rho_\Lambda/\rho_P\sim(\ell_P/L)^2\sim10^{-122} . \]
 All at conjecture level: the observed $\Omega_\Lambda=0.68$ \emph{would require} $d\approx0.82$ (not forced),
-and $w=-1$ needs the future event horizon (Hsu--Li~\cite{Hsu2004,Li2004}), which turns phantom for $d<1$ (O6). Scripts:
+and $w=-1$ needs the future event horizon (Hsu--Li~\cite{Hsu2004,Li2004}), a different cutoff from the one giving $d\approx0.82$, which turns phantom for $d<1$ (O6). Scripts:
 \texttt{DTF\_cosmology\_timeline}, \texttt{DTF\_de\_horizon}, \texttt{DTF\_darksectors\_unified}.
 
 %======================================================================
@@ -749,13 +749,16 @@ observables ($n_s,r$) are unshown (\S\ref{sec:consistency}).
 (\S\ref{sec:rate}, App.~G), but what \emph{grows} $\sigma_u$ from the Row-0 synced state is gravitational clumping ---
 argued from the sign of the instability, not simulated. The entropy results are conditional on it.
 \item \textbf{The dark-energy coefficient and its equation of state.} The horizon fixes the \emph{scale}
-$\rho_\Lambda=d^2\rho_{\rm crit}$, not $d$; the observed $\Omega_\Lambda=0.68$ needs $d\approx0.82$
-(\S\ref{sec:consistency}). Taking $w=-1$ from the future-event-horizon cutoff~\cite{Li2004}, where
-$w=-\tfrac13-\tfrac{2}{3d}\sqrt{\Omega_\Lambda}$, has two costs. It is partly circular, since the event horizon exists only if the expansion
-accelerates. It also turns phantom for any $d<1$: $w\simeq-1.00$ today but $w\to-\tfrac13-\tfrac{2}{3d}\simeq-1.15$ as
-$\Omega_\Lambda\to1$, which contradicts the no-phantom future that $\pi_u=0$ implies (premise~(ii) below). So either $d=1$
-exactly, which keeps $w\to-1$ but leaves $\Omega_\Lambda$ today to the matter history and so unpredicted, or the event-horizon
-cutoff is dropped and only the $O(1)$ scale is claimed. Until this is resolved, $w$ is not a DTF output.
+$\rho_\Lambda\sim(cH_0)^2c^2/G$, not the coefficient $d$, and the two claims made about $d$ in
+\S\ref{sec:consistency} rest on two different cutoffs. The Hubble cutoff $L=c/H$ gives $\Omega_\Lambda=d^2$, hence
+$d\approx0.82$, but $\rho_\Lambda$ then tracks $H^2$ and does not accelerate ($w\approx0$~\cite{Hsu2004}). The
+future-event-horizon cutoff~\cite{Li2004} accelerates, with $w=-\tfrac13-\tfrac{2}{3d}\sqrt{\Omega_\Lambda}$, but there
+$\Omega_\Lambda$ today is an integration constant rather than $d^2$, and the cutoff is partly circular because the
+event horizon exists only if the expansion accelerates. Evolved from $\Omega_\Lambda=0.68$, it cannot give both
+$w\approx-1$ today and no phantom. It crosses $w=-1$ at $\Omega_\Lambda=d^2$ and is phantom afterwards for any $d<1$:
+at $d=0.82$, $w=-1.00$ today and $w\to-\tfrac13-\tfrac{2}{3d}=-1.15$, which violates premise~(ii) below (the
+no-phantom future that $\pi_u=0$ implies). At $d=1$ it is never phantom, but $w\approx-0.88$ today
+(\texttt{DTF\_de\_horizon.py}). DTF therefore claims only the $O(1)$ scale; $d$ and $w$ are not DTF outputs.
 \item \textbf{One cosmic input carries both dark scales.} $a_0=cH_0/2\pi$, $\rho_\Lambda\sim(cH_0)^2c^2/G$ and the
 horizon $L=c/H_0$ all descend from $H_0$, which stays an input (Appendix~E). The ``two faces of one horizon''
 unification is therefore a statement about \emph{shared} dependence on $H_0$; it becomes predictive only
