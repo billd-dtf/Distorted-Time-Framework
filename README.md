@@ -46,7 +46,7 @@ check. Pure Python, no build step:
 
 ```bash
 pip install -r requirements.txt
-python OnePrimitive/DTF_o2_amplitude_channel.py   # no amplitude-directed law is Born-equivariant
+python OnePrimitive/DTF_amplitude_channel.py      # no amplitude-directed law is Born-equivariant
 python OnePrimitive/DTF_vorticity_residual.py     # the frame-dragging residual, and why it is not a test
 python OnePrimitive/DTF_native_arrow.py           # S = ln N, with N ~ omega * sigma_u * t
 python OnePrimitive/DTF_tsirelson_bound.py         # the CHSH bound, 2 sqrt 2
