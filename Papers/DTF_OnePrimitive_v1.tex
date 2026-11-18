@@ -469,7 +469,7 @@ the variation of the Fisher functional~\cite{Reginatto1998,Frieden1989}.
 \noindent DTF adds no term. It reads the two already there, and three results follow.
 \begin{itemize}[leftmargin=1.4em,itemsep=3pt,topsep=3pt]
 \item \textbf{The tax is forced, not chosen.} Among local terms with at most two derivatives, the Fisher form
-  is the \emph{unique} one that keeps the $\psi$-equation linear (\texttt{DTF\_o9\_fisher\_unique.py}). Why
+  is the \emph{unique} one that keeps the $\psi$-equation linear (\texttt{DTF\_fisher\_unique.py}). Why
   quantum mechanics is linear is not addressed.
 \item \textbf{Born is not a separate axiom.} The current $j=\rho\nabla S/m$ makes $|\psi|^2$ equivariant, so
   Born frequencies are a typicality assumption~\cite{DGZ1992,Valentini1991} rather than a theorem, and objects
@@ -487,7 +487,7 @@ brought together. Nothing orders spacelike-separated outcomes, so the account is
 relativistic pilot-wave theories~\cite{DGMZ1999,Tumulka2006}, which must postulate a foliation). The ledger is timeless rather than a past hidden variable, so it evades Bell's factorisation and is compatible with the quantum bound. The CHSH operator obeys
 \[ C^2 = 4I-[A,A'][B,B'], \qquad \text{so}\quad \|C\|\le 2\sqrt2 \]
 (the standard Tsirelson bound, which QM saturates; the classical $2$ is the commuting case;
-\texttt{DTF\_o8\_tsirelson.py}). This is the recognised locally-mediated/atemporal
+\texttt{DTF\_tsirelson\_bound.py}). This is the recognised locally-mediated/atemporal
 class~\cite{WhartonArgaman2020}, Row 0 the timeless bookkeeper. What remains: a dynamical ledger, and
 no-signalling, which the row ordering \emph{motivates} without yet deriving.
 
@@ -583,10 +583,10 @@ $\chi$, not about detectability). With $\chi=0$ forced, none of it is available 
 \textbf{DTF is identical to quantum mechanics not only in single-time statistics but in arrival
 statistics too, and its whole empirical exposure is gravitational (\S\ref{sec:consistency}).}
 \end{tcolorbox}
-\statusline{Verified: \texttt{DTF\_o2\_amplitude\_channel.py} (trichotomy; $0.7\varepsilon$ rate;
-Fokker--Planck cancellation exact), \texttt{DTF\_o2\_tax\_sources\_chi.py} ($\chi=0$: the tax contributes
-$(0,0)$ to $j$), \texttt{DTF\_o2\_arrival\_time.py} (complete-plane flux null; aperture shift for $\chi\neq0$),
-\texttt{DTF\_o2\_deotto\_ghirardi.py}.}
+\statusline{Verified: \texttt{DTF\_amplitude\_channel.py} (trichotomy; $0.7\varepsilon$ rate;
+Fokker--Planck cancellation exact), \texttt{DTF\_tax\_sources\_chi.py} ($\chi=0$: the tax contributes
+$(0,0)$ to $j$), \texttt{DTF\_arrival\_time.py} (complete-plane flux null; aperture shift for $\chi\neq0$),
+\texttt{DTF\_deotto\_ghirardi.py}.}
 
 
 \medskip
@@ -711,10 +711,12 @@ Whether the emergence also drives inflation is \emph{left open} (it would need a
 invariance, $\pi_u\neq0$; O4).
 
 Late times: the redshift is unchanged ($1+z=a_{\rm obs}/a_{\rm emit}$; homogeneous $u(t)$ is gauge), and the
-one finite causal horizon $L=c/H_0$ fixes both dark scales,
-\[ \Omega_\Lambda=d^2\sim O(1), \qquad a_0\sim cH_0, \qquad \rho_\Lambda/\rho_P\sim(\ell_P/L)^2\sim10^{-122} . \]
-All at conjecture level: the observed $\Omega_\Lambda=0.68$ \emph{would require} $d\approx0.82$ (not forced),
-and $w=-1$ needs the future event horizon (Hsu--Li~\cite{Hsu2004,Li2004}). Scripts:
+one finite causal horizon $L=c/H_0$ sets the \emph{size} of both dark scales,
+\[ \rho_\Lambda/\rho_P\sim(\ell_P/L)^2\sim10^{-122}\ \ (\Omega_\Lambda\sim O(1)), \qquad a_0\sim cH_0 . \]
+All at conjecture level, and both coefficients are open. The value $\Omega_\Lambda=0.68$ and the equation of state
+$w$ are not outputs: the Hubble cutoff, which would set $\Omega_\Lambda=d^2$, does not accelerate, and the
+event-horizon cutoff, which does accelerate (Hsu--Li~\cite{Hsu2004,Li2004}), turns phantom for $d<1$ (O6). Both
+scales share their dependence on the input $H_0$ (O7). Scripts:
 \texttt{DTF\_cosmology\_timeline}, \texttt{DTF\_de\_horizon}, \texttt{DTF\_darksectors\_unified}.
 
 %======================================================================
@@ -748,6 +750,45 @@ observables ($n_s,r$) are unshown (\S\ref{sec:consistency}).
 \item \textbf{The driver of clock desync.} The arrow follows from a spread $\sigma_u$ in local rates
 (\S\ref{sec:rate}, App.~G), but what \emph{grows} $\sigma_u$ from the Row-0 synced state is gravitational clumping ---
 argued from the sign of the instability, not simulated. The entropy results are conditional on it.
+\item \textbf{The dark-energy coefficient and its equation of state.} The horizon fixes the \emph{scale}
+$\rho_\Lambda\sim(cH_0)^2c^2/G$, not the coefficient $d$, and the two natural claims about $d$ (that it fixes
+$\Omega_\Lambda$, and that it yields $w=-1$) rest on two different cutoffs (\S\ref{sec:consistency}). The Hubble cutoff $L=c/H$ gives $\Omega_\Lambda=d^2$, hence
+$d\approx0.82$, but $\rho_\Lambda$ then tracks $H^2$ and does not accelerate ($w\approx0$~\cite{Hsu2004}). The
+future-event-horizon cutoff~\cite{Li2004} accelerates, with $w=-\tfrac13-\tfrac{2}{3d}\sqrt{\Omega_\Lambda}$, but there
+$\Omega_\Lambda$ today is an integration constant rather than $d^2$, and the cutoff is partly circular because the
+event horizon exists only if the expansion accelerates. Evolved from $\Omega_\Lambda=0.68$, it cannot give both
+$w\approx-1$ today and no phantom. It crosses $w=-1$ at $\Omega_\Lambda=d^2$ and is phantom afterwards for any $d<1$:
+at $d=0.82$, $w=-1.00$ today and $w\to-\tfrac13-\tfrac{2}{3d}=-1.15$, which violates premise~(ii) below (the
+no-phantom future that $\pi_u=0$ implies). At $d=1$ it is never phantom, but $w\approx-0.88$ today
+(\texttt{DTF\_de\_horizon.py}). DTF therefore claims only the $O(1)$ scale; $d$ and $w$ are not DTF outputs.
+\item \textbf{One cosmic input carries both dark scales.} $a_0=cH_0/2\pi$, $\rho_\Lambda\sim(cH_0)^2c^2/G$ and the
+horizon $L=c/H_0$ all descend from $H_0$, which stays an input (Appendix~E). The ``two faces of one horizon''
+unification is therefore a statement about \emph{shared} dependence on $H_0$; it becomes predictive only
+once the coefficients are fixed. Here the $2\pi$ in $a_0$ (argued from radians per cycle, App.~B) is not separated from
+$1$ or $6$ by SPARC (\S\ref{sec:consistency}), and $d$ is O6.
+\end{enumerate}
+
+\noindent\textbf{Premises in use, stated.}\ \ Three rules are used by the equations above without having been stated. They are
+listed because each one carries weight in the argument and each can be tested.
+\begin{enumerate}[leftmargin=1.9em,itemsep=2pt,topsep=2pt,label=(\roman*)]
+\item \textbf{No spatial gradient in $\omega_C$.} The energy is $E=\hbar\omega_C u$, so the drive is in general
+$\mathbf F=-\hbar\omega_C\nabla u-\hbar u\nabla\omega_C$. The drive of \S\ref{sec:rate} is the first term alone, so
+$\nabla\omega_C=0$ is assumed. This is the equivalence principle in DTF's variables. A $\nabla\omega_C\neq0$ would be a
+composition-dependent fifth force, which free-fall tests bound at $\sim10^{-15}$. It also follows that changing an
+object's $\omega_C$ on board produces no lift: shed rest energy that is radiated isotropically carries no momentum, and the
+lighten--lift--restore cycle closes to zero only because the energy sent up is redshifted by $u$.
+\item \textbf{$u\le1$ (energy conditions).} With $u=1$ for a clock at rest far from all sources, no clock ticks faster
+than that reference unless some source has $\rho<0$; a phantom component ($\rho+p<0$) violates the null energy
+condition in the same way. DTF admits neither. Classical electromagnetism satisfies this, since its field energy is positive and only deepens
+$u$. The Casimir vacuum would give $\delta u\lesssim10^{-50}$, which is not observable. This premise is what makes O6 a real tension
+rather than a free choice.
+\item \textbf{Homogeneous $u(t)$ is gauge; redshift needs $\omega_C$ relative to light.} The line element $-u(t)^2c^2dt^2+d\mathbf x^2$ becomes
+Minkowski under $T=\int u\,dt$, so a uniform $u(t)$ gives $z=0$: it rescales the photon and the atom alike. A
+redshift needs atomic frequencies to change \emph{relative to} light, $1+z=\omega_C^{\rm now}/\omega_C^{\rm then}$. A
+uniform $\omega_C(t)\propto a(t)$ for all species, $M_{\rm P}$ included, is a conformal frame of FRW~\cite{Wetterich2013}. It reproduces the
+$(1+z)$ light-curve stretch and $(1+z)^{-4}$ surface-brightness dimming exactly, so it is a re-description rather than a rival.
+A version with new content requires the local and cosmic drift of $\omega_C$ to differ, and laboratory clocks bound that
+at $\lesssim10^{-17}\,{\rm yr}^{-1}$.
 \end{enumerate}
 
 %======================================================================
@@ -984,10 +1025,10 @@ Scripts: \texttt{DTF\_entropy\_clockcycle.py}, \texttt{DTF\_native\_arrow.py},
 \small All results marked \emph{verified} are reproduced by short Python scripts (NumPy/SciPy/SymPy) at
 \url{https://github.com/billd-dtf/Distorted-Time-Framework} (all names carry the \texttt{DTF\_} prefix):
 \begin{itemize}[leftmargin=1.4em,itemsep=1.5pt,topsep=2pt]
-\item \textbf{\S\ref{sec:rate}:} \texttt{which\_reading\_is\_DTF}, \texttt{phase\_unification}, \texttt{o6\_congruence}, \texttt{localnow\_integrability}, \texttt{native\_arrow}, \texttt{entropy\_clockcycle}, \texttt{entropy\_is\_entanglement}, \texttt{arrow\_grav\_thermal}, \texttt{vorticity\_residual}
+\item \textbf{\S\ref{sec:rate}:} \texttt{which\_reading\_is\_DTF}, \texttt{phase\_unification}, \texttt{congruence\_lapse}, \texttt{localnow\_integrability}, \texttt{native\_arrow}, \texttt{entropy\_clockcycle}, \texttt{entropy\_is\_entanglement}, \texttt{arrow\_grav\_thermal}, \texttt{vorticity\_residual}
 \item \textbf{\S\ref{sec:equiv}:} \texttt{kerr\_deser\_closure}
 \item \textbf{\S\ref{sec:gravity}:} \texttt{radiative\_content\_constructive}, \texttt{alpha1\_explicit\_1PN}
-\item \textbf{\S\ref{sec:quantum}:} \texttt{localization\_tax}, \texttt{evanescent\_speed}, \texttt{born\_relaxation\_2d}, \texttt{o8\_tsirelson}, \texttt{o9\_fisher\_unique}, \texttt{o1\_wallstrom}, \texttt{o2\_deotto\_ghirardi}, \texttt{winding\_dynamics}, \texttt{o2\_amplitude\_channel}, \texttt{o2\_arrival\_time}, \texttt{o2\_tax\_sources\_chi}, \texttt{no\_signalling\_projection}
+\item \textbf{\S\ref{sec:quantum}:} \texttt{localization\_tax}, \texttt{evanescent\_speed}, \texttt{born\_relaxation\_2d}, \texttt{tsirelson\_bound}, \texttt{fisher\_unique}, \texttt{wallstrom}, \texttt{deotto\_ghirardi}, \texttt{winding\_dynamics}, \texttt{amplitude\_channel}, \texttt{arrival\_time}, \texttt{tax\_sources\_chi}, \texttt{no\_signalling\_projection}
 \item \textbf{\S\ref{sec:consistency}:} \texttt{singularity\_deemergence}, \texttt{LTB\_collapse}, \texttt{singularity\_observable}, \texttt{mond\_quadrature\_zeta}, \texttt{sparc\_fixed\_a0}, \texttt{stream\_apsidal}, \texttt{cosmology\_timeline}, \texttt{de\_horizon}, \texttt{darksectors\_unified}, \texttt{localnow\_eventhorizon}
 \item \textbf{App.\ D:} \texttt{em\_from\_phase}, \texttt{em\_clockphase\_forced}, \texttt{force\_census}, \texttt{em\_frame\_gauge}
 \end{itemize}
@@ -1016,9 +1057,10 @@ content.
 \bibitem{Rovelli1996} C.~Rovelli, \emph{Relational quantum mechanics}, Int. J. Theor. Phys. \textbf{35}, 1637 (1996).
 \bibitem{GravityProbeB2011} C.~W.~F. Everitt et al., \emph{Gravity Probe B: Final Results of a Space Experiment to Test General Relativity}, Phys. Rev. Lett. \textbf{106}, 221101 (2011).
 \bibitem{LARES2016} I.~Ciufolini et al., \emph{A test of general relativity using the LARES and LAGEOS satellites and a GRACE Earth gravity model}, Eur. Phys. J. C \textbf{76}, 120 (2016).
-\bibitem{Saadeh2016} D.~Saadeh, S.~M. Feeney, A.~Pontzen, H.~V. Peiris, and J.~D. McEwen, \emph{How Isotropic is the Universe?}, Phys. Rev. Lett. 	extbf{117}, 131302 (2016).
+\bibitem{Saadeh2016} D.~Saadeh, S.~M. Feeney, A.~Pontzen, H.~V. Peiris, and J.~D. McEwen, \emph{How Isotropic is the Universe?}, Phys. Rev. Lett. \textbf{117}, 131302 (2016).
 \bibitem{Hsu2004} S.~D.~H. Hsu, \emph{Entropy bounds and dark energy}, Phys. Lett. B \textbf{594}, 13 (2004).
 \bibitem{Li2004} M.~Li, \emph{A model of holographic dark energy}, Phys. Lett. B \textbf{603}, 1 (2004).
+\bibitem{Wetterich2013} C.~Wetterich, \emph{A Universe without expansion}, Phys. Dark Univ. \textbf{2}, 184 (2013).
 \bibitem{Catillon2008} P.~Catillon \emph{et al.}, \emph{A search for the de Broglie particle internal clock by means of electron channeling}, Found. Phys. \textbf{38}, 659 (2008).
 \bibitem{Albert2000} D.~Z. Albert, \emph{Time and Chance} (Harvard University Press, 2000).
 \bibitem{Kaufman2016} A.~M. Kaufman, M.~E. Tai, A.~Lukin, M.~Rispoli, R.~Schittko, P.~M. Preiss, and M.~Greiner, \emph{Quantum thermalization through entanglement in an isolated many-body system}, Science \textbf{353}, 794 (2016).
