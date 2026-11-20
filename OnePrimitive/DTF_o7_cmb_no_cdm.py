@@ -132,7 +132,7 @@ def peaks(Dl, n=3):
 print("(2) Fit to Planck 2018 TT, l = 30-2508")
 r_lcdm = fit(0.1200, [0.02237, 67.36, 0.9649, 3.044, 0.0544], "LCDM (control)       ")
 r_flat = fit(1e-6,   [0.0224, 67.4, 0.9649, 3.044, 0.0544],        "baryons only, flat   ")
-r_curv = fit(1e-6,   [0.0224, 67.4, 0.9649, 3.044, 0.0544, 0.10],  "baryons only, omk free")
+r_curv = fit(1e-6,   [0.0224, 60.0, 0.9649, 3.044, 0.0544, -0.10], "baryons only, omk free")  # closed (omk<0) moves peaks to lower l
 r_bary = min((r_flat, r_curv), key=lambda r: r.fun)
 
 def spec_of(r, omch2):
