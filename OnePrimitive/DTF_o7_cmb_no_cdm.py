@@ -12,7 +12,8 @@ script checks two things:
 
 (2) How badly does baryons-only GR fit Planck 2018 TT (plik-lite, l = 30-2508)?  The
     no-CDM model gets its best shot: ombh2, H0, ns, As, tau are all refit, with only a
-    weak Gaussian prior on tau. LCDM is the control.
+    Gaussian prior on tau, first flat and then with spatial curvature free (the one extra
+    parameter published no-CDM fits use to put the first peak at l ~ 220). LCDM is the control.
 
 Data: Planck 2018 plik-lite binned TT spectrum and covariance (Planck Collaboration 2020,
 A&A 641, A5). Not redistributed here. Put the five files
@@ -88,8 +89,8 @@ def chi2_of(Dl, A_planck=1.0):
     r = X_tt - bin_tt(Dl) / A_planck**2
     return float(r @ icov @ r)
 
-def spectrum(ombh2, omch2, H0, ns, logA, tau):
-    p = camb.set_params(H0=H0, ombh2=ombh2, omch2=omch2, mnu=0.06, omk=0, tau=tau,
+def spectrum(ombh2, omch2, H0, ns, logA, tau, omk=0.0):
+    p = camb.set_params(H0=H0, ombh2=ombh2, omch2=omch2, mnu=0.06, omk=omk, tau=tau,
                         As=np.exp(logA) * 1e-10, ns=ns, lmax=LMAX + 100, WantTensors=False)
     p.set_for_lmax(LMAX + 100, lens_potential_accuracy=0)
     res = camb.get_results(p)
@@ -98,44 +99,54 @@ def spectrum(ombh2, omch2, H0, ns, logA, tau):
 TAU0, TAUSIG = 0.054, 0.007              # Planck low-l EE: tau = 0.054 +- 0.007
 
 def fit(omch2, x0, label):
-    names = ["ombh2", "H0", "ns", "ln(1e10 As)", "tau"]
+    names = ["ombh2", "H0", "ns", "ln(1e10 As)", "tau", "omk"][:len(x0)]
     def obj(x):
-        ombh2, H0, ns, logA, tau = x
-        if not (0.005 < ombh2 < 0.1 and 40 < H0 < 100 and 0.8 < ns < 1.2 and 2 < logA < 4 and 0.01 < tau < 0.2):
+        ombh2, H0, ns, logA, tau = x[:5]
+        omk = x[5] if len(x) > 5 else 0.0
+        if not (0.005 < ombh2 < 0.1 and 40 < H0 < 100 and 0.8 < ns < 1.2 and 2 < logA < 4
+                and 0.01 < tau < 0.2 and -0.5 < omk < 0.5):
             return 1e9
         try:
-            Dl = spectrum(ombh2, omch2, H0, ns, logA, tau)
+            Dl = spectrum(ombh2, omch2, H0, ns, logA, tau, omk)
         except Exception:
             return 1e9
         return chi2_of(Dl) + ((tau - TAU0) / TAUSIG) ** 2
     t = time.time()
     r = minimize(obj, x0, method="Nelder-Mead",
-                 options=dict(maxiter=400, xatol=1e-4, fatol=0.05, initial_simplex=None))
+                 options=dict(maxiter=600, xatol=1e-4, fatol=0.05))
     print(f"    {label}: chi2 = {r.fun:9.1f}  ({nbintt} bins; {time.time()-t:.0f}s, {r.nfev} CAMB calls)")
     print("      best fit: " + ", ".join(f"{n}={v:.4g}" for n, v in zip(names, r.x)))
     return r
 
-def peaks(Dl):
+def peaks(Dl, n=3):
+    """First n true local maxima of D_l above l = 100 (no fixed windows)."""
     out = []
-    for lo, hi in ((150, 300), (420, 620), (720, 900)):
-        seg = Dl[lo:hi]; i = int(np.argmax(seg)); out.append((lo + i, seg[i]))
+    for l in range(101, len(Dl) - 25):
+        w = Dl[l - 25:l + 26]
+        if Dl[l] == w.max():
+            out.append((l, Dl[l]))
+            if len(out) == n:
+                break
     return out
 
 print("(2) Fit to Planck 2018 TT, l = 30-2508")
 r_lcdm = fit(0.1200, [0.02237, 67.36, 0.9649, 3.044, 0.0544], "LCDM (control)       ")
-r_bary = fit(1e-6,   [0.0224, 67.4, 0.9649, 3.044, 0.0544],  "baryons only, GR     ")
-# give the no-CDM model a second start from a high-baryon corner, keep the better one
-r_b2   = fit(1e-6,   [0.035, 55.0, 0.95, 3.0, 0.06],          "baryons only (start 2)")
-if r_b2.fun < r_bary.fun:
-    r_bary = r_b2
+r_flat = fit(1e-6,   [0.0224, 67.4, 0.9649, 3.044, 0.0544],        "baryons only, flat   ")
+r_curv = fit(1e-6,   [0.0224, 67.4, 0.9649, 3.044, 0.0544, 0.10],  "baryons only, omk free")
+r_bary = min((r_flat, r_curv), key=lambda r: r.fun)
 
-Dl_l = spectrum(*[r_lcdm.x[0], 0.1200, *r_lcdm.x[1:]])
-Dl_b = spectrum(*[r_bary.x[0], 1e-6,  *r_bary.x[1:]])
-pl, pb = peaks(Dl_l), peaks(Dl_b)
-print("\n    peak heights D_l [muK^2] (l in brackets)")
-print(f"    {'':22s} {'peak 1':>14} {'peak 2':>14} {'peak 3':>14} {'3rd/1st':>8}")
-for lab, pk in (("LCDM (tracks data)", pl), ("baryons only, GR", pb)):
-    print(f"    {lab:22s} " + " ".join(f"{v:8.0f} [{l:4d}]" for l, v in pk) + f" {pk[2][1]/pk[0][1]:8.3f}")
+def spec_of(r, omch2):
+    x = list(r.x); omk = x[5] if len(x) > 5 else 0.0
+    return spectrum(x[0], omch2, x[1], x[2], x[3], x[4], omk)
+
+rows = (("LCDM (tracks data)", peaks(spec_of(r_lcdm, 0.1200))),
+        ("baryons, flat", peaks(spec_of(r_flat, 1e-6))),
+        ("baryons, omk free", peaks(spec_of(r_curv, 1e-6))))
+print("\n    acoustic peaks: D_l [muK^2] at [l]")
+print(f"    {'':20s} {'peak 1':>14} {'peak 2':>14} {'peak 3':>14} {'2nd/1st':>8} {'3rd/1st':>8}")
+for lab, pk in rows:
+    print(f"    {lab:20s} " + " ".join(f"{v:8.0f} [{l:4d}]" for l, v in pk)
+          + f" {pk[1][1]/pk[0][1]:8.3f} {pk[2][1]/pk[0][1]:8.3f}")
 
 dchi2 = r_bary.fun - r_lcdm.fun
 print(f"\n    Delta chi2 (baryons-only - LCDM) = {dchi2:.0f} for {nbintt} bins")
@@ -143,6 +154,7 @@ ok = dchi2 > 1000
 print("\nVERDICT")
 print("  PASS (test ran; outcome adverse to DTF as written)" if ok else "  UNEXPECTED: no-CDM fit is close to LCDM -- check inputs")
 print("  Without a field equation below a0 that changes recombination-era perturbations,")
-print("  DTF's CMB is baryons-only GR, and Planck rejects it: the third peak is far too low.")
+print(f"  DTF's CMB is baryons-only GR, and Planck rejects it (Delta chi2 = {dchi2:.0f}) even with")
+print("  curvature free to place the first peak. The peak pattern, not one peak, is what fails.")
 print("  Any O7 completion must source extra potential wells at z~1100 in a regime where")
 print("  g >> a0 -- i.e. it must act like dark matter there, not like MOND.")
