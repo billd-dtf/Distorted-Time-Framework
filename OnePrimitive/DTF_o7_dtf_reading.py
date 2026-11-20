@@ -115,3 +115,18 @@ print("  (1) The paper's horizon choice and its 'constant a0' are not the same s
 print("  (2) If the below-a0 distortion is in the lapse alone, lensing sees half of it: compare rows.")
 print("  (3) Subtracting the horizon term instead of dividing by it doubles the deep-MOND scale at")
 print("      the same a0 = cH0/2pi, with no added parameter.")
+
+# ------------------------------------------------------------------ (4) which horizon the premises select
+# Sec. 7(ii) requires: (a) the LATE de Sitter horizon, (b) a0 constant in time, (c) DTF's local
+# relational primitive (no global slice, no dependence on the future). The event horizon at each epoch
+# fails (b) and (c): it is an integral over the whole future. The Hubble rate H(t) is local but fails (b).
+# The de Sitter radius c/H_L, H_L = c sqrt(Lambda/3) = H0 sqrt(Omega_L), meets all three. The paper's
+# number used c/H0 instead, which is the Hubble radius today, not the de Sitter radius.
+print("\n(4) a0 from the premises of Sec. 7(ii): R = de Sitter radius c/H_L, H_L = H0 sqrt(Omega_L)")
+OLam = 0.685
+print(f"    a0 = c H0 sqrt(Omega_L) / 2pi = {a0_paper*np.sqrt(OLam):.2e} m/s^2 (constant; paper used {a0_paper:.2e})")
+if os.path.exists(MRT) and (D / f"{stem}_Nobins.txt").exists():
+    print(f"    {'a0 reading':22s} {'interpolation':26s} {'SPARC rms':>10} {'KiDS chi2':>10}")
+    for lab, fac in (("c/H0 (paper)", 1.0), ("de Sitter c/H_L", np.sqrt(OLam))):
+        for name, f in MODELS.items():
+            print(f"    {lab:22s} {name:26s} {rms(f, a0_paper*fac):10.4f} {chi(f(gb, a0k*fac)):10.0f}")
