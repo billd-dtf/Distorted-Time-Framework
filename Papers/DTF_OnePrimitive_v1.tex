@@ -93,7 +93,8 @@ the correlations remain non-signalling.
 
 This is an organizing-principle claim in the sense of Laughlin and Pines~\cite{LaughlinPines2000}: the content
 is the reorganization, not a new number. Where general relativity and quantum mechanics have been tested DTF
-agrees with both, and only the assumption count changes: the equivalence principle and cosmic simultaneity
+agrees with both (for gravity, at accelerations well above the MOND scale $a_0$; below it DTF offers that
+scale but not yet a field equation), and only the assumption count changes: the equivalence principle and cosmic simultaneity
 stop being separate postulates. It stakes one falsifiable claim, a horizonless, echo-free black-hole remnant
 replacing the singularity. Kill it and the reframe is dead.
 \end{abstract}
@@ -144,7 +145,9 @@ made good in the section named.
 inputs}: the equivalence principle (\S\ref{sec:equiv}); Newtonian and weak-field gravity, and Kerr (\S\ref{sec:equiv}); the two
 gravitational-wave modes with $\alpha_1=\alpha_2=0$ (\S\ref{sec:gravity}); Schr\"odinger's equation and the Born rule (\S\ref{sec:quantum});
 and the Tsirelson bound (\S\ref{sec:quantum}). In every tested regime the framework is general relativity plus quantum
-mechanics.
+mechanics. The one exception is stated rather than hidden: at galactic accelerations $a\lesssim a_0$, where general
+relativity with visible matter already fails, DTF supplies the scale $a_0$ but not the modified field
+equation the data call for (\S\ref{sec:consistency}(ii), O7).
 
 \paragraph{What these unify, dissolve, and predict.} Beyond recovery, the one primitive does three things GR
 and QM, told separately, do not:
@@ -178,7 +181,9 @@ quantum theories~\cite{DGMZ1999} each die on a \emph{global} time.
 flow~\cite{ConnesRovelli1994}, or a preferred foliation~\cite{Barbour2002}). If they stay purely
 epistemic~\cite{Rovelli1996}, they add no physics.
 
-\emph{DTF escapes both.} It is local, so it never owns the global object the first group dies
+\emph{DTF escapes both} --- with one qualification, stated in \S\ref{sec:rate} and O6: its rate is defined
+against a timelike congruence, which matter fixes in the cases that matter cosmologically but which is a choice in
+vacuum. It is local, so it never owns the global object the first group dies
 on. And its rate is a real physical relation, not a bookkeeping convention: it is how fast this clock runs
 against its neighbour, which is what a redshift measurement reads. That is why it need
 not \emph{add} a global structure the way the second group does: a shared cosmic time comes back
@@ -200,12 +205,22 @@ point. Three consequences follow.
 \begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
 \item \textbf{No global slice.} Each comparison needs only a local rest frame, and the choice is
   non-integrable, so no global $u$ exists. That absence \emph{is} the absence of a preferred foliation.
-\item \textbf{Gravity is GR's.} The rate does not propagate ($\pi_u\equiv0$, standard ADM) and the dynamics
+\item \textbf{Gravity is GR's (for $a\gg a_0$).} The rate does not propagate ($\pi_u\equiv0$, standard ADM) and the dynamics
   stay Einstein's, so gravity, the two wave modes, and $\alpha_1=\alpha_2=0$ are inherited. No
-  gravitational-sector discriminator --- the price of adding nothing.
+  gravitational-sector discriminator --- the price of adding nothing. This holds in the solar-system, binary-pulsar
+  and strong-field regimes; it is \emph{not} claimed below $a_0$, where \S\ref{sec:consistency}(ii) needs a
+  modified Poisson equation that Einstein's equations do not give (O7).
 \item \textbf{The drive.} Covariantly $u$ is the proper-time rate of the matter congruence $n^\mu$, whose
   four-acceleration is the drive, $a^\mu=\nabla^\mu\ln u$ (\S\ref{sec:equiv}).
 \end{itemize}
+\noindent\emph{What fixes $n^\mu$.} The rate is gauge-invariant only \emph{relative to} a congruence, which is
+what makes it more than the ADM lapse (a Lagrange multiplier). Where matter supplies one flow --- dust, a single
+perfect fluid, the cosmic rest frame --- that flow is $n^\mu$ and nothing is chosen. In vacuum, or with several
+components moving relative to each other, the framework does not yet say which congruence carries the rate.
+That is the same kind of choice as the clock subsystem the introduction attributes to Page--Wootters, so the
+claim that DTF adds nothing holds only where matter fixes $n^\mu$. The standard tool for making such a rate a
+genuine observable is the relational (partial and complete) observable~\cite{Rovelli2002,Dittrich2006}; DTF has
+not been cast in that form (O6).
 
 The non-integrability is concrete: the vorticity of $n^\mu$ --- the twist of the worldline congruence,
 the quantity frame-dragging measures --- which by Frobenius forbids a global time function
@@ -640,13 +655,13 @@ of \S\ref{sec:quantum}, so no laboratory test can discriminate.
 \begin{tabular}{@{}>{\raggedright}p{0.30\textwidth} >{\raggedright}p{0.34\textwidth} p{0.28\textwidth}@{}}
 \toprule
 \textbf{Result} & \textbf{Equation} & \textbf{Status}\\\midrule
-Gravity, GR limit & $\nabla^2u=\tfrac{4\pi G}{c^2}(\rho+3p/c^2)$; Kerr & identical to GR\\
+Gravity, GR limit ($a\gg a_0$) & $\nabla^2u=\tfrac{4\pi G}{c^2}(\rho+3p/c^2)$; Kerr & identical to GR\\
 Two tensor GW pols; $\alpha_1{=}\alpha_2{=}0$ & $h_{ij}^{TT}$ & identical to GR (shared falsifiability)\\
 Inertia / equivalence & $\Delta E=mc^2(\gamma-1)$ & identical to GR\\
 Quantum mechanics, Born & Schr\"odinger $=$ clock-action $+$ tax; $|\psi|^2$ & identical to QM (Born: typicality)\\
 Evanescent transit speed & $v_{\rm op}=\sqrt{2|Q|/m}$ (operational) & order matches~\cite{Sharoglazova2025}; not a Bohm test~\cite{DrezetLazaroviciNabet2026}\\
 Black-hole core & de-emergence, remnant & conjecture\\
-Dark sector / MOND & $\mu$, $a_0=cH_0/2\pi$ & explains $a_0$ (plausibility)\\
+Dark sector / MOND ($a\lesssim a_0$) & $\mu$, $a_0=cH_0/2\pi$ & explains $a_0$ (plausibility); field equation owed (O7)\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -707,8 +722,12 @@ interpolation
 then follows from a two-horizon quadrature (Rindler $\kappa_a=a$ against the per-cycle de~Sitter term
 $\kappa_{\rm dS}/2\pi=cH_0/2\pi=a_0$)~\cite{DeserLevin1997,Milgrom1983}, the form Milgrom first obtained as a
 vacuum effect in de~Sitter space~\cite{Milgrom1999}, \emph{as an assignment, not a theorem}. The modified-\emph{inertia}
-route that would distinguish DTF from MOND is \emph{falsified} (stellar-stream apsides); orbits are MOND's
-modified-\emph{gravity} (AQUAL) shadow, with no new galactic prediction. Appendix~B carries the grade and the caveats. The chief one: $cH_0$, $cH_0/2\pi$ and $cH_0/6$ all sit inside
+route that would distinguish DTF from MOND is \emph{falsified} (stellar-stream apsides); orbits follow MOND's
+modified-\emph{gravity} (AQUAL) form, with no new galactic prediction. That has a cost the rest of the paper must
+carry: AQUAL replaces the Poisson equation, and Einstein's equations, which DTF otherwise keeps unchanged, do not
+reduce to it. DTF therefore supplies the \emph{scale} $a_0$ and not the \emph{field equation}; a relativistic
+completion that is Einstein's above $a_0$ and AQUAL below is owed (O7), and with it the cluster and CMB
+evidence that MOND alone does not fit. Appendix~B carries the grade and the caveats. The chief one: $cH_0$, $cH_0/2\pi$ and $cH_0/6$ all sit inside
 the SPARC band ($0.205$ against $0.201$ dex~\cite{Lelli2016}), so the fit alone does not pin the coefficient.
 
 \emph{(iii) Cosmological origin --- time's emergence.} The Big Bang is the \emph{onset of a coherent now} (the
@@ -749,13 +768,31 @@ $\delta u/u\sim(\ell_P/L)^p$ --- the precise shell radius --- needing a Row-0 fo
 handle-local reads plus completeness (\S\ref{sec:quantum}), and the row ordering explains why reads should be
 handle-local --- but the two-handle tensor structure is assumed, not built. Whether the
 Row-0$\to$Row-2 projection \emph{generates} that structure or presupposes it decides whether
-no-signalling is derived or only motivated here.
+no-signalling is derived or only motivated here. The same gap appears in the dynamics: $v=\nabla S/m$ for
+entangled particles is evaluated at simultaneous positions, and a relativistic many-particle guidance law
+that keeps $|\psi|^2$ equivariant without a foliation is not written down here. The one known foliation-free
+construction needs time-symmetric structure~\cite{GoldsteinTumulka2003}; whether the Row-0 ledger supplies it
+is unshown.
 \item \textbf{Transient inflation.} If the Row-0$\to$Row-1 emergence drives inflation (\S\ref{sec:consistency}), it needs a
 transiently incomplete reparametrization invariance ($\pi_u\neq0$); an action for that phase and any CMB
 observables ($n_s,r$) are unshown (\S\ref{sec:consistency}).
 \item \textbf{The driver of clock desync.} The arrow follows from a spread $\sigma_u$ in local rates
 (\S\ref{sec:rate}, App.~G), but what \emph{grows} $\sigma_u$ from the Row-0 synced state is gravitational clumping ---
 argued from the sign of the instability, not simulated. The entropy results are conditional on it.
+\item \textbf{Which congruence carries the rate.} $u$ is gauge-invariant only relative to a timelike congruence
+(\S\ref{sec:rate}). Matter fixes it for dust or a single fluid; in vacuum and for multi-component matter the framework
+does not. Casting $u$ as a relational observable~\cite{Rovelli2002,Dittrich2006} would settle whether the
+choice is physics or gauge; until then ``nothing added'' is established only where matter fixes $n^\mu$.
+\item \textbf{The field equation below $a_0$.} The galactic fits use AQUAL, whose nonlinear Poisson equation is
+not a limit of Einstein's equations. DTF owes a relativistic completion that is Einstein's for $a\gg a_0$ and AQUAL
+for $a\lesssim a_0$, with lensing, cluster masses, and the CMB acoustic peaks (the third in particular) as its tests.
+Every known completion adds fields~\cite{Bekenstein2004,SkordisZlosnik2021}; if DTF's must too, the economy claim of
+Appendix~F has to count them.
+\item \textbf{Is $\Phi$ what an interferometer reads?} Wolf \emph{et al.}\ argue that the Compton-phase
+difference between interferometer arms vanishes in every metric theory~\cite{Wolf2011}; M\"uller and
+collaborators dispute it~\cite{MuellerPetersChu2010,Hohensee2012}. If Wolf \emph{et al.}\ are right, the
+identification of redshift with phase (\S\ref{sec:rate}) is an accounting identity with no experimental reading, and
+the unification claim of \S\ref{sec:intro} weakens to a reorganization of notation. DTF has not answered the argument.
 \end{enumerate}
 
 %======================================================================
@@ -813,7 +850,9 @@ at best-fit $a_0$ --- a $2\%$ degradation, so ``zero free parameters'' is defens
 cannot distinguish $2\pi$ from a nearby $O(1)$, and the one residual is firming that the reach saturates at
 \emph{exactly} one cycle (not a half or two). Orbits precess as MOND and dark matter do (Orphan~\cite{Koposov2019},
 Sagittarius~\cite{Vasiliev2021}); the modified-\emph{inertia} route that would have distinguished DTF is
-falsified, so DTF reproduces MOND's modified-\emph{gravity} (AQUAL) shadow. This is distinct from
+falsified, so the galactic data select MOND's modified-\emph{gravity} (AQUAL) form. DTF does not yet derive
+that form: AQUAL's nonlinear Poisson equation is not a limit of the Einstein equations DTF keeps elsewhere, so
+the field equation below $a_0$ is owed, not supplied (O7). This is distinct from
 thermodynamic entropic-gravity routes~\cite{Jacobson1995,Verlinde2011}, which pass through Row-2 temperature.
 Scripts: \texttt{DTF\_mond\_quadrature\_zeta.py}, \texttt{DTF\_sparc\_fixed\_a0.py},
 \texttt{DTF\_stream\_apsidal.py}.
@@ -879,7 +918,7 @@ What goes in versus what comes out:
 \textbf{Inputs} & \textbf{Outputs}\\\midrule
 $c,\ G,\ \hbar,\ H_0$ & GR weak-field limit; Kerr inherited\\
 particle mass spectrum ($\omega_C$ values) & two tensor GW pols; $\alpha_1=\alpha_2=0$\\
-\textbf{no structure added to GR (frame-neutral local rate)} & inertia $=mc^2(\gamma-1)$; equivalence as identity\\
+\textbf{no structure added to GR (frame-neutral local rate; where matter fixes $n^\mu$, O6)} & inertia $=mc^2(\gamma-1)$; equivalence as identity\\
 localization-tax (Fisher) form; Born typicality & Schr\"odinger $=$ clock-action $+$ tax; $|\psi|^2$ measure\\
  & $a_0=cH_0/2\pi$ (coefficient, plausibility level)\\
 \bottomrule
@@ -1070,6 +1109,11 @@ content.
 \bibitem{OppenheimerSnyder1939} J.~R. Oppenheimer and H.~Snyder, \emph{On Continued Gravitational Contraction}, Phys. Rev. \textbf{56}, 455 (1939).
 \bibitem{DeserLevin1997} S.~Deser and O.~Levin, \emph{Accelerated detectors and temperature in (anti-)de Sitter spaces}, Class. Quantum Grav. \textbf{14}, L163 (1997).
 \bibitem{Milgrom1983} M.~Milgrom, \emph{A modification of the Newtonian dynamics as a possible alternative to the hidden mass hypothesis}, Astrophys. J. \textbf{270}, 365 (1983).
+\bibitem{Rovelli2002} C.~Rovelli, \emph{Partial observables}, Phys. Rev. D \textbf{65}, 124013 (2002).
+\bibitem{Dittrich2006} B.~Dittrich, \emph{Partial and complete observables for canonical general relativity}, Class. Quantum Grav. \textbf{23}, 6155 (2006).
+\bibitem{GoldsteinTumulka2003} S.~Goldstein and R.~Tumulka, \emph{Opposite arrows of time can reconcile relativity and nonlocality}, Class. Quantum Grav. \textbf{20}, 557 (2003).
+\bibitem{Bekenstein2004} J.~D. Bekenstein, \emph{Relativistic gravitation theory for the modified Newtonian dynamics paradigm}, Phys. Rev. D \textbf{70}, 083509 (2004).
+\bibitem{SkordisZlosnik2021} C.~Skordis and T.~Z{\l}o\'snik, \emph{New Relativistic Theory for Modified Newtonian Dynamics}, Phys. Rev. Lett. \textbf{127}, 161302 (2021).
 \bibitem{Milgrom1999} M.~Milgrom, \emph{The modified dynamics as a vacuum effect}, Phys. Lett. A \textbf{253}, 273 (1999), arXiv:astro-ph/9805346.
 \bibitem{MuellerPetersChu2010} H.~M\"uller, A.~Peters, and S.~Chu, \emph{A precision measurement of the gravitational redshift by the interference of matter waves}, Nature \textbf{463}, 926 (2010); reply, Nature \textbf{467}, E2 (2010).
 \bibitem{Wolf2010} P.~Wolf, L.~Blanchet, C.~J. Bord\'e, S.~Reynaud, C.~Salomon, and C.~Cohen-Tannoudji, \emph{Atom gravimeters and gravitational redshift}, Nature \textbf{467}, E1 (2010).

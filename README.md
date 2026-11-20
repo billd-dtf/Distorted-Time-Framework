@@ -33,7 +33,8 @@ What it claims:
   produced.
 - **Entanglement sits on the timeless layer** the Wheeler–DeWitt equation describes, rather
   than on a spatial slice, so realist quantum mechanics needs no preferred frame.
-- **Where they have been tested, DTF agrees with GR and QM** — shown constructively by
+- **Where they have been tested, DTF agrees with GR and QM** (for gravity, above the MOND scale
+  a₀; below it DTF gives the scale but not yet the field equation) — shown constructively by
   closing the three channels where a difference could have hidden: the cosmological vector
   sector, the guidance law, and arrival statistics.
 - **One falsifiable claim:** a horizonless, echo-free black-hole remnant in place of the
@@ -77,7 +78,10 @@ Not every statement in these papers carries the same weight, and the papers say 
 | **plausibility** | an argument with a stated gap, offered as a tether rather than a derivation |
 | **conjecture** | a labelled boundary claim (the black-hole core, the cosmological origin) |
 
-Open problems are listed in the final section of the flagship paper. Two checks are owed
+Open problems are listed in the final section of the flagship paper. Three of them are
+structural rather than technical: which congruence carries the rate in vacuum (O6), the field
+equation below a₀ that the galaxy fits need (O7), and whether an interferometer reads the phase
+Φ at all, given Wolf et al.'s argument that it does not (O8). Two checks are owed
 to specialists rather than to more computation: whether the primordial vector-mode
 spectrum vanishes for a reason not accounted for here, and whether the Born-equivariance
 argument has a hole a Bohmian would find.
