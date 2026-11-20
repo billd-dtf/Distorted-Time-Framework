@@ -42,9 +42,10 @@ print(f"\nde Sitter accel c^2 sqrt(Lambda/3) = {a_dS:.3e} m/s^2")
 print(f"  a_dS/(2pi) = {a_dS/(2*np.pi):.3e}   vs a0_obs={a0_obs:.3e}  "
       f"(ratio {a_dS/(2*np.pi)/a0_obs:.2f})")
 
-print(f"\n=> PREDICTION  a0 = (1/2pi) c H0 = {c*67.4e3/Mpc/(2*np.pi):.3e} m/s^2")
-print(f"   observed                        = {a0_obs:.3e} m/s^2   "
-      f"(agreement {100*c*67.4e3/Mpc/(2*np.pi)/a0_obs:.0f}%)")
+print(f"\n=> PREDICTION  a0 = c H_Lambda / 2pi = c^2 sqrt(Lambda/3) / 2pi = {a_dS/(2*np.pi):.3e} m/s^2")
+print(f"   (the late de Sitter radius, as the paper requires; c H0/2pi = {c*67.4e3/Mpc/(2*np.pi):.3e} was the")
+print(f"    Hubble radius today, an earlier choice)   observed {a0_obs:.3e}: "
+      f"ratio {a_dS/(2*np.pi)/a0_obs:.2f}")
 
 print("\n"+"="*68)
 print("PART 2 -- WHY quadrature: kill-test simple channel rules")

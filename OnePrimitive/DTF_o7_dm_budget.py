@@ -3,7 +3,8 @@ O7 test 3 -- the dark-matter budget: how much of the missing mass does DTF's MON
 
 Instead of asking only "does DTF fit with no dark matter", this asks the MOND-community question:
 at each scale, what fraction of the dark matter that Newton/GR infers does the DTF relation
-    g_obs^2 = [g_bar^2 + g_bar sqrt(g_bar^2 + 4 a0^2)] / 2,   a0 = cH0/2pi,
+    g_obs^2 = [g_bar^2 + g_bar sqrt(g_bar^2 + 4 a0^2)] / 2,   a0 = c H_Lambda / 2pi = c H0 sqrt(Omega_L) / 2pi
+(Appendix B; DTF_o7_dtf_reading.py shows why the de Sitter radius, and why not the subtraction form),
 account for as "phantom" mass, and how much real (or other) dark matter is left over?
 
 Definitions, per acceleration bin (spherical, enclosed-mass reading, M proportional to g r^2):
@@ -22,7 +23,7 @@ Scales:
 Clusters are not computed here (data unreachable); the paper quotes the MOND literature.
 
 The same analysis is repeated at the best-fit a0 to separate "the MOND-like approach works" from
-"DTF's particular value a0 = cH0/2pi is right".
+"DTF's particular value a0 = cH_L/2pi is right".
 
 Data: SPARC MassModels_Lelli2016c.mrt (Data/ or SPARC_MRT); KiDS files from
 https://kids.strw.leidenuniv.nl/sci_data/brouwer2021_rar.tar (Data/brouwer2021_rar/ or KIDS_RAR_DIR).
@@ -35,6 +36,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 c, Mpc, KPC = 2.99792458e8, 3.0856775815e22, 3.0856775814913673e19
 
+OL = 0.685
 def g_dtf(gb, a0):
     return np.sqrt((gb**2 + gb * np.sqrt(gb**2 + 4 * a0**2)) / 2)
 
@@ -58,9 +60,9 @@ if os.path.exists(MRT):
     go_s = (mm.Vobs.values[ok] * 1e3) ** 2 / r
     grid = np.logspace(-10.7, -9.0, 800)
     a0_s = grid[np.argmin([np.mean(np.log10(go_s / g_dtf(gb_s, a)) ** 2) for a in grid])]
-    a0 = c * 67.4e3 / Mpc / (2 * np.pi)
+    a0 = c * 67.4e3 / Mpc / (2 * np.pi) * np.sqrt(OL)
     sparc = dict(a0_dtf=a0, a0_fit=a0_s)
-    for name, a in (("DTF a0 = cH0/2pi", a0), ("best-fit a0", a0_s)):
+    for name, a in (("DTF a0 = cH_L/2pi", a0), ("best-fit a0", a0_s)):
         print(f"\n(A) SPARC rotation curves, {name} = {a:.2e} m/s^2  (2693 points, binned medians)")
         print(HDR)
         tot_req = tot_sup = 0.0
@@ -91,10 +93,10 @@ if (D / f"{stem}_Nobins.txt").exists():
     n = len(gb)
     cov = (cm[:, 4] / cm[:, 6]).reshape(n, n) * (4 * G_pc * pc_m) ** 2
     icov = np.linalg.inv(cov)
-    a0_dtf = c * 70e3 / Mpc / (2 * np.pi)              # B21 uses h70 units
+    a0_dtf = c * 70e3 / Mpc / (2 * np.pi) * np.sqrt(OL)  # B21 uses h70 units
     grid = np.logspace(-11, -9, 801)
     a0_fit = grid[np.argmin([(go - g_dtf(gb, a)) @ icov @ (go - g_dtf(gb, a)) for a in grid])]
-    for name, a in (("DTF a0 = cH0/2pi", a0_dtf), ("best-fit a0", a0_fit)):
+    for name, a in (("DTF a0 = cH_L/2pi", a0_dtf), ("best-fit a0", a0_fit)):
         print(f"\n(B) KiDS-1000 lensing, isolated galaxies, {name} = {a:.2e} m/s^2  ({n} bins)")
         print(HDR)
         for i in range(0, n, 2):
@@ -111,10 +113,11 @@ else:
 
 # ------------------------------------------------------------------ (C) recombination
 print("\n(C) Recombination, z ~ 1100 (a0 held constant; order of magnitude)")
-a0 = c * 67.4e3 / Mpc / (2 * np.pi)
+a0 = c * 67.4e3 / Mpc / (2 * np.pi) * np.sqrt(OL)
 omb, omc = 0.0224, 0.120
 print(f"    {'l':>6} {'g/a0':>6} {'1/mu-1':>7} {'omega_ph':>9} {'share of omega_c':>17}")
-for ell, x in ((30, 0.7), (220, 4.8), (540, 11.8), (810, 17.8)):   # g/a0 from DTF_o7_cmb_no_cdm.py
+for ell, x in ((30, 0.7), (220, 4.8), (540, 11.8), (810, 17.8)):   # g/(cH0/2pi) from DTF_o7_cmb_no_cdm.py
+    x = x / np.sqrt(OL)                                               # rescale to a0 = cH_L/2pi
     boost = np.sqrt(1 + 1 / x**2) - 1
     print(f"    {ell:6d} {x:6.1f} {boost:7.3f} {boost*omb:9.5f} {100*boost*omb/omc:16.1f}%")
 print("    At the acoustic peaks DTF supplies <~0.5% of the dark matter Planck requires; even on the")
@@ -123,14 +126,14 @@ print("    Sachs-Wolfe plateau (g ~ a0) it is ~15%. The CMB needs ~all of omega_
 # ------------------------------------------------------------------ summary
 print("\nSUMMARY -- share of the Newtonian/GR dark matter supplied by DTF's MOND sector")
 if sparc:
-    print(f"  galaxies (SPARC, r <~ 50 kpc):   {100*sparc['DTF a0 = cH0/2pi']:.0f}% at cH0/2pi;"
+    print(f"  galaxies (SPARC, r <~ 50 kpc):   {100*sparc['DTF a0 = cH_L/2pi']:.0f}% at cH_L/2pi;"
           f"  {100*sparc['best-fit a0']:.0f}% at best-fit a0 = {sparc['a0_fit']:.2e}")
 if lens:
-    f, sf = lens["DTF a0 = cH0/2pi"]; g, sg = lens["best-fit a0"]
-    print(f"  galaxy halos (KiDS lensing):     {100*f:.0f} +- {100*sf:.0f}% at cH0/2pi;"
+    f, sf = lens["DTF a0 = cH_L/2pi"]; g, sg = lens["best-fit a0"]
+    print(f"  galaxy halos (KiDS lensing):     {100*f:.0f} +- {100*sf:.0f}% at cH_L/2pi;"
           f"  {100*g:.0f} +- {100*sg:.0f}% at best-fit a0  (conditional on light following the potential)")
 print("  clusters:                        not computed (literature: MOND leaves a factor ~2 in baryons)")
 print("  CMB, z ~ 1100:                   <~1% at the peaks")
 print("Reading: DTF inherits MOND's split -- it removes most of the galaxy-scale dark matter and almost")
-print("none of the cosmological dark matter. Its distinct contribution is the value a0 = cH0/2pi, which")
-print("the galaxy and lensing data place ~1.3-1.9x too low.")
+print("none of the cosmological dark matter. Its distinct contribution is the value a0 = cH_L/2pi, which")
+print("the galaxy and lensing data place ~1.5-2.2x too low.")

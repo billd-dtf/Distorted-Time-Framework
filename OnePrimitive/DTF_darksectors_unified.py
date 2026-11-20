@@ -29,8 +29,8 @@ print("ONE horizon L = c/H0, two dark sectors")
 print("="*76)
 print(f"  horizon           L      = c/H0      = {L/3.086e22:.0f} Mpc")
 print(f"  DARK ENERGY       rho_L  ~ c^2/(G L^2) = d^2 rho_crit,  Omega_L = d^2 = {d**2:.2f}  (d={d:.2f}, O(1))")
-a0 = c**2/(2*np.pi*L)
-print(f"  DARK MATTER (MOND) a0    = c^2/(2 pi L) = cH0/2pi      = {a0:.2e} m/s^2")
+a0 = c**2/(2*np.pi*L/d)             # de Sitter radius L_Lambda = c/H_Lambda = L/d
+print(f"  DARK MATTER (MOND) a0    = c^2/(2 pi L_Lambda) = cH_Lambda/2pi = {a0:.2e} m/s^2")
 print(f"                                                     (Milgrom obs ~1.2e-10)")
 
 print("\n" + "="*76)
@@ -38,11 +38,11 @@ print("The quantitative bridge:  a0  ~  c * sqrt(G rho_L)   (MOND scale = sqrt o
 print("="*76)
 bridge = c*np.sqrt(G*rho_L)
 print(f"  c * sqrt(G rho_L)     = {bridge:.2e} m/s^2")
-print(f"  a0 = cH0/2pi          = {a0:.2e} m/s^2")
+print(f"  a0 = cH_Lambda/2pi    = {a0:.2e} m/s^2")
 print(f"  ratio a0 / (c sqrt(G rho_L)) = {a0/bridge:.2f}   (an O(1) number -- SAME scale)")
-# exact algebra: a0 = (c/2pi) H0 ; H0 = sqrt(8 pi G rho_L / 3 / d^2) ; so
-coeff = (1/(2*np.pi))*np.sqrt(8*np.pi/3)/d
-print(f"  exact:  a0 = [{coeff:.2f}] * c sqrt(G rho_L)   (coefficient = (1/2pi)sqrt(8pi/3)/d)")
+# exact algebra: a0 = (c/2pi) H_Lambda ; H_Lambda = sqrt(8 pi G rho_L / 3) ; so d drops out
+coeff = (1/(2*np.pi))*np.sqrt(8*np.pi/3)
+print(f"  exact:  a0 = [{coeff:.2f}] * c sqrt(G rho_L)   (coefficient = (1/2pi)sqrt(8pi/3), no free d)")
 print("  => the MOND acceleration scale and the dark-energy density are the SAME horizon quantity;")
 print("     the 'a0 ~ c sqrt(G rho_Lambda)' coincidence is a THEOREM of one horizon, not a fluke.")
 
@@ -71,5 +71,5 @@ print("    and its acceleration. That root is what makes 'DE and DM share an ori
 print("    than coincidental.")
 print()
 print("  VERDICT: the dark sectors are unified at the horizon. Dark energy = horizon energy density")
-print("  (Omega_L ~ O(1)); the MOND shadow = horizon acceleration (a0 = cH0/2pi); a0 ~ c sqrt(G rho_L)")
+print("  (Omega_L ~ O(1)); the MOND shadow = horizon acceleration (a0 = cH_Lambda/2pi); a0 ~ c sqrt(G rho_L)")
 print("  ties them numerically. One root, two faces -- a genuinely DTF-native, honestly-scoped result.")

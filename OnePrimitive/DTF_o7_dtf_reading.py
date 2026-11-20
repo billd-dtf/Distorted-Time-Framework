@@ -13,9 +13,10 @@ Three places where the time-first reading changes the prediction, each tested on
     metric. If the below-a0 modification acts on the lapse only (spatial metric still sourced by
     baryons as in GR), lensing sees half the phantom mass:  g_lens = (g_DTF + g_bar) / 2.
     If space is distorted equally (no slip, as TeVeS/AeST arrange), g_lens = g_DTF. KiDS decides.
-    DTF's inertia reading (a^mu = grad^mu ln u: a force acts by changing the local rate u of a massive
-    clock) adds a third case: if the below-a0 effect lived only in how massive clocks respond, a photon,
-    which carries no Compton clock, would see baryons alone, g_lens = g_bar -- the Newton row.
+    DTF's inertia reading (a^mu = grad^mu ln u: a force acts by changing the local rate u, and seen from
+    outside, slowing u slows omega_C) puts the effect in the lapse. A photon's frequency is slowed by u in
+    the same way, so light feels the lapse half of the deflection: that is the lapse-only row. Only if the
+    effect lived in the inertial response of massive bodies alone would light see baryons only (Newton row).
 
 (3) DIVIDE OR SUBTRACT.  Appendix B assigns mu = kappa_a / kappa_eff (a share). Milgrom 1999's vacuum
     route instead takes the EXCESS over the horizon background, kappa_eff - kappa_horizon:
@@ -24,6 +25,11 @@ Three places where the time-first reading changes the prediction, each tested on
     a0 of cH0/pi, with no new parameter. Tested on SPARC and KiDS. In the inertia reading this is the
     natural assignment: the horizon already supplies a background rate gradient (the per-cycle a0), and
     the force has to supply only the change of u in excess of it.
+    VERDICT ON (3): EXCLUDED. At g >> a0 it gives g = g_N + a0, a constant extra pull of ~1e-10 m/s^2 on
+    every planet (section 5). The paper's divided form gives a0^2/2g there, ~1e-16 smaller.
+
+(5) SOLAR SYSTEM. A constant extra acceleration da shifts the Sun's effective GM by da r^2/GM, differently
+    for each planet. GM_sun is known to ~1e-10 and Cassini ranged Saturn to tens of metres.
 
 Data as in DTF_o7_lensing_rar.py and DTF_sparc_fixed_a0.py (SPARC_MRT, KIDS_RAR_DIR).
 """
@@ -130,3 +136,20 @@ if os.path.exists(MRT) and (D / f"{stem}_Nobins.txt").exists():
     for lab, fac in (("c/H0 (paper)", 1.0), ("de Sitter c/H_L", np.sqrt(OLam))):
         for name, f in MODELS.items():
             print(f"    {lab:22s} {name:26s} {rms(f, a0_paper*fac):10.4f} {chi(f(gb, a0k*fac)):10.0f}")
+
+# ------------------------------------------------------------------ (5) Solar System
+GM, AU = 1.32712440041e20, 1.495978707e11
+aL = a0_paper * np.sqrt(OLam)
+print("\n(5) Solar System at a0 = cH_L/2pi: anomalous acceleration and implied shift of GM_sun")
+for pl, rau in (("Earth", 1.0), ("Mars", 1.524), ("Saturn", 9.58)):
+    gN = GM / (rau * AU) ** 2
+    out = "  ".join(f"{name.split()[0]}: da={f(gN, aL)-gN:.1e} dGM/GM={(f(gN, aL)-gN)/gN:.0e}" for name, f in MODELS.items())
+    print(f"    {pl:7s} {out}")
+print("    Subtraction shifts Saturn's GM by ~1e-6 (~1000 km/decade in range): excluded by ~4 orders.")
+print("    The divided form is ~1e-12 at Saturn: safe.")
+
+# ------------------------------------------------------------------ (6) the coefficient the data want
+print("\n(6) Coefficient (divided form, Solar-System safe). NOT derived: shown because the data ask for it.")
+if os.path.exists(MRT) and (D / f"{stem}_Nobins.txt").exists():
+    for lab, k in (("cH_L/2pi (one cycle, derived)", 1), ("cH_L/pi  (half cycle, post hoc)", 2)):
+        print(f"    {lab:32s} SPARC rms {rms(g_std, a0_paper*np.sqrt(OLam)*k):.4f}   KiDS chi2 {chi(g_std(gb, a0k*np.sqrt(OLam)*k)):.0f}")
