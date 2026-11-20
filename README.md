@@ -86,7 +86,7 @@ python OnePrimitive/DTF_native_arrow.py           # S = ln N, with N ~ omega * s
 python OnePrimitive/DTF_tsirelson.py           # the CHSH bound, 2 sqrt 2
 ```
 
-All scripts live in **`OnePrimitive/`** — the 41 the paper cites, plus the `sparc_io`
+All scripts live in **`OnePrimitive/`** — the 42 the paper cites, plus the `sparc_io`
 reader one of them imports. The paper's Code Availability section says which script backs
 which claim.
 

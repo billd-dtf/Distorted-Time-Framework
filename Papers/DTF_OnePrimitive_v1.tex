@@ -441,9 +441,22 @@ not a quantized mediator. The rotating interior is GR's open problem, inherited 
 
 Gravity is the gradient of the primitive (\S\ref{sec:equiv}), so the attraction is carried by nothing --- no field whose
 quantum mediates it. The spatial metric's radiation propagates instead, and structure fixes its content: when the metric ripples it carries the two transverse-traceless polarisations of a gravitational wave. The constrained lapse (\S\ref{sec:rate})
-does not ripple --- no scalar ``breathing'' mode, no preferred-frame effect~\cite{Will2014}, and (unlike
-Ho\v{r}ava~\cite{Horava2009}) no leftover scalar. A breathing-mode detection would falsify DTF and GR alike:
+carries no wave \emph{of its own} --- no scalar ``breathing'' mode, no preferred-frame effect~\cite{Will2014}, and
+(unlike Ho\v{r}ava~\cite{Horava2009}) no leftover scalar. A breathing-mode detection would falsify DTF and GR alike:
 shared falsifiability, not a discriminator.
+
+\emph{What a detector sees is a ripple of $u$.} The TT form is one coordinate description. In the frame of
+the observer who measures the wave (Fermi coordinates about the detector, size $L\ll\lambda$) the same wave sits
+in the lapse,
+\[ u=1+\frac{1}{2c^2}R_{0i0j}x^ix^j,\qquad R_{0i0j}=-\tfrac12\,\ddot h^{TT}_{ij}, \]
+a quadrupolar ripple of the rate travelling at $c$. Test masses fall down its gradient,
+$\ddot x^i=-c^2\partial_iu$, and that fall integrates to exactly the strain $\delta x^i=\tfrac12h^{TT}_{ij}x^j$ the TT picture
+calls space stretching; the frame's own spatial terms enter the signal only at relative order $(L/\lambda)^2$.
+So gravitational waves are rate waves that reach us as changes in space --- built from the two TT amplitudes,
+not a third mode, consistent with $\pi_u\equiv0$. And DTF's lapse equation is what forbids the breathing mode:
+in vacuum $\nabla^2u=4\pi G(\rho+3p/c^2)/c^2=0$, while $\nabla^2u=R_{0i0i}/c^2$ is the trace a breathing mode would need
+nonzero. For $L\sim\lambda$ (LISA, pulsar timing) the observable is still a clock residual, integrated along the
+light path. Same predictions as GR: a reading, not a discriminator (\texttt{DTF\_gw\_as\_u\_waves.py}).
 
 \emph{The primitive buys no force-carrier.} In the field picture a spin-2 graviton mediates the pull by
 exchange; here the pull is the $u$-gradient and the two modes are space's \emph{radiation}, not a mediator.
@@ -1127,7 +1140,7 @@ Scripts: \texttt{DTF\_entropy\_clockcycle.py}, \texttt{DTF\_native\_arrow.py},
 \begin{itemize}[leftmargin=1.4em,itemsep=1.5pt,topsep=2pt]
 \item \textbf{\S\ref{sec:rate}:} \texttt{which\_reading\_is\_DTF}, \texttt{phase\_unification}, \texttt{o6\_congruence}, \texttt{localnow\_integrability}, \texttt{native\_arrow}, \texttt{entropy\_clockcycle}, \texttt{entropy\_is\_entanglement}, \texttt{arrow\_grav\_thermal}, \texttt{vorticity\_residual}
 \item \textbf{\S\ref{sec:equiv}:} \texttt{kerr\_deser\_closure}
-\item \textbf{\S\ref{sec:gravity}:} \texttt{radiative\_content\_constructive}, \texttt{alpha1\_explicit\_1PN}
+\item \textbf{\S\ref{sec:gravity}:} \texttt{radiative\_content\_constructive}, \texttt{alpha1\_explicit\_1PN}, \texttt{gw\_as\_u\_waves}
 \item \textbf{\S\ref{sec:quantum}:} \texttt{localization\_tax}, \texttt{evanescent\_speed}, \texttt{born\_relaxation\_2d}, \texttt{tsirelson}, \texttt{fisher\_unique}, \texttt{wallstrom}, \texttt{deotto\_ghirardi}, \texttt{winding\_dynamics}, \texttt{amplitude\_channel}, \texttt{arrival\_time}, \texttt{tax\_sources\_chi}, \texttt{no\_signalling\_projection}
 \item \textbf{\S\ref{sec:consistency}:} \texttt{singularity\_deemergence}, \texttt{LTB\_collapse}, \texttt{singularity\_observable}, \texttt{mond\_quadrature\_zeta}, \texttt{sparc\_fixed\_a0}, \texttt{stream\_apsidal}, \texttt{cosmology\_timeline}, \texttt{de\_horizon}, \texttt{darksectors\_unified}, \texttt{localnow\_eventhorizon}
 \item \textbf{O7:} \texttt{o7\_cmb\_no\_cdm}, \texttt{o7\_lensing\_rar}, \texttt{o7\_dm\_budget}, \texttt{o7\_dtf\_reading} (third-party data; see the README)
