@@ -1,7 +1,7 @@
 """
-O2, PART 2: does single-time Born equivariance fix the ARRIVAL-TIME distribution?
+AMPLITUDE CHANNEL, PART 2: does single-time Born equivariance fix the ARRIVAL-TIME distribution?
 
-Part 1 (DTF_o2_amplitude_channel.py) closed the single-time channel: an added beable current
+Part 1 (DTF_amplitude_channel.py) closed the single-time channel: an added beable current
 must be divergence-free to keep rho=|psi|^2 at every instant. Arrival time, however, is not a
 single-time position statistic and is not fixed by rho -- it is a functional of TRAJECTORIES,
 and divergence-free additions change trajectories. So: can it discriminate?
@@ -105,7 +105,7 @@ print("      aperture shift by chi(y2)-chi(y1) != 0 -- measured -4.75% (8.1 sigm
 print("      y in [0,1.5] and -3.60% (4.6 sigma) for y in [0,0.75] -- while a SYMMETRIC")
 print("      aperture shifts 0.09 sigma, exactly as the identity requires for radial chi.")
 print()
-print("  => O2 is closed for single-time statistics AND for complete-plane fluxes.")
+print("  => The amplitude channel is closed for single-time statistics AND for complete-plane fluxes.")
 print("     It is OPEN for spatially resolved detection rates, which is where a")
 print("     discriminator would have to live. Caveat that needs a Bohmian, not an AI:")
 print("     this presumes first-crossing IS the arrival law and that the current j is")

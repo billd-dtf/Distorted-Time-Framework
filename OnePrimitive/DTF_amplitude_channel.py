@@ -1,12 +1,12 @@
 """
-O2 RESOLVED (negatively): the localization tax CANNOT carry a Born-equivariant amplitude channel.
+Amplitude channel CLOSED (negatively): the localization tax CANNOT carry a Born-equivariant amplitude channel.
 
-O2 asks the one question that could make DTF falsifiable against standard QM: is the
+The amplitude-channel question is the one that could make DTF falsifiable against standard QM: is the
 localization tax (Fisher/quantum-potential term) a genuine AMPLITUDE channel -- a beable
 velocity built from grad(ln rho) rather than grad(S), alive where grad(S) -> 0?
 
 Deotto-Ghirardi already fix the space of Born-equivalent additions: v -> v + w/rho with
-div(w) = 0 (verified in DTF_o2_deotto_ghirardi.py). This script asks the sharper question
+div(w) = 0 (verified in DTF_deotto_ghirardi.py). This script asks the sharper question
 that one does not: can an AMPLITUDE-DIRECTED law, w = f(rho) grad(rho), ever sit in that space?
 
 Three roads, all closed:
@@ -88,12 +88,12 @@ print("     So an amplitude channel is admissible ONLY as stochastic mechanics, 
 print("     predictions are those of standard QM. No discriminator either way.")
 
 print()
-print("="*72); print("VERDICT ON O2"); print("="*72)
+print("="*72); print("VERDICT ON THE AMPLITUDE CHANNEL"); print("="*72)
 print("  Deterministic amplitude channel : breaks Born equivariance  (theorem, sec. 1)")
 print("  Stochastic (Nelson) repair      : Born restored by the noise -> QM-identical")
 print("  Transverse div-free additions   : Born-equivalent, but NOT amplitude-directed")
 print()
-print("  => O2 CLOSES NEGATIVELY. The localization tax cannot be a beable velocity channel")
+print("  => THE AMPLITUDE CHANNEL CLOSES NEGATIVELY. The localization tax cannot be a beable velocity channel")
 print("     without either falsifying Born statistics or collapsing into standard QM.")
-print("     DTF is Born-identical, and the paper should say so outright rather than list O2")
+print("     DTF is Born-identical, and the paper should say so outright rather than list it")
 print("     as the open route to a tested-regime discriminator.")

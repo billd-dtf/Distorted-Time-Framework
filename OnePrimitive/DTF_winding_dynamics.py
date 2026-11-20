@@ -1,19 +1,19 @@
 """
-O3: is the integer phase-winding (Wallstrom quantization) PRESERVED by the Madelung/
+Winding dynamics: is the integer phase-winding (Wallstrom quantization) PRESERVED by the Madelung/
 Schrodinger dynamics around MOVING nodes?
 
 DTF's static claim: the phase S is a clock reading (S^1-valued), so circulation
-oint grad S . dl = 2*pi*n is integer by construction. O3's open part: does the
+oint grad S . dl = 2*pi*n is integer by construction. Open part: does the
 DYNAMICS keep it integer as nodes (rho=0 vortices) move? If winding can only change
 by an integer when a vortex crosses the loop (never drift fractionally, never appear
-from nowhere), then the S^1 constraint is dynamically self-consistent and O3's
+from nowhere), then the S^1 constraint is dynamically self-consistent and the
 "physical reason" extends from static to dynamic -- earned, not just asserted.
 
 Test: evolve 2D free Schrodinger (split-step Fourier, single-valued psi) from initial
 data containing (a) one moving +1 vortex, (b) a +1/-1 pair that annihilates. Track the
 discrete winding number around fixed loops over time.
   Winding(loop) = (1/2pi) * sum of wrapped phase differences around the loop.
-Expected if O3 holds: winding is ALWAYS an exact integer; it changes only by +-1 at
+Expected if the winding is preserved: winding is ALWAYS an exact integer; it changes only by +-1 at
 the instant a vortex crosses the loop; total winding (large loop) is conserved through
 pair annihilation.
 """

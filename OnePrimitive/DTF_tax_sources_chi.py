@@ -1,6 +1,6 @@
-"""O2 FINAL: does the localization tax source a divergence-free current chi?  NO -- chi=0.
+"""Amplitude channel, final: does the localization tax source a divergence-free current chi?  NO -- chi=0.
 
-The surviving O2 channel was w = curl(chi), chi arbitrary = the Deotto-Ghirardi
+The surviving amplitude channel was w = curl(chi), chi arbitrary = the Deotto-Ghirardi
 non-uniqueness. For it to be a DTF prediction the TAX must fix a particular chi.
 DTF's action decides it, and the answer is elementary: the tax is S-INDEPENDENT.
 
@@ -41,4 +41,4 @@ print("  * So the finite-aperture rate shift is NOT a DTF number: it is the")
 print("    Deotto-Ghirardi ambiguity of theories that POSTULATE a guidance law")
 print("    independently of an action. DTF derives its current from the action,")
 print("    which REMOVES that ambiguity rather than inheriting it.")
-print("  => O2 closes NEGATIVE for DTF: Born-identical AND arrival-identical.")
+print("  => The amplitude channel closes NEGATIVE for DTF: Born-identical AND arrival-identical.")

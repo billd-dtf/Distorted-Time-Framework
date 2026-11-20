@@ -1,4 +1,4 @@
-"""O9: why the Fisher form. Among local functionals I=int h(rho)(grad rho)^2 (<=2 derivatives),
+"""Fisher uniqueness: why the Fisher form. Among local functionals I=int h(rho)(grad rho)^2 (<=2 derivatives),
 the quantum potential Q = delta I/delta rho equals -(hbar^2/2m) lap(sqrt rho)/sqrt rho for EXACTLY ONE h,
 namely h = hbar^2/(8 m rho) (the Fisher/Weizsaecker form). Any other h gives a different Q -> nonlinear
 Schrodinger. So locality + linearity of the psi-equation FORCE the Fisher term (1D suffices)."""

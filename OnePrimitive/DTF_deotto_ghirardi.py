@@ -1,4 +1,4 @@
-"""O2: the amplitude-channel ambiguity IS the divergence-free-current family, and it is Born-invariant.
+"""Amplitude channel: the ambiguity IS the divergence-free-current family, and it is Born-invariant.
 
 Continuity  d_t rho + div(rho v) = 0  fixes v only up to  v -> v + w/rho  with div(w)=0.
 That divergence-free-current freedom is the exact space of "amplitude terms" one could add to the

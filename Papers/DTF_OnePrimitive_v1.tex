@@ -491,7 +491,7 @@ the variation of the Fisher functional~\cite{Reginatto1998,Frieden1989}.
 \noindent DTF adds no term. It reads the two already there, and three results follow.
 \begin{itemize}[leftmargin=1.4em,itemsep=3pt,topsep=3pt]
 \item \textbf{The tax is forced, not chosen.} Among local terms with at most two derivatives, the Fisher form
-  is the \emph{unique} one that keeps the $\psi$-equation linear (\texttt{DTF\_o9\_fisher\_unique.py}). Why
+  is the \emph{unique} one that keeps the $\psi$-equation linear (\texttt{DTF\_fisher\_unique.py}). Why
   quantum mechanics is linear is not addressed.
 \item \textbf{Born is not a separate axiom.} The current $j=\rho\nabla S/m$ makes $|\psi|^2$ equivariant, so
   Born frequencies are a typicality assumption~\cite{DGZ1992,Valentini1991} rather than a theorem, and objects
@@ -509,7 +509,7 @@ brought together. Nothing orders spacelike-separated outcomes, so the account is
 relativistic pilot-wave theories~\cite{DGMZ1999,Tumulka2006}, which must postulate a foliation). The ledger is timeless rather than a past hidden variable, so it evades Bell's factorisation and is compatible with the quantum bound. The CHSH operator obeys
 \[ C^2 = 4I-[A,A'][B,B'], \qquad \text{so}\quad \|C\|\le 2\sqrt2 \]
 (the standard Tsirelson bound, which QM saturates; the classical $2$ is the commuting case;
-\texttt{DTF\_o8\_tsirelson.py}). This is the recognised locally-mediated/atemporal
+\texttt{DTF\_tsirelson.py}). This is the recognised locally-mediated/atemporal
 class~\cite{WhartonArgaman2020}, Row 0 the timeless bookkeeper. What remains: a dynamical ledger, and
 no-signalling, which the row ordering \emph{motivates} without yet deriving.
 
@@ -605,10 +605,10 @@ $\chi$, not about detectability). With $\chi=0$ forced, none of it is available 
 \textbf{DTF is identical to quantum mechanics not only in single-time statistics but in arrival
 statistics too, and its whole empirical exposure is gravitational (\S\ref{sec:consistency}).}
 \end{tcolorbox}
-\statusline{Verified: \texttt{DTF\_o2\_amplitude\_channel.py} (trichotomy; $0.7\varepsilon$ rate;
-Fokker--Planck cancellation exact), \texttt{DTF\_o2\_tax\_sources\_chi.py} ($\chi=0$: the tax contributes
-$(0,0)$ to $j$), \texttt{DTF\_o2\_arrival\_time.py} (complete-plane flux null; aperture shift for $\chi\neq0$),
-\texttt{DTF\_o2\_deotto\_ghirardi.py}.}
+\statusline{Verified: \texttt{DTF\_amplitude\_channel.py} (trichotomy; $0.7\varepsilon$ rate;
+Fokker--Planck cancellation exact), \texttt{DTF\_tax\_sources\_chi.py} ($\chi=0$: the tax contributes
+$(0,0)$ to $j$), \texttt{DTF\_arrival\_time.py} (complete-plane flux null; aperture shift for $\chi\neq0$),
+\texttt{DTF\_deotto\_ghirardi.py}.}
 
 
 \medskip
@@ -782,7 +782,8 @@ argued from the sign of the instability, not simulated. The entropy results are 
 \item \textbf{Which congruence carries the rate.} $u$ is gauge-invariant only relative to a timelike congruence
 (\S\ref{sec:rate}). Matter fixes it for dust or a single fluid; in vacuum and for multi-component matter the framework
 does not. Casting $u$ as a relational observable~\cite{Rovelli2002,Dittrich2006} would settle whether the
-choice is physics or gauge; until then ``nothing added'' is established only where matter fixes $n^\mu$.
+choice is physics or gauge; until then ``nothing added'' is established only where matter fixes $n^\mu$. (\texttt{DTF\_o6\_congruence.py} verifies the covariant form for a given congruence; it does not
+fix the choice.)
 \item \textbf{The field equation below $a_0$.} The galactic fits use AQUAL, whose nonlinear Poisson equation is
 not a limit of Einstein's equations. DTF owes a relativistic completion that is Einstein's for $a\gg a_0$ and AQUAL
 for $a\lesssim a_0$, with lensing, cluster masses, and the CMB acoustic peaks (the third in particular) as its tests.
@@ -1042,7 +1043,7 @@ Scripts: \texttt{DTF\_entropy\_clockcycle.py}, \texttt{DTF\_native\_arrow.py},
 \item \textbf{\S\ref{sec:rate}:} \texttt{which\_reading\_is\_DTF}, \texttt{phase\_unification}, \texttt{o6\_congruence}, \texttt{localnow\_integrability}, \texttt{native\_arrow}, \texttt{entropy\_clockcycle}, \texttt{entropy\_is\_entanglement}, \texttt{arrow\_grav\_thermal}, \texttt{vorticity\_residual}
 \item \textbf{\S\ref{sec:equiv}:} \texttt{kerr\_deser\_closure}
 \item \textbf{\S\ref{sec:gravity}:} \texttt{radiative\_content\_constructive}, \texttt{alpha1\_explicit\_1PN}
-\item \textbf{\S\ref{sec:quantum}:} \texttt{localization\_tax}, \texttt{evanescent\_speed}, \texttt{born\_relaxation\_2d}, \texttt{o8\_tsirelson}, \texttt{o9\_fisher\_unique}, \texttt{o1\_wallstrom}, \texttt{o2\_deotto\_ghirardi}, \texttt{winding\_dynamics}, \texttt{o2\_amplitude\_channel}, \texttt{o2\_arrival\_time}, \texttt{o2\_tax\_sources\_chi}, \texttt{no\_signalling\_projection}
+\item \textbf{\S\ref{sec:quantum}:} \texttt{localization\_tax}, \texttt{evanescent\_speed}, \texttt{born\_relaxation\_2d}, \texttt{tsirelson}, \texttt{fisher\_unique}, \texttt{wallstrom}, \texttt{deotto\_ghirardi}, \texttt{winding\_dynamics}, \texttt{amplitude\_channel}, \texttt{arrival\_time}, \texttt{tax\_sources\_chi}, \texttt{no\_signalling\_projection}
 \item \textbf{\S\ref{sec:consistency}:} \texttt{singularity\_deemergence}, \texttt{LTB\_collapse}, \texttt{singularity\_observable}, \texttt{mond\_quadrature\_zeta}, \texttt{sparc\_fixed\_a0}, \texttt{stream\_apsidal}, \texttt{cosmology\_timeline}, \texttt{de\_horizon}, \texttt{darksectors\_unified}, \texttt{localnow\_eventhorizon}
 \item \textbf{App.\ D:} \texttt{em\_from\_phase}, \texttt{em\_clockphase\_forced}, \texttt{force\_census}, \texttt{em\_frame\_gauge}
 \end{itemize}

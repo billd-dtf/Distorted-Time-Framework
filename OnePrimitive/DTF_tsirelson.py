@@ -1,4 +1,4 @@
-"""O8: derive Tsirelson's bound CHSH <= 2 sqrt2 from the operator structure DTF's Hilbert-space amplitude
+"""Tsirelson: derive Tsirelson's bound CHSH <= 2 sqrt2 from the operator structure DTF's Hilbert-space amplitude
 supplies (Chain 5), not from a simulation. Local measurements are +/-1 observables (A^2=I), Alice's
 commuting with Bob's (spatial split). The CHSH operator C = A(B+B') + A'(B-B') then obeys the identity
     C^2 = 4 I  -  [A,A'] [B,B'],

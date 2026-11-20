@@ -1,4 +1,4 @@
-"""O1 (Wallstrom): the Madelung variables (rho, v=grad S/m) do NOT force quantized circulation, so
+"""Wallstrom condition: the Madelung variables (rho, v=grad S/m) do NOT force quantized circulation, so
 Schrodinger is not recovered without imposing single-valuedness of psi by hand. DTF's resolution: the
 phase Phi=S/hbar is a CLOCK reading, and a clock is a circle -- Phi is S^1-valued by the primitive. Then
 the winding of Phi around ANY loop (including loops around nodes, where rho=0) is the integer DEGREE of a
