@@ -4,10 +4,11 @@
 neighbours — is a physical fact, not a consequence of geometry and not a coordinate
 convention. There is no global "now"; geometry follows from the rate.
 
-This is an organizing-principle account in the sense of Laughlin & Pines (2000). It adds
-no particle, no force, and no fundamental constant, and it changes no tested prediction of
-general relativity or quantum mechanics. What changes is the number of independent
-assumptions.
+This is an interpretation of general relativity and quantum mechanics, in the relational
+family, and an organizing-principle account in the sense of Laughlin & Pines (2000). In every
+tested regime it adds no equation to either theory; what changes is the number of
+independent assumptions. Two speculative extensions go further, and the reorganization does
+not depend on them.
 
 **Author:** William de Dufour · ORCID [0009-0008-3470-1231](https://orcid.org/0009-0008-3470-1231)
 **Deposit:** [doi:10.5281/zenodo.21659853](https://doi.org/10.5281/zenodo.21659853)
@@ -22,23 +23,31 @@ a specific paper revision.
 **`Papers/DTF_OnePrimitive_v1.pdf`** — *Local Rate as Primitive: Ontological Economy
 Without Global Structure* (24 pp). The framework in a single self-contained paper.
 
-What it claims:
+What it claims, at the grade the paper gives each:
 
-- **Gravitational redshift and quantum phase are one accumulated quantity** — a redshift
-  and an interference fringe read the same clock.
-- **Gravitational and inertial mass are equal because there is only one rate**, not by
-  coincidence.
-- **Cosmic time is an approximation**, exact only where the cosmic flow has no twist. Ours
-  has almost none — a fact about how the universe began, not something the expansion
-  produced.
+- **Gravitational and inertial mass are equal because there is only one rate**, not as a
+  separate postulate.
+- **Gravitational redshift and quantum phase are one accumulated quantity.** This reading is
+  prior art (Müller–Peters–Chu 2010; Zych et al. 2011) and contested (Wolf et al. 2011); DTF
+  adopts it rather than establishing it (open problem O8).
+- **Cosmic time is an approximation**, exact only where the cosmic flow has no twist — the
+  standard covariant-cosmology result, read here as the reason there is no global now. Ours
+  has almost no twist, a fact about how the universe began.
 - **Entanglement sits on the timeless layer** the Wheeler–DeWitt equation describes, rather
-  than on a spatial slice, so realist quantum mechanics needs no preferred frame.
+  than on a spatial slice. Realist quantum mechanics without a preferred frame follows for
+  single-time statistics; a guidance law for entangled particles that needs no foliation is
+  still owed (O3).
 - **Where they have been tested, DTF agrees with GR and QM** (for gravity, above the MOND scale
-  a₀; below it DTF gives the scale but not yet the field equation) — shown constructively by
-  closing the three channels where a difference could have hidden: the cosmological vector
-  sector, the guidance law, and arrival statistics.
-- **One falsifiable claim:** a horizonless, echo-free black-hole remnant in place of the
-  singularity.
+  a₀) — shown constructively by closing the three channels where a difference could have
+  hidden: the cosmological vector sector, the guidance law, and arrival statistics.
+- **The rate is defined against the flow of matter**, which fixes it in cosmology but not in
+  vacuum (O6).
+
+Speculative extensions:
+
+- **A horizonless, echo-free black-hole remnant** in place of the singularity (conjecture).
+- **The MOND scale a₀ = cH₀/2π** (plausibility), in the form Milgrom (1999) found from
+  vacuum effects. DTF supplies the scale but not the field equation below it (O7).
 
 ## Verification scripts
 
