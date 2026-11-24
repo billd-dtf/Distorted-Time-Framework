@@ -11,7 +11,7 @@ SECTIONS
       wavelength, by  delta_u = G m / (c^2 lambdabar_C) = G m^2/(hbar c) = (m/m_P)^2 = alpha_G.
       The Planck mass is the clock that stops itself (delta_u ~ 1 at its own Compton radius).
       Electron: alpha_G = 1.75e-45. A dictionary, not a derivation.
-  [2] CANDIDATE G-MASS RELATION, TESTED.  DTF already has a0 = c H0/2pi. Set the self-gravity of a
+  [2] CANDIDATE G-MASS RELATION, TESTED.  DTF has a0 = c H0/2pi (paper) or k c H_Lambda (G thread). Set the self-gravity of a
       clock at its Compton wavelength equal to a0:  m^3 = hbar^2 H0 / (2 pi G c)  (Weinberg's 1972
       relation, with DTF's 2 pi).  -> ~32 MeV: matches no particle (e 0.511, mu 105.7, pi 139.6).
       FAILS. Recorded so it is not rediscovered as numerology.
@@ -75,6 +75,11 @@ m_star = (hbar**2 * H0 / (2 * np.pi * G * c))**(1 / 3)
 m_star_W = (hbar**2 * H0 / (G * c))**(1 / 3)
 print(f"  a0 = {a0:.3e} m/s^2")
 print(f"  m^3 = hbar^2 H0/(2 pi G c)  ->  m = {m_star/MeV:.1f} MeV     (Weinberg, no 2 pi: {m_star_W/MeV:.1f} MeV)")
+OmL = 0.6847                                   # Planck 2018
+HL = H0 * np.sqrt(OmL)                         # de Sitter rate H_Lambda (G thread: a0 = k c H_Lambda)
+for lab, a0x in [("a0 = c H_L / 2 pi", c * HL / (2 * np.pi)), ("a0 = 0.2 c H_L (k fitted)", 0.2 * c * HL)]:
+    mx = (hbar**2 * a0x / (G * c**2))**(1 / 3)
+    print(f"  {lab:<26}: a0 = {a0x:.3e}  ->  m = {mx/MeV:.1f} MeV")
 nearest = min(masses.items(), key=lambda kv: abs(np.log(kv[1] / (m_star / MeV))))
 print(f"  nearest particle: {nearest[0]} at {nearest[1]} MeV  (ratio {nearest[1]/(m_star/MeV):.2f})")
 check("the a0-Compton relation matches no particle mass to within a factor 2: FAILS",
